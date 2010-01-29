@@ -67,7 +67,7 @@
     </head>
     <body>
         <div id="about">
-                <p><strong>iWDL</strong><br />Version 0.2<br />
+                <p><strong>iWDL</strong><br />Version 0.3<br />
                     <p><strong>By Sietse Visser</strong></p>
                 <p><em>Weather Display Live<br /> on you iPhone</em></p>
                     <p>&nbsp;</p>
@@ -93,18 +93,58 @@
             </div>
         </div>
 
-        <div id="graphs">
+        <div id="ghour">
             <div class="toolbar">
-                <h1 iwdltxt="graphs"></h1>
+                <h1 iwdltxt="ghour"></h1>
                 <a href="#" class="back" iwdltxt="back"></a>
             </div>
-            <div id="graphsinfo" class="info">
+            <div id="hgraphsinfo" class="info">
             </div>
+        </div>
+
+        <div id="gday">
+            <div class="toolbar">
+                <h1 iwdltxt="gday"></h1>
+                <a href="#" class="back" iwdltxt="back"></a>
+            </div>
+            <div id="dgraphsinfo" class="info">
+            </div>
+        </div>
+
+        <div id="gweek">
+            <div class="toolbar">
+                <h1 iwdltxt="gweek"></h1>
+                <a href="#" class="back" iwdltxt="back"></a>
+            </div>
+            <div id="wgraphsinfo" class="info">
+            </div>
+        </div>
+
+        <div id="gmonth">
+            <div class="toolbar">
+                <h1 iwdltxt="gmonth"></h1>
+                <a href="#" class="back" iwdltxt="back"></a>
+            </div>
+            <div id="mgraphsinfo" class="info">
+            </div>
+        </div>
+
+        <div id="graphs">
+            <div class="toolbar">
+                <h1 iwdltxt="graphmenu"></h1>
+                <a href="#" class="back" iwdltxt="back"></a>
+            </div>
+            <ul class="rounded">
+                <li class="arrow"><a href="#ghour"  iwdltxt="ghour"></a></li>
+                <li class="arrow"><a href="#gday"   iwdltxt="gday"></a></li>
+                <li class="arrow"><a href="#gweek"  iwdltxt="gweek"></a></li>
+                <li class="arrow"><a href="#gmonth" iwdltxt="gmonth"></a></li>
+            </ul>
         </div>
 
         <div id="home" class="current">
             <div class="toolbar">
-                <h1>iWD Live</h1>
+                <h1>iWeather Display</h1>
                 <a class="button flip" id="infoButton" href="#about" iwdltxt="about"></a>
             </div>
             <ul class="rounded">
