@@ -16,7 +16,7 @@
 //
 // Settings for the iWDL iPhone webapp
 // By Sietse Visser (sietse@sietse.nl)
-// Version 0.3
+// Version 0.4
 //
 
 // Where are the clientraw files
@@ -26,15 +26,15 @@ settings["clientraw_dir"] = "/iwdl";
 //temp:   c f
 //wind:   kn mph kmh ms
 //rain:   mm in
-//baro:   hpa in
-//height: ft m
+//baro:   hpa hg
 //time:   24 12
+//height: ft m
 settings["temp"]   = "c";
 settings["wind"]   = "kmh";
 settings["rain"]   = "mm";
 settings["baro"]   = "hpa";
 settings["height"] = "ft";
-settings["time"]   = "24";   // does nothing for now
+settings["time"]   = "24";
 
 //Language to use; a file named iwdl_lang_<language>.js must exist.
 settings["lang"] = "en";

@@ -16,7 +16,7 @@
 //
 // Language file for iWDL
 // By Sietse Visser (sietse@sietse.nl)
-// Version 0.3
+// Version 0.4
 //
 
 texts["about"]          = "About";
@@ -67,6 +67,17 @@ texts["grm_wind_speed"] = "Wind speed (last 31 days)";
 texts["grm_wind_dir"]   = "Wind direction (last 31 days)";
 texts["grm_humid_out"]  = "Humidity out (last 31 days)";
 texts["grm_rain_year"]  = "Rain year (last 12 months)";
+
+texts["graphs_wavg"]    = "Graphs avg wind";
+texts["graphs_wgust"]   = "Graphs gust wind";
+texts["graphs_wdir"]    = "Graphs wind dir";
+texts["graphs_tempout"] = "Graphs temp out";
+texts["graphs_humout"]  = "Graphs hum out";
+texts["graphs_baro"]    = "Graphs baro";
+texts["graphs_rain"]    = "Graphs rain";
+texts["graphs_tempin"]  = "Graphs temp in";
+texts["graphs_solaruv"] = "Graphs solar UV";
+texts["graphs_solarwm"] = "Graphs solar WM";
 
 
 //
