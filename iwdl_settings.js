@@ -16,7 +16,7 @@
 //
 // Settings for the iWDL iPhone webapp
 // By Sietse Visser (sietse@sietse.nl)
-// Version 0.4
+// Version 0.5
 //
 
 // Where are the clientraw files
@@ -42,11 +42,12 @@ settings["lang"] = "en";
 //Refresh period for live weather in seconds; 15 secs x 120 times = 30 minutes
 //The number of refreshes is limited to prevent draining the battery if the page is still
 //active in safari (even when the iPhone is turned off).
-settings["refresh"]     =  "15";
-settings["num_refresh"] = "120";
+settings["refresh"]     =  15;
+settings["num_refresh"] = 120;
 
 //What to display on the live screen
 //The numbers correspond with the ones in iwdl_lang_en.js
+settings["home"]        = [4, 5, 6, 7, 117, 158];
 settings["live_screen"] = [4, 5, 6, 7, 12, 13, 79, 127, 73, 3, 1, 2, 44, 45];
 settings["min_max"]     = [47, 46, 76, 75, 78, 77, 111, 110, 129, 128, 132, 131, 11, 133, 113];
 
