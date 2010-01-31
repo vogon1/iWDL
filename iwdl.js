@@ -16,7 +16,7 @@
 //
 // Main javascript file
 // By Sietse Visser (sietse@sietse.nl)
-// Version 0.5
+// Version 0.6
 //
 
 //
@@ -421,7 +421,7 @@ function roundNumber(num, dec) {
 
 function check_convert(val, units) {
 	var ret = new Array();
-	ret["val"] = val;
+	ret["val"] = val + '';
 	ret["units"] = units;
 	if (unitnames[units]) ret["units"] = unitnames[units];
 
@@ -434,34 +434,34 @@ function check_convert(val, units) {
 		break;
 	case "kn":
 		if (settings["wind"] == "mph") {
-			ret["val"] = roundNumber(1.1507794 * val, 1);
+			ret["val"] = roundNumber(1.1507794 * val, 1) + '';
 			if (unitnames["mph"]) ret["units"] = unitnames["mph"];
 		}
 		if (settings["wind"] == "kmh") {
-			ret["val"] = roundNumber(1.852 * val, 1);
+			ret["val"] = roundNumber(1.852 * val, 1) + '';
 			if (unitnames["kmh"]) ret["units"] = unitnames["kmh"];
 		}
 		if (settings["wind"] == "ms") {
-			ret["val"] = roundNumber(1.852 * 3600 / 1000 * val, 1);
+			ret["val"] = roundNumber(0.514444 * val, 1) + '';
 			if (unitnames["ms"]) ret["units"] = unitnames["ms"];
 		}
 		break;
 	case "mm":
 		if (settings["rain"] == "in") {
-			ret["val"] = roundNumber(0.0393700787 * val, 3);
+			ret["val"] = roundNumber(0.0393700787 * val, 3) + '';
 			if (unitnames["in"]) ret["units"] = unitnames["in"];
 		}
 		break;
 	case "hpa":
 		if (settings["baro"] == "hg") {
-			ret["val"] = roundNumber(val / 33.86388158, 2);
+			ret["val"] = roundNumber(val / 33.86388158, 2) + '';
 			if (unitnames["hg"]) ret["units"] = unitnames["hg"];
 		}
 		break;
 	case "ft":
-		ret["val"] = (Math.round(val * 1.0).toFixed(0));
+		ret["val"] = (Math.round(val * 1.0).toFixed(0)) + '';
 		if (settings["height"] == "m") {
-			ret["val"] = (Math.round(val / 3.2808399).toFixed(0));
+			ret["val"] = (Math.round(val / 3.2808399).toFixed(0)) + '';
 			if (unitnames["m"]) ret["units"] = unitnames["m"];
 		}
 		break;
@@ -489,8 +489,18 @@ function updateiWdl() {
 
     // Translate
     var descrs = descr.split("/");
-    if (descrs[0]) descr = texts[descrs[0]];
-    if (descrs[1]) descr += " / " + texts[descrs[1]];
+    if (descrs[0]) {
+        if (texts[descrs[0]])
+            descr = texts[descrs[0]];
+        else
+            descr = descrs[0];
+    }
+    if (descrs[1]) {
+        if (texts[descrs[1]])
+            descr += " / " + texts[descrs[1]];
+        else
+            descr += " / " + descrs[1];
+    }
     
     if ($("#hm_descr").html() != descr) $("#hm_descr").html(descr);
     if ($("#il_descr").html() != descr) $("#il_descr").html(descr);
