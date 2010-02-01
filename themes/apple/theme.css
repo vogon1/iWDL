@@ -79,7 +79,7 @@ body.landscape .toolbar > h1 {
 }
 
 .blueButton {
-    -webkit-border-image: url(img/blueButton.png) 0 5 0 5;
+    -webkit-border-image: url(img/actionButton.png) 0 5 0 5;
     border-width: 0 5px;
 }
 
@@ -169,6 +169,10 @@ ul li.arrow {
     background-image: url(img/chevron.png);
     background-position: right center;
     background-repeat: no-repeat;
+}
+
+ul li.arrow a { 
+	padding: 12px 22px 12px 10px;
 }
 
 #plastic ul li.arrow, #metal ul li.arrow {
@@ -275,7 +279,7 @@ ul.form li:hover {
     background: #fff;
 }
 
-ul li input[type="text"], ul li input[type="password"], ul li textarea, ul li select {
+ul li input[type="text"], ul li input[type="password"], ul li input[type="tel"], ul li input[type="number"], ul li input[type="search"], ul li input[type="email"], ul li input[type="url"], ul li textarea, ul li select {
     color: #777;
     background: #fff url(../.png);
     border: 0;
@@ -318,6 +322,20 @@ ul li input[type="checkbox"]:after, ul li input[type="radio"]:after {
 /* @end */
 
 /* @group Edge to edge */
+ul.edgetoedge {
+    -webkit-border-radius: 0;
+}
+	
+ul.edgetoedge li.sep {
+    background: -webkit-gradient(linear, 0% 0%, 0% 100%, from(rgba(139, 159, 171, 1)), to(rgba(181, 193, 201, 1.0)));
+    border-bottom: 1px solid #b5c1c9;
+    border-top: 1px solid #b5c1c9;
+    color: #fff;
+    font-size: 16px;
+    margin: 1px 0 0 0;
+    padding: 2px 10px;
+    text-shadow: #636a6f 0 1px 0;
+}
 
 .edgetoedge h4 {
     color: #fff;

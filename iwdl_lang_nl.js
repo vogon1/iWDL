@@ -16,20 +16,33 @@
 //
 // Language file for iWDL
 // By Sietse Visser (sietse@sietse.nl)
-// Version 0.6
+// Version 0.7
 //
 
 texts["about"]                     = "Over";
 texts["live_weather"]              = "Live weer";
 texts["min_max"]                   = "Min / Max";
-texts["back"]                      = "Terug";
 texts["graphs"]                    = "Grafieken";
+texts["map"]                       = "Kaart";
+texts["settings"]                  = "Instellingen";
+texts["back"]                      = "Terug";
+
+texts["station_location"]          = "Locatie van weerstation";
+texts["unknown_location"]          = "Onbekende locatie";
 
 texts["graphmenu"]                 = "Grafieken";
 texts["ghour"]                     = "Uur grafieken";
 texts["gday"]                      = "Dag grafieken";
 texts["gweek"]                     = "Week grafieken";
 texts["gmonth"]                    = "Maand grafieken";
+
+texts["set_temp"]                  = "Temperatuur";
+texts["set_wind"]                  = "Wind snelheid";
+texts["set_wdir"]                  = "Wind richting";
+texts["set_rain"]                  = "Regen";
+texts["set_baro"]                  = "Druk";
+texts["set_height"]                = "Wolkenbasis";
+texts["set_lang"]                  = "Taal";
 
 texts["last_60m"]                  = "laatste 60 min";
 texts["last_24h"]                  = "laatste 24 uur";
@@ -58,6 +71,23 @@ texts["Mostly cloudy"]             = "Meestal bewolkt";
 texts["Cloudy with clear p"]       = "Meestal bewolkt";
 texts["Cloudy with clear patches"] = "Meestal bewolkt";
 texts["Overcast"]                  = "Zwaar bewolkt";
+
+texts["wdir_N"]   = "N";
+texts["wdir_NNE"] = "NNO";
+texts["wdir_NE"]  = "NO";
+texts["wdir_ENE"] = "ONO";
+texts["wdir_E"]   = "O";
+texts["wdir_ESE"] = "OZO";
+texts["wdir_SE"]  = "ZO";
+texts["wdir_SSE"] = "ZZO";
+texts["wdir_S"]   = "Z";
+texts["wdir_SSW"] = "ZZW";
+texts["wdir_SW"]  = "ZW";
+texts["wdir_WSW"] = "WZW";
+texts["wdir_W"]   = "W";
+texts["wdir_WNW"] = "WNW";
+texts["wdir_NW"]  = "NW";
+texts["wdir_NNW"] = "NNW";
 
 //
 // The clientraw field names
@@ -128,8 +158,8 @@ cr_fieldnames[130] = "Kennelijke temp";
 cr_fieldnames[131] = "Max luchtdruk";
 cr_fieldnames[132] = "Min luchtdruk";
 cr_fieldnames[133] = "Max windstoot";
-cr_fieldnames[134] = "Max windstoot laatste uur";
-cr_fieldnames[135] = "Max windstoot vandaag";
+cr_fieldnames[134] = "Max windstoot laatste uur tijd";
+cr_fieldnames[135] = "Max windstoot vandaag tijd";
 cr_fieldnames[136] = "Max kennelijke temp";
 cr_fieldnames[137] = "Min kennelijke temp";
 cr_fieldnames[138] = "Max dauwpunt";

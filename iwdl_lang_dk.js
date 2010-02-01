@@ -16,29 +16,42 @@
 //
 // Language file for iWDL
 // By Sietse Visser (sietse@sietse.nl)
-// Version 0.6
+// Version 0.7
 //
 
-texts["about"]          = "Om";
-texts["live_weather"]   = "Live vejrdata";
-texts["min_max"]        = "Min / Max";
-texts["back"]           = "Tilbage";
-texts["graphs"]         = "Grafer";
+texts["about"]                     = "Om";
+texts["live_weather"]              = "Live vejrdata";
+texts["min_max"]                   = "Min / Max";
+texts["graphs"]                    = "Grafer";
+texts["map"]                       = "Map";
+texts["settings"]                  = "Settings";
+texts["back"]                      = "Tilbage";
 
-texts["graphmenu"]      = "Graf menu";
-texts["ghour"]          = "Timegrafer";
-texts["gday"]           = "Dagsgrafer";
-texts["gweek"]          = "Ugegrafer";
-texts["gmonth"]         = "M&#229;nedsgrafer";
+texts["station_location"]          = "Weather station location";
+texts["unknown_location"]          = "Unknown location";
 
-texts["last_60m"]       = "sidste 60 min";
-texts["last_24h"]       = "sidste 24 timer";
-texts["last_7d"]        = "sidste 7 dage";
-texts["last_31d"]       = "sidste 31 dage";
-texts["last_12m"]       = "sidste 12 m&#229;neder";
+texts["graphmenu"]                 = "Graf menu";
+texts["ghour"]                     = "Timegrafer";
+texts["gday"]                      = "Dagsgrafer";
+texts["gweek"]                     = "Ugegrafer";
+texts["gmonth"]                    = "M&#229;nedsgrafer";
 
-texts["nat"]			   = "Nat";
-texts["tørt"]			   = "T&#248;rt";
+texts["set_temp"]                  = "Temperature";
+texts["set_wind"]                  = "Wind speed";
+texts["set_wdir"]                  = "Wind direction";
+texts["set_rain"]                  = "Rain";
+texts["set_baro"]                  = "Pressure";
+texts["set_height"]                = "Cloud height";
+texts["set_lang"]                  = "Language";
+
+texts["last_60m"]                  = "sidste 60 min";
+texts["last_24h"]                  = "sidste 24 timer";
+texts["last_7d"]                   = "sidste 7 dage";
+texts["last_31d"]                  = "sidste 31 dage";
+texts["last_12m"]                  = "sidste 12 m&#229;neder";
+
+texts["nat"]		   	           = "Nat";
+texts["tørt"]			           = "T&#248;rt";
 texts["Dry"]                       = "T&#248;rt";
 texts["Light rain"]                = "Let regn";
 texts["Moderate drizzle"]          = "Moderat nedb&#248;r";
@@ -60,13 +73,23 @@ texts["Mostly cloudy"]             = "Mest skyet";
 texts["Cloudy with clear p"]       = "Skyet med huller i skyd&#230;kket";
 texts["Cloudy with clear patches"] = "Skyet med huller i skyd&#230;kket";
 texts["Overcast"]                  = "Overskyet";
-texts["ø"]			   = "
-texts["å"]			   = "�";
-texts["æ"]			   = "�";
-texts["Clear"]  		   = "Klart";
-texts[", clear"]		   = "Klart";
-texts["mostly"]			   = "overvejende";
-texts["cloudy"]			   = "skyet";
+
+texts["wdir_N"]   = "N";
+texts["wdir_NNE"] = "NNE";
+texts["wdir_NE"]  = "NE";
+texts["wdir_ENE"] = "ENE";
+texts["wdir_E"]   = "E";
+texts["wdir_ESE"] = "ESE";
+texts["wdir_SE"]  = "SE";
+texts["wdir_SSE"] = "SSE";
+texts["wdir_S"]   = "S";
+texts["wdir_SSW"] = "SSW";
+texts["wdir_SW"]  = "SW";
+texts["wdir_WSW"] = "WSW";
+texts["wdir_W"]   = "W";
+texts["wdir_WNW"] = "WNW";
+texts["wdir_NW"]  = "NW";
+texts["wdir_NNW"] = "NNW";
 
 //
 // The clientraw field names

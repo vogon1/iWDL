@@ -16,26 +16,39 @@
 //
 // Language file for iWDL
 // By Sietse Visser (sietse@sietse.nl)
-// Version 0.6
+// Version 0.7
 //
 
-texts["about"]          = "About";
-texts["live_weather"]   = "Live weather";
-texts["min_max"]        = "Min / Max";
-texts["back"]           = "Back";
-texts["graphs"]         = "Graphs";
+texts["about"]                     = "About";
+texts["live_weather"]              = "Live weather";
+texts["min_max"]                   = "Min / Max";
+texts["graphs"]                    = "Graphs";
+texts["map"]                       = "Map";
+texts["settings"]                  = "Settings";
+texts["back"]                      = "Back";
 
-texts["graphmenu"]      = "Graph menu";
-texts["ghour"]          = "Hour graphs";
-texts["gday"]           = "Day graphs";
-texts["gweek"]          = "Week graphs";
-texts["gmonth"]         = "Month graphs";
+texts["station_location"]          = "Weather station location";
+texts["unknown_location"]          = "Unknown location";
 
-texts["last_60m"]       = "last 60 min";
-texts["last_24h"]       = "last 24 hours";
-texts["last_7d"]        = "last 7 days";
-texts["last_31d"]       = "last 31 days";
-texts["last_12m"]       = "last 12 months";
+texts["graphmenu"]                 = "Graph menu";
+texts["ghour"]                     = "Hour graphs";
+texts["gday"]                      = "Day graphs";
+texts["gweek"]                     = "Week graphs";
+texts["gmonth"]                    = "Month graphs";
+
+texts["set_temp"]                  = "Temperature";
+texts["set_wind"]                  = "Wind speed";
+texts["set_wdir"]                  = "Wind direction";
+texts["set_rain"]                  = "Rain";
+texts["set_baro"]                  = "Pressure";
+texts["set_height"]                = "Cloud height";
+texts["set_lang"]                  = "Language";
+
+texts["last_60m"]                  = "last 60 min";
+texts["last_24h"]                  = "last 24 hours";
+texts["last_7d"]                   = "last 7 days";
+texts["last_31d"]                  = "last 31 days";
+texts["last_12m"]                  = "last 12 months";
 
 texts["Dry"]                       = "Dry";
 texts["Light rain"]                = "Light rain";
@@ -58,6 +71,23 @@ texts["Mostly cloudy"]             = "Mostly cloude";
 texts["Cloudy with clear p"]       = "Cloudy with clear patches";
 texts["Cloudy with clear patches"] = "Cloudy with clear patches";
 texts["Overcast"]                  = "Overcast";
+
+texts["wdir_N"]   = "N";
+texts["wdir_NNE"] = "NNE";
+texts["wdir_NE"]  = "NE";
+texts["wdir_ENE"] = "ENE";
+texts["wdir_E"]   = "E";
+texts["wdir_ESE"] = "ESE";
+texts["wdir_SE"]  = "SE";
+texts["wdir_SSE"] = "SSE";
+texts["wdir_S"]   = "S";
+texts["wdir_SSW"] = "SSW";
+texts["wdir_SW"]  = "SW";
+texts["wdir_WSW"] = "WSW";
+texts["wdir_W"]   = "W";
+texts["wdir_WNW"] = "WNW";
+texts["wdir_NW"]  = "NW";
+texts["wdir_NNW"] = "NNW";
 
 //
 // The clientraw field names
@@ -96,7 +126,7 @@ cr_fieldnames[ 45] = "Humidex";
 cr_fieldnames[ 46] = "Max Day Temp";
 cr_fieldnames[ 47] = "Min Day Temp";
 cr_fieldnames[ 50] = "Baro Trend";
-cr_fieldnames[ 71] = "Max Wind Gust";
+cr_fieldnames[ 71] = "Max Wind Gust Today";
 cr_fieldnames[ 72] = "DewPoint Temp";
 cr_fieldnames[ 73] = "Cloud Height";
 cr_fieldnames[ 75] = "Max Humidex";
@@ -127,9 +157,9 @@ cr_fieldnames[129] = "Min Indoor Temp";
 cr_fieldnames[130] = "Apparent Temp";
 cr_fieldnames[131] = "Max Baro";
 cr_fieldnames[132] = "Min Baro";
-cr_fieldnames[133] = "Max Gust";
+cr_fieldnames[133] = "Max Gust Last Hour";
 cr_fieldnames[134] = "Max Gust Last Hour Time";
-cr_fieldnames[135] = "Max Gust Today";
+cr_fieldnames[135] = "Max Gust Today Time";
 cr_fieldnames[136] = "Max Apparent Temp";
 cr_fieldnames[137] = "Min Apparent Temp";
 cr_fieldnames[138] = "Max Dewpt";

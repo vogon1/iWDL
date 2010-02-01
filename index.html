@@ -7,14 +7,16 @@
         <style type="text/css" media="screen">@import "themes/apple/theme.min.css";</style>
 <!--
         <script src="lib/jquery.1.3.2.min.js" type="text/javascript" charset="utf-8"></script>
-        <script src="lib/jqtouch.min.js" type="application/x-javascript" charset="utf-8"></script>
+        <script src="lib/jqtouch.js" type="application/x-javascript" charset="utf-8"></script>
+        <script src="lib/jqt.database.js" type="application/x-javascript" charset="utf-8"></script>
         <script src="lib/jquery.flot.min.js" type="application/x-javascript" charset="utf-8"></script>
         <script src="lib/jquery.timers.js" type="application/x-javascript" charset="utf-8"></script>
--->
-        <script src="lib/all.js" type="application/x-javascript" charset="utf-8"></script>
-        <!--[if IE]><script language="javascript" type="text/javascript" src="lib/excanvas.min.js"></script><![endif]-->
         <script src="iwdl.js" type="application/x-javascript" charset="utf-8"></script>
+-->
+        <script src="all.min.js" type="application/x-javascript" charset="utf-8"></script>
+        <!--[if IE]><script language="javascript" type="text/javascript" src="lib/excanvas.min.js"></script><![endif]-->
         <script src="iwdl_settings.js" type="application/x-javascript" charset="utf-8"></script>
+        <script type="text/javascript" src="http://maps.google.com/maps/api/js?sensor=true"></script>
         <style type="text/css" media="screen">
             body.fullscreen #home .info {
                 display: none;
@@ -69,47 +71,114 @@
             .w25 {
                 width: 25%;
             }
+            .w33 {
+                width: 25%;
+            }
             .w50 {
                 width: 50%;
             }
+            .w100 {
+                width: 100%;
+            }
+            .tb_link {
+              color: #f0f0f0;
+              font-size: 15px;
+              font-weight: bold;
+            }
+            <!--// BEGIN MAP CSS //-->
+            #map_canvas {
+                    width: 100%;
+                    height: 250px;
+            }
+            body.profile #map_canvas {
+                    min-height: 250px;
+            }
+            body.landscape #map_canvas {
+                    min-height: 250px;
+            }
+            .mapcontrol {
+                    text-decoration: none;
+                    -webkit-border-radius: 4px;
+                    -webkit-box-shadow: rgba(0,0,0,.75) 1px 1px 3px;
+                    font-family: Arial;
+                    font-size: 20px;
+                    padding: 5px 10px 5px 10px;
+                    border: 1px solid #AAA;
+                    color: #6688CC;
+                    text-align: center;
+                    margin-bottom: 5px;
+                    background-color: #FFF;
+            }
+            <!--// END MAP CSS //-->
+
         </style>
     </head>
     <body id='body'>
         <div id="about">
-                <p><strong>iWDL</strong><br />Version 0.6<br />
+                <p><strong>iWDL</strong><br />Version 0.7<br />
                     <p><strong>By Sietse Visser</strong></p>
                 <p><em>Weather Display Live<br /> on you iPhone</em></p>
                     <p>&nbsp;</p>
                     <p>sietse@sietse.nl</p>
+                    <p>http://sietse.net/iwdlinfo</p>
                 <p><br /><br /><a href="#" class="grayButton goback">Close</a></p>
         </div>
 
         <div id="graphs">
             <div class="toolbar">
-                <h1 iwdltxt="graphmenu"></h1>
-                <a href="#" class="back" iwdltxt="back"></a>
+                <h1 iwdltxt="hm_station">Your station</h1>
+                <a href="#" class="back" iwdltxt="back">Back</a>
             </div>
             <ul class="rounded">
-                <li class="arrow"><a href="#hour"  iwdltxt="ghour"></a></li>
-                <li class="arrow"><a href="#day"   iwdltxt="gday"></a></li>
-                <li class="arrow"><a href="#week"  iwdltxt="gweek"></a></li>
-                <li class="arrow"><a href="#month" iwdltxt="gmonth"></a></li>
+                <li class="arrow"><a href="#hour"  iwdltxt="ghour">Hour graphs</a></li>
+                <li class="arrow"><a href="#day"   iwdltxt="gday">Day graphs</a></li>
+                <li class="arrow"><a href="#week"  iwdltxt="gweek">Week graphs</a></li>
+                <li class="arrow"><a href="#month" iwdltxt="gmonth">Month graphs</a></li>
             </ul>
+        </div>
+
+        <div id="map" class="draggable">
+            <div class="toolbar">
+                <h1 iwdltxt='hm_station'>Your station</h1>
+                <a href="#" class="back" iwdltxt="back">Back</a>
+            </div>
+            <ul class="rounded">
+          <div id="map_canvas" class="draggable"></div>
+          <p>&nbsp;</p>
+          <div id="map_text"></div>
+          <p>&nbsp;</p>
         </div>
 
         <div id="home" class="current">
             <div class="toolbar">
-                <h1>iWeather Live</h1>
-                <a class="button flip" id="infoButton" href="#about" iwdltxt="about"></a>
+                <h1 id='hm_station' iwdltxt='hm_station'>Your station</h1>
             </div>
             <ul class="iwdl_overview">
                 <li><div id='home_display'></div></li>
             </ul>
             <ul class="rounded">
-                <li class="arrow"><a href="#live_weather"  iwdltxt="live_weather"></a></li>
-                <li class="arrow"><a href="#min_max"       iwdltxt="min_max"></a></li>
-                <li class="arrow"><a href="#graphs"        iwdltxt="graphs"></a></li>
+                <li class="arrow"><a href="#live_weather"  iwdltxt="live_weather">Live weather</a></li>
+                <li class="arrow"><a href="#min_max"       iwdltxt="min_max">Min / Max</a></li>
+                <li class="arrow"><a href="#graphs"        iwdltxt="graphs">Graphs</a></li>
             </ul>
+
+            <div id='filler'> </div>
+
+            <div class="toolbar bottom">
+              <table class='w100'>
+              <tr>
+              <td class='center w33'>
+                <a class="slideup tb_link" id="mapButton" href="#map" iwdltxt="map">Map</a>
+              </td>
+              <td class='center w33'>
+                <a class="slideup tb_link" href="#settings" iwdltxt="settings">Settings</a>
+              </td>
+              <td class='center w33'>
+                <a class="slideup tb_link" href="#about" iwdltxt="about">About</a>
+              </td>
+              </tr>
+              </table>
+            </div>
         </div>
 
     </body>

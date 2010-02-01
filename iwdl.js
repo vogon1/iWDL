@@ -16,7 +16,7 @@
 //
 // Main javascript file
 // By Sietse Visser (sietse@sietse.nl)
-// Version 0.6
+// Version 0.7
 //
 
 //
@@ -26,7 +26,7 @@ var cr_fields = new Array;
 cr_fields[  0] = new Array("Header"                     ,  "");
 cr_fields[  1] = new Array("Avg Speed"                  ,  "kn");
 cr_fields[  2] = new Array("Gusts"                      ,  "kn");
-cr_fields[  3] = new Array("WindDir"                    ,  "&deg;");
+cr_fields[  3] = new Array("WindDir"                    ,  "deg");
 cr_fields[  4] = new Array("Out Temp"                   ,  "c");
 cr_fields[  5] = new Array("Out Hum"                    ,  "%");
 cr_fields[  6] = new Array("Baro"                       ,  "hpa");
@@ -140,9 +140,9 @@ cr_fields[113] = new Array("Max Avg Speed"              ,  "kn");
 cr_fields[114] = new Array("Lightning Last Min"         ,  "Number");
 cr_fields[115] = new Array("Lightning Last Time Hour"   ,  "Time");
 cr_fields[116] = new Array("Lightning Last Time Min"    ,  "Time");
-cr_fields[117] = new Array("Wind Avg Dir"               ,  "&deg;");
+cr_fields[117] = new Array("Wind Avg Dir"               ,  "deg");
 cr_fields[118] = new Array("Nexstorm Dist"              ,  "");
-cr_fields[119] = new Array("NextStorm Bearing"          ,  "&deg;");
+cr_fields[119] = new Array("NextStorm Bearing"          ,  "deg");
 cr_fields[120] = new Array("Extra Temp Sensor 7"        ,  "c");
 cr_fields[121] = new Array("Extra Temp Sensor 8"        ,  "c");
 cr_fields[122] = new Array("Extra Hum Sensor 4"         ,  "%");
@@ -158,7 +158,7 @@ cr_fields[131] = new Array("Max Baro"                   ,  "hpa");
 cr_fields[132] = new Array("Min Baro"                   ,  "hpa");
 cr_fields[133] = new Array("Max Gust"                   ,  "kn");
 cr_fields[134] = new Array("Max Gust Last Hour Time"    ,  "Time");
-cr_fields[135] = new Array("Max Gust Today"             ,  "Time");
+cr_fields[135] = new Array("Max Gust Today Time"        ,  "Time");
 cr_fields[136] = new Array("Max Apparent Temp"          ,  "c");
 cr_fields[137] = new Array("Min Apparent Temp"          ,  "c");
 cr_fields[138] = new Array("Max Dewpt"                  ,  "c");
@@ -169,16 +169,16 @@ cr_fields[142] = new Array("THSWS"                      ,  "");
 cr_fields[143] = new Array("Temp Trend (Logic)"         ,  "bool");
 cr_fields[144] = new Array("Humidity Trend (Logic)"     ,  "bool");
 cr_fields[145] = new Array("Humidex Trend (Logic)"      ,  "bool");
-cr_fields[146] = new Array("Hr Wind Dir  1"             ,  "&deg;");
-cr_fields[147] = new Array("Hr Wind Dir  2"             ,  "&deg;");
-cr_fields[148] = new Array("Hr Wind Dir  3"             ,  "&deg;");
-cr_fields[149] = new Array("Hr Wind Dir  4"             ,  "&deg;");
-cr_fields[150] = new Array("Hr Wind Dir  5"             ,  "&deg;");
-cr_fields[151] = new Array("Hr Wind Dir  6"             ,  "&deg;");
-cr_fields[152] = new Array("Hr Wind Dir  7"             ,  "&deg;");
-cr_fields[153] = new Array("Hr Wind Dir  8"             ,  "&deg;");
-cr_fields[154] = new Array("Hr Wind Dir  9"             ,  "&deg;");
-cr_fields[155] = new Array("Hr Wind Dir 10"             ,  "&deg;");
+cr_fields[146] = new Array("Hr Wind Dir  1"             ,  "deg");
+cr_fields[147] = new Array("Hr Wind Dir  2"             ,  "deg");
+cr_fields[148] = new Array("Hr Wind Dir  3"             ,  "deg");
+cr_fields[149] = new Array("Hr Wind Dir  4"             ,  "deg");
+cr_fields[150] = new Array("Hr Wind Dir  5"             ,  "deg");
+cr_fields[151] = new Array("Hr Wind Dir  6"             ,  "deg");
+cr_fields[152] = new Array("Hr Wind Dir  7"             ,  "deg");
+cr_fields[153] = new Array("Hr Wind Dir  8"             ,  "deg");
+cr_fields[154] = new Array("Hr Wind Dir  9"             ,  "deg");
+cr_fields[155] = new Array("Hr Wind Dir 10"             ,  "deg");
 cr_fields[156] = new Array("Leaf Wetness"               ,  "c");
 cr_fields[157] = new Array("Soil moisture"              ,  "c");
 cr_fields[158] = new Array("10 Min Avg Wind Speed"      ,  "kn");
@@ -255,9 +255,11 @@ var unitnames = new Array;
 unitnames["c"]    = "&deg;C";
 unitnames["f"]    = "&deg;F";
 unitnames["kn"]   = "Kn";
-unitnames["mph"]  = "mi/h";
+unitnames["mph"]  = "mph";
 unitnames["kmh"]  = "km/h";
 unitnames["ms"]   = "m/s";
+unitnames["deg"]  = "&deg;";
+unitnames["abbr"] = " ";
 unitnames["mm"]   = "mm";
 unitnames["in"]   = "in";
 unitnames["hpa"]  = "hPa";
@@ -336,6 +338,7 @@ var cr_fieldnames = new Array();
 var cr, crh, cre, crd;
 var jQT;
 var orientation = '0';
+var station = 'Weather station';
 
 function crAsyncDone(data, status) {
 	var now = new Date();
@@ -383,6 +386,7 @@ function getClientRaw(files) {
 			// Don't fetch it more often than once every 5 secs
 			if (getClientRaw.crlast + 5000 < now) {
 				cr = makeSyncRequest(settings["clientraw_dir"] + "/clientraw.txt").split(" ");
+				if (cr[0] != '12345') alert("Cannot read clientraw.txt; make sure the path in iwdl_settings.js is correct");
 				getClientRaw.crlast = now;
 			}
 			break;
@@ -446,6 +450,13 @@ function check_convert(val, units) {
 			if (unitnames["ms"]) ret["units"] = unitnames["ms"];
 		}
 		break;
+	case 'deg':
+		if (settings["wdir"] == "abbr") {
+			var windlabel = new Array("N", "NNE", "NE", "ENE", "E", "ESE", "SE", "SSE", "S", "SSW", "SW", "WSW", "W", "WNW", "NW", "NNW");
+			ret["val"] = windlabel[Math.floor(((parseInt(val) + 11) / 22.5) % 16 )];
+			if (texts["wdir_" + ret["val"]]) ret["val"] = texts["wdir_" + ret["val"]];
+			if (unitnames["abbr"]) ret["units"] = unitnames["abbr"];
+		}
 	case "mm":
 		if (settings["rain"] == "in") {
 			ret["val"] = roundNumber(0.0393700787 * val, 3) + '';
@@ -473,13 +484,19 @@ function updateiWdl() {
     getClientRaw(["cr"]);
 
     var station_time = cr[32].replace(/_/g, " ").split("-");
-    station = station_time[0];
-    time = station_time[1];
+    var mystation, time;
+    if (station_time.length > 2) {
+    	time = station_time[station_time.length - 1];
+    	delete station_time[station_time.length - 1];
+    	mystation = station_time.join("-").replace(/-$/, "");
+    } else {
+        mystation = station_time[0];
+        time = station_time[1];
+    }
 
-    if ($("#hm_time").html() != time) $("#hm_time").html(time);
-    if ($("#il_time").html() != time) $("#il_time").html(time);
-    if ($("#hm_station").html() != station) $("#hm_station").html("<h1>" + station + "</h1>");
-    if ($("#il_station").html() != station) $("#il_station").html(station);
+    if (mystation) station = mystation;
+
+    if ($("#hm_station").html() != station) $("[iwdltxt=hm_station]").html(station);
 
     var descr = cr[49].replace(/_/g, " ");
     // Extra Tag Cleanup
@@ -497,13 +514,16 @@ function updateiWdl() {
     }
     if (descrs[1]) {
         if (texts[descrs[1]])
-            descr += " / " + texts[descrs[1]];
+            time += " / " + texts[descrs[1]];
         else
-            descr += " / " + descrs[1];
+            time += " / " + descrs[1];
     }
     
-    if ($("#hm_descr").html() != descr) $("#hm_descr").html(descr);
+    if ($("#il_time").html() != time) $("#il_time").html(time);
     if ($("#il_descr").html() != descr) $("#il_descr").html(descr);
+
+    if ($("#hm_time").html() != time) $("#hm_time").html(time);
+    if ($("#hm_descr").html() != descr) $("#hm_descr").html(descr);
 
     var fields = settings["live_screen"];
     for ( var i=0, len=fields.length; i<len; ++i ){
@@ -529,9 +549,9 @@ function updateiWdl() {
     for ( var i=0, len=fields.length; i<len; ++i ){
         var conv = check_convert(cr[fields[i]], cr_fields[fields[i]][1]);
         var newval = conv["val"];
-        var val = $("#hmcr_" + fields[i]).html();
+        var val = $("#hmcr_" + fields[i]).text();
         if (newval != val) {
-            $("#hmcr_" + fields[i]).html(newval);
+            $("#hmcr_" + fields[i]).text(newval);
         }
     }
 }
@@ -541,9 +561,8 @@ function dispHome() {
     str += "<table width='100%'>";
     str += "<tr>";
     str += "<td align='center' width='100%' class='head'>";
-    str += "<span class='black' id='hm_station'></span>";
     str += "<span class='iwdl black' id='hm_time'></span>";
-    str += "</tr>";
+    str += "</td></tr>";
     str += "<tr>";
     str += "<td align='center' width='100%' id='hm_descr' class='head'></td>"; 
     str += "</tr>";
@@ -562,7 +581,7 @@ function dispHome() {
         	else
                 str2 += "<span class='iwdl black'> / </span>";
         }
-        str2 += "<span class='iwdl black' id='hmcr_" + fields[i] + "'></span><span class='iwdl black'>" + units + "</span>";
+        str2 += "<span class='iwdl black' id='hmcr_" + fields[i] + "'></span><span txtunits='" + cr_fields[fields[i]][1] + "' class='iwdl black'>" + units + "</span>";
     }
     str2 += "</td></tr></table>";
     str += str2;
@@ -577,7 +596,6 @@ function dispIwdl() {
     str += "<table width='100%'>";
     str += "<tr>";
     str += "<td align='center' width='100%' class='head'>";
-    str += "<span class='iwdl black' id='il_station'></span>";
     str += "<span class='iwdl black' id='il_time'></span>";
     str += "</tr>";
     str += "<tr>";
@@ -598,9 +616,9 @@ function dispIwdl() {
 	        str += "<li class='iwdl'>";
 	    }
         str += "<table width='100%'><tr>" + 
-                       "<td class='iwdl left  w50'>" + cr_fieldnames[fields[i]] + "</td>" +
+                       "<td class='iwdl left  w50'><span crtxt='" + fields[i] + "'>" + cr_fieldnames[fields[i]] + "</span></td>" +
                        "<td class='iwdl right w25 black'><span id='cr_" + fields[i] + "'></span></td>" +
-                       "<td class='iwdl left  w25'>" + units + "</td>" +
+                       "<td class='iwdl left  w25' txtunits='" + cr_fields[fields[i]][1] + "'>" + units + "</td>" +
                     "</tr></table>";
         if (crtogr[fields[i]]) str += "</a>";
         str += "</li>";
@@ -631,9 +649,9 @@ function dispMinMax() {
         str += "<li class='iwdl'>";
         str += "<table width='100%'>";
         str += "  <tr>";
-        str += "    <td align='left'  class='iwdl left  w50'>" + cr_fieldnames[fields[i]] + "</td>"; 
+        str += "    <td align='left'  class='iwdl left  w50'><span crtxt='" + fields[i] + "'>" + cr_fieldnames[fields[i]] + "</span></td>"; 
         str += "    <td align='right' class='iwdl right w25 black'><span id='mmcr_" + fields[i] + "'></span>";
-        str += "    <td align='left'  class='iwdl left  w25'> " + units + "</td>";
+        str += "    <td align='left'  class='iwdl left  w25' txtunits='" + cr_fields[fields[i]][1] + "'> " + units + "</td>";
         str += "  </tr>";
         str += "</table>";
         str += "</li>";
@@ -642,25 +660,101 @@ function dispMinMax() {
     return str;
 }
 
+function dispSettings() {
+	var str = '';
+	var selected;
+
+	str += "<form><ul class='edit rounded'>"
+	str += "<h1 iwdltxt='settings'>" + texts["settings"] + "</h1>";
+
+    str += "<li class='arrow'><select id='settings_temp' onChange='javascript: settingsChange(\"temp\", \"settings_temp\")'>";
+    if (settings["temp"] == "c") selected = 'selected'; else selected = '';
+    str += "<option value='c'" + selected + ">"    + texts["set_temp"] + ": &deg;C</option>";
+    if (settings["temp"] == "f") selected = 'selected'; else selected = '';
+	str += "<option value='f'" + selected + ">"    + texts["set_temp"] + ": &deg;F</option>";
+	str += "</select></li>";
+
+    str += "<li class='arrow'><select id='settings_wind' onChange='javascript: settingsChange(\"wind\", \"settings_wind\")'>";
+    if (settings["wind"] == "kn") selected = 'selected'; else selected = '';
+	str += "<option value='kn'" + selected + ">"   + texts["set_wind"] + ": kn</option>";
+    if (settings["wind"] == "kmh") selected = 'selected'; else selected = '';
+	str += "<option value='kmh'" + selected + ">"  + texts["set_wind"] + ": km/h</option>";
+    if (settings["wind"] == "mph") selected = 'selected'; else selected = '';
+	str += "<option value='mph'" + selected + ">"  + texts["set_wind"] + ": mp/h</option>";
+    if (settings["wind"] == "ms") selected = 'selected'; else selected = '';
+	str += "<option value='ms'" + selected + ">"   + texts["set_wind"] + ": m/s</option>";
+	str += "</select></li>";
+
+    str += "<li class='arrow'><select id='settings_wdir' onChange='javascript: settingsChange(\"wdir\", \"settings_wdir\")'>";
+    if (settings["wdir"] == "deg") selected = 'selected'; else selected = '';
+	str += "<option value='deg'" + selected + ">"  + texts["set_wdir"] + ": &deg;</option>";
+    if (settings["wdir"] == "abbr") selected = 'selected'; else selected = '';
+	str += "<option value='abbr'" + selected + ">" + texts["set_wdir"] + ": abbr</option>";
+	str += "</select></li>";
+
+    str += "<li class='arrow'><select id='settings_rain' onChange='javascript: settingsChange(\"rain\", \"settings_rain\")'>";
+    if (settings["rain"] == "mm") selected = 'selected'; else selected = '';
+	str += "<option value='mm'" + selected + ">"  + texts["set_rain"] + ": mm</option>";
+    if (settings["rain"] == "in") selected = 'selected'; else selected = '';
+	str += "<option value='in'" + selected + ">"  + texts["set_rain"] + ": inch</option>";
+	str += "</select></li>";
+
+    str += "<li class='arrow'><select id='settings_baro' onChange='javascript: settingsChange(\"baro\", \"settings_baro\")'>";
+    if (settings["baro"] == "hpa") selected = 'selected'; else selected = '';
+	str += "<option value='hpa'" + selected + ">" + texts["set_baro"] + ": hpa</option>";
+    if (settings["baro"] == "hg") selected = 'selected'; else selected = '';
+	str += "<option value='hg'" + selected + ">"  + texts["set_baro"] + ": hg</option>";
+	str += "</select></li>";
+
+    str += "<li class='arrow'><select id='settings_height' onChange='javascript: settingsChange(\"height\", \"settings_height\")'>";
+    if (settings["height"] == "ft") selected = 'selected'; else selected = '';
+	str += "<option value='ft'" + selected + ">"  + texts["set_height"] + ": ft</option>";
+    if (settings["height"] == "m") selected = 'selected'; else selected = '';
+	str += "<option value='m'" + selected + ">"   + texts["set_height"] + ": m</option>";
+	str += "</select></li>";
+
+    str += "<li class='arrow'><select id='settings_lang' onChange='javascript: settingsChange(\"lang\", \"settings_lang\")'>";
+    if (settings["lang"] == "en") selected = 'selected'; else selected = '';
+	str += "<option value='en'" + selected + ">"  + texts["set_lang"] + ": en</option>";
+    if (settings["lang"] == "nl") selected = 'selected'; else selected = '';
+	str += "<option value='nl'" + selected + ">"  + texts["set_lang"] + ": nl</option>";
+    if (settings["lang"] == "dk") selected = 'selected'; else selected = '';
+	str += "<option value='dk'" + selected + ">"  + texts["set_lang"] + ": dk</option>";
+    if (settings["lang"] == "no") selected = 'selected'; else selected = '';
+	str += "<option value='no'" + selected + ">"  + texts["set_lang"] + ": no</option>";
+    if (settings["lang"] == "se") selected = 'selected'; else selected = '';
+	str += "<option value='se'" + selected + ">"  + texts["set_lang"] + ": se</option>";
+	str += "</select></li>";
+
+    str += "</ul></form>";
+    return str;
+	
+}
+
 function dispGraph(grtype, graph) {
-	var gr, cr;
+	var gr, cr, type;
+	var ticks = null;
 	switch (grtype.substr(0,1)) {
 	case "h":
+		type = 'h';
 		grlist = ghsettings[graph];
 	    getClientRaw(["hcr"]);
 		cr = crh;
 		break;
 	case "d":
+		type = 'd';
 		grlist = gdsettings[graph];
 	    getClientRaw(["ecr"]);
 		cr = cre;
 		break;
 	case "w":
+		type = 'w';
 		grlist = gwsettings[graph];
 	    getClientRaw(["dcr"]);
 		cr = crd;
 		break;
 	case "m":
+		type = 'm';
 		grlist = gmsettings[graph];
 	    getClientRaw(["dcr"]);
 		cr = crd;
@@ -682,29 +776,45 @@ function dispGraph(grtype, graph) {
         var start = gr[0];
         var length = gr[1];
         for (var l = start; l < start+length; l++) {
-        	var conv = check_convert(cr[l], units);
-            vals[s] = conv["val"];
+        	// don't convert if units is abbr
+        	if (units == 'deg')
+        		vals[s] = cr[l];
+        	else {
+	        	var conv = check_convert(cr[l], units);
+	            vals[s] = conv["val"];
+        	}
             s++;
         }
     }
     var d1 = [];
-    for (var j = 0, len = vals.length; j < len; j++)
-        d1.push([j - len + 1, vals[j]]);
+    for (var j = 0, len = vals.length; j < len; j++) {
+    	if (type == 'w')
+    		d1.push([(j - len + 1)/4, vals[j]]);
+    	else
+    		d1.push([j - len + 1, vals[j]]);
+    }
 
-    $.plot($("#graphsinfo" + "_" + grtype + "_graph_" + graph), [ d1 ]);
+    var options = {
+    	xaxis: {
+    	   ticks: ticks
+        }
+    }
+
+    $.plot($("#graphsinfo" + "_" + grtype + "_graph_" + graph), [ d1 ], options);
 }
 
 function getGraphDescr(graph, type) {
-	var descr = cr_fieldnames[grtocr[graph]] + " " + check_convert(0, cr_fields[grtocr[graph]][1])["units"];
+	var descr = "<span crtxt='" + grtocr[graph] + "'>" + cr_fieldnames[grtocr[graph]] + "</span>" +
+	            " <span txtunits='" + cr_fields[grtocr[graph]][1] + "'>" + check_convert(0, cr_fields[grtocr[graph]][1])["units"] + "</span>";
 	switch (type) {
-	case "h": descr += " (" + texts["last_60m"] + ")"; break;
-	case "d": descr += " (" + texts["last_24h"] + ")"; break;
-	case "w": descr += " (" + texts["last_7d"] + ")"; break;
+	case "h": descr += " (<span iwdltxt='last_60m'>" + texts["last_60m"] + "</span>)"; break;
+	case "d": descr += " (<span iwdltxt='last_24h'>" + texts["last_24h"] + "</span>)"; break;
+	case "w": descr += " (<span iwdltxt='last_7d'>"  + texts["last_7d"] + "</span>)"; break;
 	case "m":
 		if (graph == "rain_year")
-			descr += " (" + texts["last_12m"] + ")";
+			descr += " (<span iwdltxt='last_12m'>" + texts["last_12m"] + "</span>)";
 		else
-			descr += " (" + texts["last_31d"] + ")";
+			descr += " (<span iwdltxt='last_31d'>" + texts["last_31d"] + "</span>)";
 		break;
 	}
 	return descr;
@@ -764,9 +874,40 @@ function dispTypeGraphs(type) {
     if (graphs[3][1]) dispGraph("m31", graphs[3][1]);
 }
 
-function setTexts() {
-    for ( var t in texts ){
-        $("[iwdltxt=" + t + "]").html(texts[t]);
+function setTexts(what) {
+	if (what == 'iwdl' || what == 'all') {
+	    for (var t in texts ){
+	        $("[iwdltxt=" + t + "]").html(texts[t]);
+	    }
+	}
+
+	if (what == 'cr' || what == 'all') {
+	    var done = new Array;
+	    for (var i = 0, len = settings["home"].length; i < len; ++i) {
+	    	done[i] = 1;
+	    	$("[crtxt=" + i + "]").html(cr_fieldnames[i]);
+	    }
+	    for (var i = 0, len = settings["live_screen"].length; i < len; ++i) {
+	    	if (!done[i]) {
+	    		$("[crtxt=" + i + "]").html(cr_fieldnames[i]);
+	    		done[i] = 1;
+	    	}
+	    }
+	    for (var i = 0, len = settings["min_max"].length; i < len; ++i) {
+	    	if (!done[i]) {
+	    		$("[crtxt=" + i + "]").html(cr_fieldnames[i]);
+	    		done[i] = 1;
+	    	}
+	    }
+	}
+}
+
+function setUnits() {
+    var conv;
+    var lst = new Array('c', 'kn', 'deg', 'hpa', 'mm', 'ft');
+    for (i = 0; i < lst.length; i++) {
+	    conv = check_convert(0, lst[i]);
+	    $("[txtunits=" + lst[i] + "]").html(conv["units"]);
     }
 }
 
@@ -774,37 +915,128 @@ function addDiv(name, content) {
 	var dv = '';
 	dv += "<div id='" + name + "'>";
     dv += "<div class='toolbar'>";
-    dv += "<h1 iwdltxt='" + name + "'></h1>";
-    dv += "<a href='#' class='back' iwdltxt='back'></a>";
+    dv += "<h1>" + station + "</h1>";
+    dv += "<a href='#' class='back' iwdltxt='back'>Back</a>";
     dv += "</div>";
+    dv += content;
     dv += "</div>";
     $("#body").append(dv);
-    $("#" + name).append(content);
+}
+
+function localiser() {
+    if ($("#map_text").html()) return;
+
+    var lng = 0;
+	var lat = 0;
+	if (cr[160] == 0 && cr[161] == 0) {
+		if (settings['longitude']) lng = -settings['longitude'];
+		if (settings['latitude'])  lat = settings['latitude'];
+	}
+
+	if (lng || lat) {
+	    var myLatlng = new google.maps.LatLng(lat, lng);
+	    var myOptions = {
+	      zoom: 5,
+	      center: myLatlng,
+	      mapTypeId: google.maps.MapTypeId.ROADMAP
+	    }
+	    var map = new google.maps.Map(document.getElementById('map_canvas'), myOptions);
+	    var marker = new google.maps.Marker({
+	      position: myLatlng,
+	      map: map,
+	      title: station
+	    });
+
+	    var geocoder = new google.maps.Geocoder();
+	    var latlng = new google.maps.LatLng(lat, lng);
+	    if (geocoder) {
+	        geocoder.geocode({'latLng': latlng}, function(results, status) {
+	          if (status == google.maps.GeocoderStatus.OK) {
+	            if (results[3]) {
+                  $("#map_text").html("<center>" + texts["station_location"] + ":<br>" +results[3].formatted_address + "</center>");
+	            }
+	          } else {
+	          }
+	        });
+	    }
+	} else {
+		$("#map_canvas").html(texts["unknown_location"]);
+	}
+}
+
+function settingsChange(which, newval) {
+	var nw = $("#" + newval).val();
+	settings[which] = nw;
+    if (1) {
+		jQT.dbDeleteRow("settings", "setting", "'" + which + "'");
+		jQT.dbInsertRows({"addRow": [ { "table": "settings", "property": [ { "name": "setting", value: which }, { "name": "value", "value": nw } ] } ] });
+    }
+	if (which == "lang") {
+    	// Load language file
+        loadjsfile("iwdl_lang_" + settings["lang"] + ".js");
+        setTexts('all');
+        $("#settings_content").html(dispSettings());
+	}
+	setUnits();
+	updateiWdl();
 }
 
 function startIwdl() {
     jQT = new $.jQTouch({
         addGlossToIcon: false,
         startupScreen: 'iwdl_startup.png',
-        statusBar: 'black-translucent',
-        preloadImages: [
-            'themes/apple/img/back_button.png',
-            'themes/apple/img/grayButton.png',
-            'themes/apple/img/whiteButton.png',
-            'themes/apple/img/loading.gif'
-            ]
+        statusBar: 'black',
     });
     $(document).ready(function(e){
+    	if (!settings["clientraw_dir"]) {
+    		alert("No iwdl_settings.js, please rename iwdl_settings.js.sample to iwdl_settings.js and make necessary changes");
+    	}
+    	if (1) {
+    	// Open database
+    	jQT.dbOpen("iwdl", "1.0","Settings", 5000);
+    	jQT.dbCreateTables({ "createTables" : [ { "table": "settings", "property": [ {"name": "setting", "type": "text"},
+    	                                                                             {"name": "value", "type": "text" } ] } ] } );
+    	jQT.dbSelectAll("settings", function(result) {
+    		for (var i = 0; i < result.rows.length; i++) {
+    			var row = result.rows.item(i);
+    			if (row['setting'] == "lang" && settings["lang"] != row['value']) {
+    			    settings[row['setting']] = row['value'];
+    		    	// Load language file
+    		        loadjsfile("iwdl_lang_" + settings["lang"] + ".js");
+    		        setTexts('all');
+    			} else {
+    			    settings[row['setting']] = row['value'];
+    			}
+    		}
+    		setUnits();
+    		updateiWdl();
+            addDiv("settings", "<div id='settings_content'>" + dispSettings() + "</div>");
+    	});
+    	} else {
+        	// Load language file
+            loadjsfile("iwdl_lang_" + settings["lang"] + ".js"); 
+            addDiv("settings", "<div id='settings_content'>" + dispSettings() + "</div>");
+    	}
 
     	// Load language file
         loadjsfile("iwdl_lang_" + settings["lang"] + ".js"); 
 
         getClientRaw(["cr"]);
+        dispHome();
+        updateiWdl();
 
         addDiv("live_weather", dispIwdl());
         addDiv("min_max",      dispMinMax());
-        dispHome();
+
+		setUnits();
         updateiWdl();
+ 
+        if (document.height >= 450) {
+        	$("#filler").css({'height': 49 });
+        } else {
+        	$("#filler").css({'height': 8 });
+        }
+        
         $(document).everyTime(settings["refresh"] + "s", "iwdlTimer", function(i) { updateiWdl(); }, settings["num_refresh"]);
 
         var lst = ["hour", "day", "week", "month"];
@@ -843,10 +1075,11 @@ function startIwdl() {
             }
         });
 
-        setTexts();
+        setTexts('iwdl');
 
         $(function(){
             $('body').bind('turn', function(event, info){
+                $("#height").text(document.height);
             	  var curr = $(".current").attr("id");
            		  switch (curr) {
            		  case "hour"      : ;
@@ -866,6 +1099,12 @@ function startIwdl() {
             	  }
             });
             
+        });
+
+        $('#map').bind('pageAnimationEnd', function(event, info){
+            if (info.direction == 'in') {
+                localiser();
+            }
         });
     });
 }
