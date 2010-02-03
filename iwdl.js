@@ -931,6 +931,9 @@ function localiser() {
 	if (cr[160] == 0 && cr[161] == 0) {
 		if (settings['longitude']) lng = -settings['longitude'];
 		if (settings['latitude'])  lat = settings['latitude'];
+	} else {
+		if (settings['longitude']) lng = -cr[161];
+		if (settings['latitude'])  lat = cr[160];
 	}
 
 	if (lng || lat) {
