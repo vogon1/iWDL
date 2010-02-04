@@ -1079,6 +1079,18 @@ function startIwdl() {
             }
         });
 
+        $("#tap_mapbutton").bind('click', function(event) {
+        	jQT.goTo("#map", "slideup");
+        });
+        
+        $("#tap_settings").bind('click', function(event) {
+        	jQT.goTo("#settings", "slideup");
+        });
+        
+        $("#tap_about").bind('click', function(event) {
+        	jQT.goTo("#about", "slideup");
+        });
+        
         setTexts('iwdl');
 
         $(function(){
