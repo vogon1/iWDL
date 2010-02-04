@@ -16,7 +16,7 @@
 //
 // Language file for iWDL
 // By Sietse Visser (sietse@sietse.nl)
-// Version 0.8a
+// Version 0.9
 //
 // Norwegian translation: Runar B. Gundersen (runar@runarweb.com)
 //
@@ -79,22 +79,30 @@ texts["Cloudy with clear p"]       = "Overskyet med sprekker i skydekket";
 texts["Cloudy with clear patches"] = "Overskyet med sprekker i skydekket";
 texts["Overcast"]                  = "Overskyet";
 
-texts["wdir_N"]   = "N";
-texts["wdir_NNE"] = "NN&Oslash;";
-texts["wdir_NE"]  = "N&Oslash;";
-texts["wdir_ENE"] = "&Oslash;N&Oslash;";
-texts["wdir_E"]   = "&Oslash;";
-texts["wdir_ESE"] = "&Oslash;S&Oslash;";
-texts["wdir_SE"]  = "S&Oslash;";
-texts["wdir_SSE"] = "SS&Oslash;";
-texts["wdir_S"]   = "S";
-texts["wdir_SSW"] = "SSV";
-texts["wdir_SW"]  = "SV";
-texts["wdir_WSW"] = "VSV";
-texts["wdir_W"]   = "V";
-texts["wdir_WNW"] = "VNV";
-texts["wdir_NW"]  = "NV";
-texts["wdir_NNW"] = "NNV";
+texts["wdir_N"]    = "N";
+texts["wdir_NNE"]  = "NN&Oslash;";
+texts["wdir_NE"]   = "N&Oslash;";
+texts["wdir_ENE"]  = "&Oslash;N&Oslash;";
+texts["wdir_E"]    = "&Oslash;";
+texts["wdir_ESE"]  = "&Oslash;S&Oslash;";
+texts["wdir_SE"]   = "S&Oslash;";
+texts["wdir_SSE"]  = "SS&Oslash;";
+texts["wdir_S"]    = "S";
+texts["wdir_SSW"]  = "SSV";
+texts["wdir_SW"]   = "SV";
+texts["wdir_WSW"]  = "VSV";
+texts["wdir_W"]    = "V";
+texts["wdir_WNW"]  = "VNV";
+texts["wdir_NW"]   = "NV";
+texts["wdir_NNW"]  = "NNV";
+
+texts["Monday"]    = "Mandag";
+texts["Tuesday"]   = "Tirsdag";
+texts["Wednesday"] = "Onsdag";
+texts["Thursday"]  = "Torsdag";
+texts["Friday"]    = "Fredag";
+texts["Saturday"]  = "Lørdag";
+texts["Sunday"]    = "Søndag";
 
 //
 // The clientraw field names

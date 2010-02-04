@@ -3,10 +3,10 @@
     <head>
         <meta charset="UTF-8" />
         <title>iWDL</title>
-        <style type="text/css" media="screen">@import "css/jqtouch.min.css";</style>
-        <style type="text/css" media="screen">@import "themes/apple/theme.min.css";</style>
-        <style type="text/css" media="screen">@import "iwdl.css";</style>
 <!--
+        <style type="text/css" media="screen">@import "css/jqtouch.css";</style>
+        <style type="text/css" media="screen">@import "themes/apple/theme.css";</style>
+        <style type="text/css" media="screen">@import "iwdl.css";</style>
         <script src="lib/jquery.1.3.2.min.js" type="text/javascript" charset="utf-8"></script>
         <script src="lib/jqtouch.js" type="application/x-javascript" charset="utf-8"></script>
         <script src="lib/jqt.database.js" type="application/x-javascript" charset="utf-8"></script>
@@ -14,16 +14,17 @@
         <script src="lib/jquery.timers.js" type="application/x-javascript" charset="utf-8"></script>
         <script src="iwdl.js" type="application/x-javascript" charset="utf-8"></script>
 -->
+        <style type="text/css" media="screen">@import "all.min.css";</style>
         <script src="all.min.js" type="application/x-javascript" charset="utf-8"></script>
         <!--[if IE]><script language="javascript" type="text/javascript" src="lib/excanvas.min.js"></script><![endif]-->
         <script src="iwdl_settings.js" type="application/x-javascript" charset="utf-8"></script>
         <script type="text/javascript" src="http://maps.google.com/maps/api/js?sensor=true"></script>
     </head>
-    <body id='body'>
+    <body id="body">
         <div id="about">
-                <p><strong>iWDL</strong><br />Version 0.8a<br />
+                <p><strong>iWDL</strong><br />Version 0.9<br />
                     <p><strong>By Sietse Visser</strong></p>
-                <p><em>Weather Display Live<br /> on you iPhone</em></p>
+                <p><em>Weather Display Live<br /> on your iPhone</em></p>
                     <p>&nbsp;</p>
                     <p>sietse@sietse.nl</p>
                     <p>http://sietse.net/iwdlinfo</p>
@@ -36,7 +37,7 @@
                 <a href="#" class="back" iwdltxt="back">Back</a>
             </div>
             <ul class="rounded">
-                <li class="iwdl_bg" iwdltxt='graphs'>Graphs</li>
+                <li class="iwdl_bg" iwdltxt="graphs">Graphs</li>
                 <li class="arrow"><a href="#hour"  iwdltxt="ghour">Hour graphs</a></li>
                 <li class="arrow"><a href="#day"   iwdltxt="gday">Day graphs</a></li>
                 <li class="arrow"><a href="#week"  iwdltxt="gweek">Week graphs</a></li>
@@ -46,7 +47,7 @@
 
         <div id="map" class="draggable">
             <div class="toolbar">
-                <h1 iwdltxt='hm_station'>Your station</h1>
+                <h1 iwdltxt="hm_station">Your station</h1>
                 <a href="#" class="back" iwdltxt="back">Back</a>
             </div>
             <ul class="rounded iwdl_bg">
@@ -63,17 +64,17 @@
                 <a href="#" class="back" iwdltxt="back">Back</a>
             </div>
             <ul class="rounded">
-                <li id='fc'></li>
-                <li id='fcref' iwdltxt='loading'></li>
+                <li id="fc"></li>
+                <li id="fcref" iwdltxt="loading"></li>
             </ul>
         </div>
 
         <div id="home" class="current">
             <div class="toolbar">
-                <h1 id='hm_station' iwdltxt='hm_station'>Your station</h1>
+                <h1 id="hm_station" iwdltxt="hm_station">Your station</h1>
             </div>
             <ul class="iwdl_overview iwdl_bg">
-                <li><div id='home_display'></div></li>
+                <li><div id="home_display"></div></li>
             </ul>
             <ul class="rounded iwdl_home_menu">
                 <li class="arrow"><a href="#live_weather"  iwdltxt="live_weather">Live weather</a></li>
@@ -82,22 +83,9 @@
                 <li class="arrow"><a href="#forecast"      iwdltxt="forecast">Forecast</a></li>
             </ul>
 
-            <div id='filler'> </div>
+            <div id="filler"> </div>
 
-            <div class="toolbar bottom">
-              <table class='w100'>
-              <tr>
-              <td class='center w33' id='tap_mapbutton'>
-                <a class="slideup tb_link" id="mapButton" href="#map" iwdltxt="map">Map</a>
-              </td>
-              <td class='center w33' id='tap_settings'>
-                <a class="slideup tb_link" href="#settings" iwdltxt="settings">Settings</a>
-              </td>
-              <td class='center w33' id='tap_about'>
-                <a class="slideup tb_link" href="#about" iwdltxt="about">About</a>
-              </td>
-              </tr>
-              </table>
+            <div class="toolbar_black bottom" id="toolbar">
             </div>
         </div>
     </body>

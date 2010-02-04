@@ -48,6 +48,17 @@ body.fullscreen #home .info {
 .iwdl_home_menu {
     margin: 5px 10px 5px 10px;
 }
+
+.toolbar_black {
+    -webkit-box-sizing: border-box;
+    border-bottom: 1px solid #000000;
+    padding: 0px;
+    margin: 0px;
+    height: 43px;
+    background: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAArCAYAAAC5IuLZAAAAAXNSR0IArs4c6QAAAAZiS0dEAP8A/wD/oL2nkwAAAAlwSFlzAAALEwAACxMBAJqcGAAAAAd0SU1FB9oBGBQUHhgyIrMAAABPSURBVAjXfY1BDoNAEMMcH/ZfwP8/UvjC7vTAShWIcomi2FIgluu24PHZsaoQwN47qrMlwTHGVJ7iR2/ePwBQ59t7qFNurUGSMsncrk2AL3Y7Qqj8/th3AAAAAElFTkSuQmCC) #000000 repeat-x;
+    position: relative;
+}
+
 .black {
     color: black;
 }
@@ -59,6 +70,9 @@ body.fullscreen #home .info {
 }
 .center {
     text-align: center;
+}
+.w20 {
+    width: 20%;
 }
 .w25 {
     width: 25%;
@@ -74,7 +88,7 @@ body.fullscreen #home .info {
 }
 .tb_link {
   color: #f0f0f0;
-  font-size: 15px;
+  font-size: 11px;
   font-weight: bold;
 }
 .inline {

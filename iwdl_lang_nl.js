@@ -16,7 +16,7 @@
 //
 // Language file for iWDL
 // By Sietse Visser (sietse@sietse.nl)
-// Version 0.8a
+// Version 0.9
 //
 
 texts["about"]                     = "Over";
@@ -77,22 +77,30 @@ texts["Cloudy with clear p"]       = "Meestal bewolkt";
 texts["Cloudy with clear patches"] = "Meestal bewolkt";
 texts["Overcast"]                  = "Zwaar bewolkt";
 
-texts["wdir_N"]   = "N";
-texts["wdir_NNE"] = "NNO";
-texts["wdir_NE"]  = "NO";
-texts["wdir_ENE"] = "ONO";
-texts["wdir_E"]   = "O";
-texts["wdir_ESE"] = "OZO";
-texts["wdir_SE"]  = "ZO";
-texts["wdir_SSE"] = "ZZO";
-texts["wdir_S"]   = "Z";
-texts["wdir_SSW"] = "ZZW";
-texts["wdir_SW"]  = "ZW";
-texts["wdir_WSW"] = "WZW";
-texts["wdir_W"]   = "W";
-texts["wdir_WNW"] = "WNW";
-texts["wdir_NW"]  = "NW";
-texts["wdir_NNW"] = "NNW";
+texts["wdir_N"]    = "N";
+texts["wdir_NNE"]  = "NNO";
+texts["wdir_NE"]   = "NO";
+texts["wdir_ENE"]  = "ONO";
+texts["wdir_E"]    = "O";
+texts["wdir_ESE"]  = "OZO";
+texts["wdir_SE"]   = "ZO";
+texts["wdir_SSE"]  = "ZZO";
+texts["wdir_S"]    = "Z";
+texts["wdir_SSW"]  = "ZZW";
+texts["wdir_SW"]   = "ZW";
+texts["wdir_WSW"]  = "WZW";
+texts["wdir_W"]    = "W";
+texts["wdir_WNW"]  = "WNW";
+texts["wdir_NW"]   = "NW";
+texts["wdir_NNW"]  = "NNW";
+
+texts["Monday"]    = "Maandag";
+texts["Tuesday"]   = "Dinsdag";
+texts["Wednesday"] = "Woensdag";
+texts["Thursday"]  = "Donderdag";
+texts["Friday"]    = "Vrijdag";
+texts["Saturday"]  = "Zaterdag";
+texts["Sunday"]    = "Zondag";
 
 //
 // The clientraw field names

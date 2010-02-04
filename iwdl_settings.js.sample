@@ -16,7 +16,7 @@
 //
 // Settings for the iWDL iPhone webapp
 // By Sietse Visser (sietse@sietse.nl)
-// Version 0.8a
+// Version 0.9
 //
 
 // Where are the clientraw files
@@ -39,8 +39,9 @@ settings["height"] = "ft";
 settings["time"]   = "24";
 
 //Language to use; a file named iwdl_lang_<language>.js must exist.
-// Possible languages: en nl dk no se
+// Possible languages: cz dk en fi it nl no se sp
 settings["lang"] = "en";
+settings["all_langs"] = [ "cz", "dk", "en", "fi", "it", "nl", "no", "se", "sp" ];
 
 // Station name override; iWDL normally uses the station name from the clientraw.txt.
 // In case you want another name to show up in the top bar, remove // in the following line:
@@ -49,6 +50,11 @@ settings["lang"] = "en";
 // Location name override; iWDL normally uses the coordinates from clientraw.txt.
 // In case you want another location to show up in the map screen, remove // in the following line:
 // settings["location"] = "Utrecht, NL";
+
+// Station type; if this setting is not defined, Weather Display is assumed.
+// Meteohub has another stationname/time separator, and negates longitude
+// Possible setting: meteohub
+// settings["station_type"] = "meteohub";
 
 // Forecast; possible types:
 // yr.no   -- get forecast from yr.no
@@ -59,17 +65,21 @@ settings["forecast"] = "yr.no";
 // and fill in the last part of the url like below.
 settings["yr.no"] = "Nederland/Utrecht/Utrecht";
 
+// When using yr.no, decide weather to show date and/or day of the week.
+// Possible settings: date day date-day day-date
+settings["date_day"] = "weekday";
+
 // When 'forcast' set to 'url', fill in the url (it will be shown in an iframe).
 // NOTE: You are responsible for a readable iphone page!
 // The forecast_from field is shown at the bottom of the forecast screen
 settings["forecast_url"] = "http://mobil.silkeborg-vejret.dk/vejrudsigt.php";
 settings["forecast_from"] = "Silkeborg";
 
-// If you have radar data, set the url here; it is shown in an iframe
-settings["radar"] = "http://buienradar.mobi/";
+// If you have radar data, uncomment the following and set the url here; it is shown in an iframe
+// settings["radar"] = "http://buienradar.mobi/";
 
-// If you have a webcam, set the url here; it is shown in an iframe
-settings["webcam"] = "http://yoursite.com/webcam.html";
+// If you have a webcam, uncomment the following and set the url here; it is shown in an iframe
+// settings["webcam"] = "http://yoursite.com/webcam.html";
 
 // Refresh period for live weather in seconds; 15 secs x 120 times = 30 minutes
 // The number of refreshes is limited to prevent draining the battery if the page is still
@@ -82,6 +92,10 @@ settings["num_refresh"] = 120;
 settings["home"]        = [4, 5, 6, 7, 3, 1];
 settings["live_screen"] = [4, 5, 6, 7, 12, 13, 79, 127, 73, 3, 1, 2, 44, 45];
 settings["min_max"]     = [47, 46, 76, 75, 78, 77, 111, 110, 129, 128, 132, 131, 11, 71, 113];
+
+// If you want to toggle humidex (temp > 17C) and windchill (temp < 17C), then uncomment following option.
+// In the live screen setting (see above), use either field 44 or 45, it will toggle
+// settings["humchill"] = "toggle";
 
 // Possible settings for hour graphs:
 // temp_out, humid_out, rain, baro, wind_speed, wind_gust, wind_dir, solar_wm

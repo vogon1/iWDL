@@ -16,7 +16,7 @@
 //
 // Main javascript file
 // By Sietse Visser (sietse@sietse.nl)
-// Version 0.8a
+// Version 0.9
 //
 
 //
@@ -342,25 +342,25 @@ var station = 'Weather station';
 var isIphone = (navigator.userAgent.toLowerCase().indexOf('iphone') != -1 || navigator.userAgent.toLowerCase().indexOf('ipod') != -1);
 
 function crAsyncDone(data, status) {
-	var now = new Date();
-	now = now.getTime();
-	cr = data.split(" ");
-	getClientRaw.crlast = now;
-	updateiWdl();
+    var now = new Date();
+    now = now.getTime();
+    cr = data.split(" ");
+    getClientRaw.crlast = now;
+    updateiWdl();
 }
 
 function AsyncClientRaw() {
-	var now = new Date();
-	now = now.getTime();
-	if (typeof getClientRaw.crlast == 'undefined') getClientRaw.crlast = 0;
-	// Don't fetch it more often than once every 5 secs
-	if (getClientRaw.crlast + 5000 < now) {
-		$.ajax({
-	      url: settings["clientraw_dir"] + "/clientraw.txt",
-	      async: true,
-	      success: crAsyncDone
-	     });
-	}
+    var now = new Date();
+    now = now.getTime();
+    if (typeof getClientRaw.crlast == 'undefined') getClientRaw.crlast = 0;
+    // Don't fetch it more often than once every 5 secs
+    if (getClientRaw.crlast + 5000 < now) {
+        $.ajax({
+          url: settings["clientraw_dir"] + "/clientraw.txt",
+          async: true,
+          success: crAsyncDone
+         });
+    }
 }
 
 function makeSyncRequest(url) {
@@ -376,199 +376,242 @@ function getForecast() {
     if ($("#fc").html() != "") return;
 
     if (settings["forecast"] == "yr.no") {
-	    var q = "";
-	    q += "http://query.yahooapis.com/v1/public/yql?q=";
-	    q += encodeURIComponent("select * from xml where url='http:www.yr.no/sted/" + encodeURI(settings["yr.no"]) + "/forecast.xml'");
-	    q += "&format=json&callback=?";
-	    $.getJSON(q, function(fc) {
-		    var i = 0;
-		    var date = '';
-		    var str;
-		    while (i < 16) {
-		    	var t = fc.query.results.weatherdata.forecast.tabular.time[i];
-	    		var dt = t.from.replace(/T.*/, "");
-	    		var stime = t.from.replace(/.*T/, "");
-	    		var etime = t.to.replace(/.*T/, "");
-	    		var p = t.period;
-	    		var sym = t.symbol.number;
-	    		if (sym.length == 1) sym = '0' + sym;
-	    		var c_temp = check_convert(t.temperature.value, 'c');
-	    		var c_wind = check_convert(t.windSpeed.mps / 0.514444, 'kn');
-	    		var c_wdir = check_convert(t.windDirection.deg, 'deg');
-	    		var c_baro = check_convert(t.pressure.value, 'hpa');
-	
-			    if (i == 0)
-		    		str = "<table class='w100'><tr><td></td><td></td><td class='center'>" + c_temp.units + "</td><td class='center'>" + 
-			          c_wdir.units + "</td><td class='center'>" + c_wind.units + "</td><td class='center'>" + c_baro.units + "</td><td>";
+        var q = "";
+        q += "http://query.yahooapis.com/v1/public/yql?q=";
+        q += encodeURIComponent("select * from xml where url='http:www.yr.no/sted/" + encodeURI(settings["yr.no"]) + "/forecast.xml'");
+        q += "&format=json&callback=?";
+        $.getJSON(q, function(fc) {
+            var i = 0;
+            var date = '';
+            var str;
+            while (i < 16) {
+                var t = fc.query.results.weatherdata.forecast.tabular.time[i];
+                var dt = t.from.replace(/T.*/, "");
+                var stime = t.from.replace(/.*T/, "");
+                var etime = t.to.replace(/.*T/, "");
+                var p = t.period;
+                var sym = t.symbol.number;
+                if (sym.length == 1) sym = '0' + sym;
+                var c_temp = check_convert(t.temperature.value, 'c');
+                var c_wind = check_convert(t.windSpeed.mps / 0.514444, 'kn');
+                var c_wdir = check_convert(t.windDirection.deg, 'deg');
+                var c_baro = check_convert(t.pressure.value, 'hpa');
+    
+                if (i == 0)
+                    str = "<table class='w100'><tr><td></td><td></td><td class='center'>" + c_temp.units + "</td><td class='center'>" + 
+                      c_wdir.units + "</td><td class='center'>" + c_wind.units + "</td><td class='center'>" + c_baro.units + "</td><td>";
 
-			    stime = stime.replace(/:.*$/, "");
-	            etime = etime.replace(/:.*$/, "");
-	
-	    		if (date != dt) {
-	    		    str += "<tr><td colspan='6' class='iwdl_bg left'>" + dt + "</td></tr>";
-	    			date = dt;
-	    		}
-	    		str += "<tr><td class='iwdl'>" + stime + "-" + etime;
-	    		if (p == "0") { if (sym == "01" || sym == "02" || sym == "03" || sym == "05" || sym == "06" || sym == "07" || sym == "08") sym += "n"; }
-	    		if (p == "1") { if (sym == "01" || sym == "02" || sym == "03" || sym == "05" || sym == "06" || sym == "07" || sym == "08") sym += "d"; }
-	    		if (p == "2") { if (sym == "01" || sym == "02" || sym == "03" || sym == "05" || sym == "06" || sym == "07" || sym == "08") sym += "d"; }
-	    		if (p == "3") { if (sym == "01" || sym == "02" || sym == "03" || sym == "05" || sym == "06" || sym == "07" || sym == "08") sym += "n"; }
-	    		str += "</td>";
-	            str += "<td><img src='http://fil.nrk.no/yr/grafikk/sym/b38/" + sym + ".png' width='28'></td>";
-	            str += "<td align='center' class='iwdl black'>" + c_temp.val + "</td>";
-	            str += "<td align='center' class='iwdl black'>" + c_wdir.val + "</td>";
-	            str += "<td align='center' class='iwdl black'>" + c_wind.val + "</td>";
-	            str += "<td align='center' class='iwdl black'>" + c_baro.val + "</td>";
-	    		str += "</tr>";
-		    	i++;
-	    	}
-		    str += "</table>";
-		    $("#fc").html(str);
-		    var link = "<center><a target='_blank' href='" + fc.query.results.weatherdata.credit.link.url + "'>Forecast by yr.no</a>";
-		    link += " <span class='iwdl'>" + settings["yr.no"] + "</span><br>";
-		    link += " <span class='iwdl'>" + fc.query.results.weatherdata.meta.lastupdate.replace(/T/, " ") + "</span>";
-		    link += "</center>";
-		    $("#fcref").html(link);
+                stime = stime.replace(/:.*$/, "");
+                etime = etime.replace(/:.*$/, "");
+    
+                if (date != dt) {
+                	var ndate = dt.replace(/-0/, "-");
+                	var sp_date = ndate.split(/-/);
+                    var elms = ndate.split(/[- :]/);
+                    var jsdt = new Date();
+                    jsdt.setFullYear(parseInt(elms[0]));
+                    jsdt.setMonth(parseInt(elms[1]-1));
+                    jsdt.setDate(parseInt(elms[2]));
+                    var day = '?';
+                    switch (jsdt.getDay()) {
+                    case 0: day = texts['Sunday']; break;
+                    case 1: day = texts['Monday']; break;
+                    case 2: day = texts['Tuesday']; break;
+                    case 3: day = texts['Wednesday']; break;
+                    case 4: day = texts['Thursday']; break;
+                    case 5: day = texts['Friday']; break;
+                    case 6: day = texts['Saturday']; break;
+                    }
 
-		    // set background color
-		    $(".iwdl_bg").css("background", settings["bgcolor"]); 
-	    });
+                    var daydate = dt + ' ' + day;
+                    switch (settings["date_day"]) {
+                    case "day":
+                    	daydate = day;
+                    	break;
+                    case "date":
+                    	daydate = dt;
+                    	break;
+                    case "day-date":
+                        daydate = day + ' ' + dt;
+                    	break;
+                    case "date-day":
+                        daydate = dt + ' ' + day;
+                    	break;
+                    }
+
+                    str += "<tr><td colspan='6' class='iwdl_bg left'>" + daydate + "</tr>";
+                    date = dt;
+                }
+                str += "<tr><td class='iwdl'>" + stime + "-" + etime;
+                if (p == "0") { if (sym == "01" || sym == "02" || sym == "03" || sym == "05" || sym == "06" || sym == "07" || sym == "08") sym += "n"; }
+                if (p == "1") { if (sym == "01" || sym == "02" || sym == "03" || sym == "05" || sym == "06" || sym == "07" || sym == "08") sym += "d"; }
+                if (p == "2") { if (sym == "01" || sym == "02" || sym == "03" || sym == "05" || sym == "06" || sym == "07" || sym == "08") sym += "d"; }
+                if (p == "3") { if (sym == "01" || sym == "02" || sym == "03" || sym == "05" || sym == "06" || sym == "07" || sym == "08") sym += "n"; }
+                str += "</td>";
+                str += "<td><img src='http://fil.nrk.no/yr/grafikk/sym/b38/" + sym + ".png' width='28'></td>";
+                str += "<td align='center' class='iwdl black'>" + c_temp.val + "</td>";
+                str += "<td align='center' class='iwdl black'>" + c_wdir.val + "</td>";
+                str += "<td align='center' class='iwdl black'>" + c_wind.val + "</td>";
+                str += "<td align='center' class='iwdl black'>" + c_baro.val + "</td>";
+                str += "</tr>";
+                i++;
+            }
+            str += "</table>";
+            $("#fc").html(str);
+            var link = "<center><a target='_blank' href='" + fc.query.results.weatherdata.credit.link.url + "'>Forecast by yr.no</a>";
+            link += " <span class='iwdl'>" + settings["yr.no"] + "</span><br>";
+            link += " <span class='iwdl'>" + fc.query.results.weatherdata.meta.lastupdate.replace(/T/, " ") + "</span>";
+            link += "</center>";
+            $("#fcref").html(link);
+
+            // set background color
+            $(".iwdl_bg").css("background", settings["bgcolor"]); 
+        });
     } else {
-    	$("#fc").html("<iframe frameborder='no' scrolling='auto' width='275px' height='200px' src='" + settings["forecast_url"] + "'></iframe>");
-    	$("#fcref").html("<center>" + settings["forecast_from"] + "</center>");
+        $("#fc").html("<iframe frameborder='no' scrolling='auto' width='275px' height='200px' src='" + settings["forecast_url"] + "'></iframe>");
+        $("#fcref").html("<center>" + settings["forecast_from"] + "</center>");
     }
 
 };
 
 function loadjsfile(filename){
-	var code = makeSyncRequest(filename);
-	eval(code);
+    var code = makeSyncRequest(filename);
+    eval(code);
 }
 
 function getClientRaw(files) {
-	var now = new Date();
-	now = now.getTime();
-	for (var i = 0; i < files.length; i++) {
-		switch (files[i]) {
-		case "cr":
-			if (typeof getClientRaw.crlast == 'undefined') getClientRaw.crlast = 0;
-			// Don't fetch it more often than once every 5 secs
-			if (getClientRaw.crlast + 5000 < now) {
-				cr = makeSyncRequest(settings["clientraw_dir"] + "/clientraw.txt").split(" ");
-				if (cr[0] != '12345') alert("Cannot read clientraw.txt; make sure the path in iwdl_settings.js is correct");
-				getClientRaw.crlast = now;
-			}
-			break;
-		case "ecr":
-			if (typeof getClientRaw.ecrlast == 'undefined') getClientRaw.ecrlast = 0;
-			// Don't fetch it more often than once every minute
-			if (getClientRaw.ecrlast + 60000 < now) {
-				cre = makeSyncRequest(settings["clientraw_dir"] + "/clientrawextra.txt").split(" ");
-				getClientRaw.ecrlast = now;
-			}
-			break;
-		case "hcr":
-			if (typeof getClientRaw.hcrlast == 'undefined') getClientRaw.hcrlast = 0;
-			// Don't fetch it more often than once every minute
-			if (getClientRaw.hcrlast + 60000 < now) {
-				crh = makeSyncRequest(settings["clientraw_dir"] + "/clientrawhour.txt").split(" ");
-				getClientRaw.hcrlast = now;
-			}
-			break;
-		case "dcr":
-			if (typeof getClientRaw.dcrlast == 'undefined') getClientRaw.dcrlast = 0;
-			// Don't fetch it more often than once every 5 minutes
-			if (getClientRaw.dcrlast + 300000 < now) {
-				crd = makeSyncRequest(settings["clientraw_dir"] + "/clientrawdaily.txt").split(" ");
-				getClientRaw.dcrlast = now;
-			}
-			break;
-		}
-	}
+    var now = new Date();
+    now = now.getTime();
+    for (var i = 0; i < files.length; i++) {
+        switch (files[i]) {
+        case "cr":
+            if (typeof getClientRaw.crlast == 'undefined') getClientRaw.crlast = 0;
+            // Don't fetch it more often than once every 5 secs
+            if (getClientRaw.crlast + 5000 < now) {
+                cr = makeSyncRequest(settings["clientraw_dir"] + "/clientraw.txt").split(" ");
+                if (cr[0] != '12345') alert("Cannot read clientraw.txt; make sure the path in iwdl_settings.js is correct");
+                getClientRaw.crlast = now;
+            }
+            break;
+        case "ecr":
+            if (typeof getClientRaw.ecrlast == 'undefined') getClientRaw.ecrlast = 0;
+            // Don't fetch it more often than once every minute
+            if (getClientRaw.ecrlast + 60000 < now) {
+                cre = makeSyncRequest(settings["clientraw_dir"] + "/clientrawextra.txt").split(" ");
+                getClientRaw.ecrlast = now;
+            }
+            break;
+        case "hcr":
+            if (typeof getClientRaw.hcrlast == 'undefined') getClientRaw.hcrlast = 0;
+            // Don't fetch it more often than once every minute
+            if (getClientRaw.hcrlast + 60000 < now) {
+                crh = makeSyncRequest(settings["clientraw_dir"] + "/clientrawhour.txt").split(" ");
+                getClientRaw.hcrlast = now;
+            }
+            break;
+        case "dcr":
+            if (typeof getClientRaw.dcrlast == 'undefined') getClientRaw.dcrlast = 0;
+            // Don't fetch it more often than once every 5 minutes
+            if (getClientRaw.dcrlast + 300000 < now) {
+                crd = makeSyncRequest(settings["clientraw_dir"] + "/clientrawdaily.txt").split(" ");
+                getClientRaw.dcrlast = now;
+            }
+            break;
+        }
+    }
 }
 
 function roundNumber(num, dec) {
-	var result = Math.round(num*Math.pow(10,dec))/Math.pow(10,dec);
-	return result;
+    var result = Math.round(num*Math.pow(10,dec))/Math.pow(10,dec);
+    return result;
 }
 
 function check_convert(val, units) {
-	var ret = new Array();
-	ret["val"] = val + '';
-	ret["units"] = units;
-	if (unitnames[units]) ret["units"] = unitnames[units];
+    var ret = new Array();
+    ret["val"] = val + '';
+    ret["units"] = units;
+    if (unitnames[units]) ret["units"] = unitnames[units];
 
-	switch (units) {
-	case "c":
-		if (settings["temp"] == "f") {
-			ret["val"] = roundNumber((1.8 * val) + 32.0, 1);
-			if (unitnames["f"]) ret["units"] = unitnames["f"];
-		}
-		break;
-	case "kn":
-		if (settings["wind"] == "mph") {
-			ret["val"] = roundNumber(1.1507794 * val, 1) + '';
-			if (unitnames["mph"]) ret["units"] = unitnames["mph"];
-		}
-		if (settings["wind"] == "kmh") {
-			ret["val"] = roundNumber(1.852 * val, 1) + '';
-			if (unitnames["kmh"]) ret["units"] = unitnames["kmh"];
-		}
-		if (settings["wind"] == "ms") {
-			ret["val"] = roundNumber(0.514444 * val, 1) + '';
-			if (unitnames["ms"]) ret["units"] = unitnames["ms"];
-		}
-		break;
-	case 'deg':
-		if (settings["wdir"] == "abbr") {
-			var windlabel = new Array("N", "NNE", "NE", "ENE", "E", "ESE", "SE", "SSE", "S", "SSW", "SW", "WSW", "W", "WNW", "NW", "NNW");
-			ret["val"] = windlabel[Math.floor(((parseInt(val) + 11) / 22.5) % 16 )];
-			if (texts["wdir_" + ret["val"]]) ret["val"] = texts["wdir_" + ret["val"]];
-			if (unitnames["abbr"]) ret["units"] = unitnames["abbr"];
-		}
-		break;
-	case "mm":
-		if (settings["rain"] == "in") {
-			ret["val"] = roundNumber(0.0393700787 * val, 3) + '';
-			if (unitnames["in"]) ret["units"] = unitnames["in"];
-		}
-		break;
-	case "hpa":
-		if (settings["baro"] == "hg") {
-			ret["val"] = roundNumber(val / 33.86388158, 2) + '';
-			if (unitnames["hg"]) ret["units"] = unitnames["hg"];
-		}
-		break;
-	case "ft":
-		ret["val"] = (Math.round(val * 1.0).toFixed(0)) + '';
-		if (settings["height"] == "m") {
-			ret["val"] = (Math.round(val / 3.2808399).toFixed(0)) + '';
-			if (unitnames["m"]) ret["units"] = unitnames["m"];
-		}
-		break;
-	}
-	return ret;
+    switch (units) {
+    case "c":
+        if (settings["temp"] == "f") {
+            ret["val"] = roundNumber((1.8 * val) + 32.0, 1);
+            if (unitnames["f"]) ret["units"] = unitnames["f"];
+        }
+        break;
+    case "kn":
+        if (settings["wind"] == "mph") {
+            ret["val"] = roundNumber(1.1507794 * val, 1) + '';
+            if (unitnames["mph"]) ret["units"] = unitnames["mph"];
+        }
+        if (settings["wind"] == "kmh") {
+            ret["val"] = roundNumber(1.852 * val, 1) + '';
+            if (unitnames["kmh"]) ret["units"] = unitnames["kmh"];
+        }
+        if (settings["wind"] == "ms") {
+            ret["val"] = roundNumber(0.514444 * val, 1) + '';
+            if (unitnames["ms"]) ret["units"] = unitnames["ms"];
+        }
+        break;
+    case 'deg':
+        if (settings["wdir"] == "abbr") {
+            var windlabel = new Array("N", "NNE", "NE", "ENE", "E", "ESE", "SE", "SSE", "S", "SSW", "SW", "WSW", "W", "WNW", "NW", "NNW");
+            ret["val"] = windlabel[Math.floor(((parseInt(val) + 11) / 22.5) % 16 )];
+            if (texts["wdir_" + ret["val"]]) ret["val"] = texts["wdir_" + ret["val"]];
+            if (unitnames["abbr"]) ret["units"] = unitnames["abbr"];
+        }
+        break;
+    case "mm":
+        if (settings["rain"] == "in") {
+            ret["val"] = roundNumber(0.0393700787 * val, 3) + '';
+            if (unitnames["in"]) ret["units"] = unitnames["in"];
+        }
+        break;
+    case "hpa":
+        if (settings["baro"] == "hg") {
+            ret["val"] = roundNumber(val / 33.86388158, 2) + '';
+            if (unitnames["hg"]) ret["units"] = unitnames["hg"];
+        }
+        break;
+    case "ft":
+        ret["val"] = (Math.round(val * 1.0).toFixed(0)) + '';
+        if (settings["height"] == "m") {
+            ret["val"] = (Math.round(val / 3.2808399).toFixed(0)) + '';
+            if (unitnames["m"]) ret["units"] = unitnames["m"];
+        }
+        break;
+    }
+    return ret;
 }
 
 function updateiWdl() {
     getClientRaw(["cr"]);
 
-    var station_time = cr[32].replace(/_/g, " ").split("-");
     var mystation, time;
-    if (station_time.length > 2) {
-    	time = station_time[station_time.length - 1];
-    	delete station_time[station_time.length - 1];
-    	mystation = station_time.join("-").replace(/-$/, "");
+
+    if (settings["station_type"] && settings["station_type"] == 'meteohub') {
+    	// station - time is spit by _, not -
+        var station_time = cr[32].replace(/_/g, " ").split(" ");
+        time = station_time[station_time.length - 1];
+        delete station_time[station_time.length - 1];
+        mystation = station_time.join("-").replace(/-$/, "");
     } else {
-        mystation = station_time[0];
-        time = station_time[1];
+        var station_time = cr[32].replace(/_/g, " ").split("-");
+        if (station_time.length > 2) {
+            time = station_time[station_time.length - 1];
+            delete station_time[station_time.length - 1];
+            mystation = station_time.join("-").replace(/-$/, "");
+        } else {
+            mystation = station_time[0];
+            time = station_time[1];
+        }
     }
 
     if (settings["station_name"])
-    	station = settings["station_name"];
+        station = settings["station_name"];
     else
-    	if (mystation)
-    		station = mystation;
+        if (mystation)
+            station = mystation;
 
     if ($("#hm_station").html() != station) $("[iwdltxt=hm_station]").html(station);
 
@@ -601,7 +644,26 @@ function updateiWdl() {
 
     var fields = settings["live_screen"];
     for ( var i=0, len=fields.length; i<len; ++i ){
-        var conv = check_convert(cr[fields[i]], cr_fields[fields[i]][1]);
+
+    	if ((fields[i] == 44 || fields[i] == 45) && settings["humchill"] == 'toggle') {
+			var t = parseInt(cr[4]);
+    		if (fields[i] == 44 && t >= 17) {
+    			// toggle to humidex
+    			settings["live_screen"][i] = 45;
+    			$("[crtxt=44]").attr("crtxt", "45");
+    			$("#cr_44").attr("id", "cr_45");
+    			$("[crtxt=45]").html(cr_fieldnames[45]);
+    		}
+    		if (fields[i] == 45 && t < 17) {
+    			// toggle to humidex
+    			settings["live_screen"][i] = 44;
+    			$("[crtxt=45]").attr("crtxt", "44");
+    			$("#cr_45").attr("id", "cr_44");
+    			$("[crtxt=44]").html(cr_fieldnames[44]);
+    		}
+    	}
+
+    	var conv = check_convert(cr[fields[i]], cr_fields[fields[i]][1]);
         var newval = conv["val"];
         var val = $("#cr_" + fields[i]).html();
         if (newval != val) {
@@ -631,6 +693,7 @@ function updateiWdl() {
 }
 
 function dispHome() {
+	// The live field
     var str = '';
     str += "<table width='100%'>";
     str += "<tr>";
@@ -650,9 +713,9 @@ function dispHome() {
         var conv = check_convert(0, cr_fields[fields[i]][1]);
         var units = conv["units"];
         if (str2) {
-        	if (i % 3 == 0)
-        		str2 += "<br>";
-        	else
+            if (i % 3 == 0)
+                str2 += "<br>";
+            else
                 str2 += "<span class='iwdl black'> / </span>";
         }
         str2 += "<span class='iwdl black' id='hmcr_" + fields[i] + "'></span><span txtunits='" + cr_fields[fields[i]][1] + "' class='iwdl black'>" + units + "</span>";
@@ -660,23 +723,48 @@ function dispHome() {
     str2 += "</td></tr></table>";
     str += str2;
     $("#home_display").html(str);
+
+    // Now the toolbar
+    var w = 'w33';
+    if (settings["radar"]) {
+    	addDiv("radar", "<iframe id='radarframe' frameborder='no' scrolling='auto' width='275px' height='200px' src=''></iframe>");
+    	w = 'w25';
+    }
+    if (settings["webcam"]) {
+    	addDiv("webcam", "<iframe id='webcamframe' frameborder='no' scrolling='auto' width='275px' height='200px' src=''></iframe>");
+    	w = 'w25';
+    }
+    if (settings["radar"] && settings["webcam"]) w = 'w20';
+
+    str = "<table class='w100'>";
+    str += "<tr>";
+    str += "<td class='center " + w + "' id='tap_mapbutton'>";
+   	str += "<img border='0' src='data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABwAAAAdCAYAAAC5UQwxAAAAAXNSR0IArs4c6QAAAAZiS0dEAP8A/wD/oL2nkwAAAAlwSFlzAAALEwAACxMBAJqcGAAAAAd0SU1FB9oBGBQ5A1seFIUAAAY/SURBVEjHlZbLTxTdFsV/derRTdN8BDrSvCQqEg0Q307wMcL4mDpzYBxp/CfMN/BPMHFgHDrAIdEoEx0QND6Ikh5gQgwIJCqmsZ/VVafq1LkDrBOQezX3TDqp6trr7L3XWntbR44c0Ww7Wmuy2Sy+7yOEMM8dx0FrTRzHRFFEJpPBtm3zzLZt8/un42i9A484jmm1Wgbc8zyUUvi+TyaTwXEcPM+j1WqRJAmWZaG1xrIshBD8Hu/3I3bdwHFIkoRMJmOA4jgml8uhlCIMQ4IgIJvNkiQJSilc10VKSRzH/O04SqkdD9Iy+b6P53kmi2azSblc3rqlEBSLRfMuiiK01jiOw+/xdgFu7xNAkiS4rms+jKII27bJ5/PcuXMH27apVqvcv3/ffKOUQghhyvp/ZaiUMj0JggCtNVJKms0mWmuSJMG2bdbW1ujo6CCTyeC6LpZl0Wq1cBznj4DW6OjoLpa6rkuz2aTVatHT08Po6ChjY2P09/ejtUYIwerqKktLS8zPz1Or1chms6avfwQcGRnRKROVUnieh+/7ZLNZLly4wNGjR01/pJSGWGllhBC8efOGly9fEscxruviOA5RFOG6LlrrHcy1+/r6/g2CAMuycF2XarVKX18ft27dYmBgACkllUqF+fl59u7di2VZKKV4/fo17e3tdHR00Nvby/j4OMvLyzQaDTKZDEmSEMex0a+UEtd1sXt6ev5N2eb7PgcPHuTatWsAbGxsMDs7y8zMDJubm5w6dYowDInjmKmpKRYWFlhfX6enp4eOjg6OHTvG4uIim5ub5PN5tNZEUYQQwhiDNTw8rB3HIY5j2trauHHjBq7rUi6XmZ6epl6vG/dIS75dhwDt7e1cunSJvr4+KpUKjx49QkqJbdtGOqncRHoLrTUTExM4jkOtVuPJkyf4vm+kEkURgClNHMcopQiCgHq9zrNnz6hUKhQKBY4fP24cyHVdbNsmDMMt+biuixCCzs5ODh8+jJSS2dlZfv78aUiyXWOpfaUZCCFQSlGv13nx4gW1Wo0TJ06Qy+WIooh6vU6SJDiOs0WolDD79+8nSRKq1SpLS0tGb7Zt02g08DyPWq2GlBLHcejo6CAIAjzPM/1fW1ujUqlQLBbZs2cPYRiaUkZRRBiGOOVyGdu2GRoaQkrJx48f+fHjB4VCAa01QRCQyWQQQnDlyhVGRkb48uULMzMzpp8pwzc2NiiVSuTzefbt28e7d+8A6O7uNn207t69q1NSpNqJ45iHDx/uYNjk5CQHDhwwPV1fX+fp06dYlrUlaMvi5s2bCCGIogjP84iiCMuyePDgAUKILZmkjp9qxvd9XNc1JU0BisUiYRgaIhSLRQOUCj7tOUAQBMZXoygyehRpbW3bNqXZPmqUUkgpKZfL5hJSSr59+4aU0lhdGIYIIYz5p98GQYBt22YIWAMDA9qyLC5fvkx3dzfv379ncXFxx40dxyGXyzExMcHg4CArKyvMzc1tCfmXyad2dvLkScbGxlhdXeXVq1dmfLmuu5VpkiRorVlfX6dYLHLo0CE+fPhgStXW1kYYhjQaDZ4/f24GbuqPaZ/SgP39/bS3t7O5uYlSCsuyjA87joNQSpEkCcvLy7RaLdra2hgcHDQ7TRowpX+aSTq60j75vk+hUKCrq4tqtcrq6ipRFBnTSHcf4XkeAOVymZWVFQBOnz5NLpczf05LK6VESollWWSzWZNlal9nz55Fa82nT5+o1Wporc1UsSyLJEkQQRAgpSSTyfD27VsajQb//PMP586d2yEVpRTNZhPf96lUKsRxbBYuIQSTk5Pk83lqtRqlUmkr+C9XSvsohMACdgzg3t5erl69ilKKVqvF3Nwcnz9/BuD27dtmybp37x5CCIaGhjh//jydnZ0EQcDjx4/xfd94b8rcNMtdgEIIent7uXjxotnUyuUyX79+ZXx83Ny8VCoxODhIV1eXsb/p6WlqtdqOReqvgOnxPI8zZ84wPDxsxlIaIN0O0vGzsLBAqVRCSrljxUhdaPvE/yOglJJcLsfo6CiFQoGBgYEdO833799ZXFw0TpKaxX8D+p+Av/85bbzWmuvXrxtZTE1NGcaaaf5rBu4C2RZz1xKZeuV2Km/vR+qn22fl38C2v/sPXT0eVHGIma4AAAAASUVORK5CYII%3D'>";
+	str += "</td>";
+	if (settings["radar"]) {
+	    str += "<td class='center " + w + "' id='tap_radarbutton'>";
+	   	str += "<img border='0' src='data:image/png;base64,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%3D%3D'>";
+		str += "</td>";
+	}
+	if (settings["webcam"]) {
+	    str += "<td class='center " + w + "' id='tap_webcambutton'>";
+	   	str += "<img border='0' src='data:image/png;base64,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%3D%3D'>";
+		str += "</td>";
+	}
+	str += "<td class='center " + w + "' id='tap_settings'>";
+	str += "<img src='data:image/png;base64,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%3D'>";
+	str += "</td>";
+	str += "<td class='center " + w + "' id='tap_about'>";
+	str += "<img src='data:image/png;base64,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%3D%3D'>";
+	str += "</td>";
+	str += "</tr>";
+	str += "</table>";
+	$("#toolbar").append(str);
 }
 
 function dispIwdl() {
     var str = '';
 
-    if (settings['webcam'] || settings['radar']) {
-    	str += "<ul class='individual'>";
-    	if (settings['radar']) {
-    		str += "<li><a href='#radar'>" + texts["radar"] + "</a></li>";
-    		addDiv("radar", "<iframe id='radarframe' frameborder='no' scrolling='auto' width='275px' height='200px' src=''></iframe>");
-    	}
-    	if (settings['webcam']) {
-    		str += "<li><a href='#webcam'>" + texts["webcam"] + "</a></li>";
-    		addDiv("webcam", "<iframe id='webcamframe' frameborder='no' scrolling='auto' width='275px' height='200px' src=''></iframe>");
-    	}
-        str += "</ul>";
-    }
     str += "<ul class='rounded'>";
 
     str += "<li class='iwdl iwdl_bg'>";
@@ -698,10 +786,10 @@ function dispIwdl() {
 
         if (crtogr[fields[i]]) {
             str += "<li class='arrow iwdl'>";
-        	str += "<a href='#graphs_" + fields[i] + "'>";
-	    } else {
-	        str += "<li class='iwdl'>";
-	    }
+            str += "<a href='#graphs_" + fields[i] + "'>";
+        } else {
+            str += "<li class='iwdl'>";
+        }
         str += "<table width='100%'><tr>" + 
                        "<td class='iwdl left  w50'><span crtxt='" + fields[i] + "'>" + cr_fieldnames[fields[i]] + "</span></td>" +
                        "<td class='iwdl right w25 black'><span id='cr_" + fields[i] + "'></span></td>" +
@@ -748,105 +836,100 @@ function dispMinMax() {
 }
 
 function dispSettings() {
-	var str = '';
-	var selected;
+    var str = '';
+    var selected;
 
-	str += "<form><ul class='edit rounded'>"
-	str += "<li class='iwdl_bg'><h3 iwdltxt='settings'>" + texts["settings"] + "</h3></li>";
+    str += "<form><ul class='edit rounded'>"
+    str += "<li class='iwdl_bg'><h3 iwdltxt='settings'>" + texts["settings"] + "</h3></li>";
 
     str += "<li class='arrow'><select id='settings_temp' onChange='javascript: settingsChange(\"temp\", \"settings_temp\")'>";
     if (settings["temp"] == "c") selected = 'selected'; else selected = '';
     str += "<option value='c'" + selected + ">"    + texts["set_temp"] + ": &deg;C</option>";
     if (settings["temp"] == "f") selected = 'selected'; else selected = '';
-	str += "<option value='f'" + selected + ">"    + texts["set_temp"] + ": &deg;F</option>";
-	str += "</select></li>";
+    str += "<option value='f'" + selected + ">"    + texts["set_temp"] + ": &deg;F</option>";
+    str += "</select></li>";
 
     str += "<li class='arrow'><select id='settings_wind' onChange='javascript: settingsChange(\"wind\", \"settings_wind\")'>";
     if (settings["wind"] == "kn") selected = 'selected'; else selected = '';
-	str += "<option value='kn'" + selected + ">"   + texts["set_wind"] + ": kn</option>";
+    str += "<option value='kn'" + selected + ">"   + texts["set_wind"] + ": kn</option>";
     if (settings["wind"] == "kmh") selected = 'selected'; else selected = '';
-	str += "<option value='kmh'" + selected + ">"  + texts["set_wind"] + ": km/h</option>";
+    str += "<option value='kmh'" + selected + ">"  + texts["set_wind"] + ": km/h</option>";
     if (settings["wind"] == "mph") selected = 'selected'; else selected = '';
-	str += "<option value='mph'" + selected + ">"  + texts["set_wind"] + ": mp/h</option>";
+    str += "<option value='mph'" + selected + ">"  + texts["set_wind"] + ": mp/h</option>";
     if (settings["wind"] == "ms") selected = 'selected'; else selected = '';
-	str += "<option value='ms'" + selected + ">"   + texts["set_wind"] + ": m/s</option>";
-	str += "</select></li>";
+    str += "<option value='ms'" + selected + ">"   + texts["set_wind"] + ": m/s</option>";
+    str += "</select></li>";
 
     str += "<li class='arrow'><select id='settings_wdir' onChange='javascript: settingsChange(\"wdir\", \"settings_wdir\")'>";
     if (settings["wdir"] == "deg") selected = 'selected'; else selected = '';
-	str += "<option value='deg'" + selected + ">"  + texts["set_wdir"] + ": &deg;</option>";
+    str += "<option value='deg'" + selected + ">"  + texts["set_wdir"] + ": &deg;</option>";
     if (settings["wdir"] == "abbr") selected = 'selected'; else selected = '';
-	str += "<option value='abbr'" + selected + ">" + texts["set_wdir"] + ": abbr</option>";
-	str += "</select></li>";
+    str += "<option value='abbr'" + selected + ">" + texts["set_wdir"] + ": abbr</option>";
+    str += "</select></li>";
 
     str += "<li class='arrow'><select id='settings_rain' onChange='javascript: settingsChange(\"rain\", \"settings_rain\")'>";
     if (settings["rain"] == "mm") selected = 'selected'; else selected = '';
-	str += "<option value='mm'" + selected + ">"  + texts["set_rain"] + ": mm</option>";
+    str += "<option value='mm'" + selected + ">"  + texts["set_rain"] + ": mm</option>";
     if (settings["rain"] == "in") selected = 'selected'; else selected = '';
-	str += "<option value='in'" + selected + ">"  + texts["set_rain"] + ": inch</option>";
-	str += "</select></li>";
+    str += "<option value='in'" + selected + ">"  + texts["set_rain"] + ": inch</option>";
+    str += "</select></li>";
 
     str += "<li class='arrow'><select id='settings_baro' onChange='javascript: settingsChange(\"baro\", \"settings_baro\")'>";
     if (settings["baro"] == "hpa") selected = 'selected'; else selected = '';
-	str += "<option value='hpa'" + selected + ">" + texts["set_baro"] + ": hpa</option>";
+    str += "<option value='hpa'" + selected + ">" + texts["set_baro"] + ": hpa</option>";
     if (settings["baro"] == "hg") selected = 'selected'; else selected = '';
-	str += "<option value='hg'" + selected + ">"  + texts["set_baro"] + ": hg</option>";
-	str += "</select></li>";
+    str += "<option value='hg'" + selected + ">"  + texts["set_baro"] + ": hg</option>";
+    str += "</select></li>";
 
     str += "<li class='arrow'><select id='settings_height' onChange='javascript: settingsChange(\"height\", \"settings_height\")'>";
     if (settings["height"] == "ft") selected = 'selected'; else selected = '';
-	str += "<option value='ft'" + selected + ">"  + texts["set_height"] + ": ft</option>";
+    str += "<option value='ft'" + selected + ">"  + texts["set_height"] + ": ft</option>";
     if (settings["height"] == "m") selected = 'selected'; else selected = '';
-	str += "<option value='m'" + selected + ">"   + texts["set_height"] + ": m</option>";
-	str += "</select></li>";
+    str += "<option value='m'" + selected + ">"   + texts["set_height"] + ": m</option>";
+    str += "</select></li>";
 
     str += "<li class='arrow'><select id='settings_lang' onChange='javascript: settingsChange(\"lang\", \"settings_lang\")'>";
-    if (settings["lang"] == "en") selected = 'selected'; else selected = '';
-	str += "<option value='en'" + selected + ">"  + texts["set_lang"] + ": en</option>";
-    if (settings["lang"] == "nl") selected = 'selected'; else selected = '';
-	str += "<option value='nl'" + selected + ">"  + texts["set_lang"] + ": nl</option>";
-    if (settings["lang"] == "dk") selected = 'selected'; else selected = '';
-	str += "<option value='dk'" + selected + ">"  + texts["set_lang"] + ": dk</option>";
-    if (settings["lang"] == "no") selected = 'selected'; else selected = '';
-	str += "<option value='no'" + selected + ">"  + texts["set_lang"] + ": no</option>";
-    if (settings["lang"] == "se") selected = 'selected'; else selected = '';
-	str += "<option value='se'" + selected + ">"  + texts["set_lang"] + ": se</option>";
-	str += "</select></li>";
+    for (var i = 0, l = settings["all_langs"].length; i < l; i++) {
+    	lang = settings["all_langs"][i];
+        if (settings["lang"] == lang) selected = 'selected'; else selected = '';
+        str += "<option value='" + lang + "'" + selected + ">"  + texts["set_lang"] + ": " + lang + "</option>";
+    }
+    str += "</select></li>";
 
     str += "</ul></form>";
     return str;
-	
+    
 }
 
 function dispGraph(grtype, graph) {
-	var gr, cr, type;
-	var ticks = null;
-	switch (grtype.substr(0,1)) {
-	case "h":
-		type = 'h';
-		grlist = ghsettings[graph];
-	    getClientRaw(["hcr"]);
-		cr = crh;
-		break;
-	case "d":
-		type = 'd';
-		grlist = gdsettings[graph];
-	    getClientRaw(["ecr"]);
-		cr = cre;
-		break;
-	case "w":
-		type = 'w';
-		grlist = gwsettings[graph];
-	    getClientRaw(["dcr"]);
-		cr = crd;
-		break;
-	case "m":
-		type = 'm';
-		grlist = gmsettings[graph];
-	    getClientRaw(["dcr"]);
-		cr = crd;
-		break;
-	}
+    var gr, cr, type;
+    var ticks = null;
+    switch (grtype.substr(0,1)) {
+    case "h":
+        type = 'h';
+        grlist = ghsettings[graph];
+        getClientRaw(["hcr"]);
+        cr = crh;
+        break;
+    case "d":
+        type = 'd';
+        grlist = gdsettings[graph];
+        getClientRaw(["ecr"]);
+        cr = cre;
+        break;
+    case "w":
+        type = 'w';
+        grlist = gwsettings[graph];
+        getClientRaw(["dcr"]);
+        cr = crd;
+        break;
+    case "m":
+        type = 'm';
+        grlist = gmsettings[graph];
+        getClientRaw(["dcr"]);
+        cr = crd;
+        break;
+    }
 
     var width = "292px";
     if (orientation != 0) width = "452px";
@@ -863,55 +946,71 @@ function dispGraph(grtype, graph) {
         var start = gr[0];
         var length = gr[1];
         for (var l = start; l < start+length; l++) {
-        	// don't convert if units is abbr
-        	if (units == 'deg')
-        		vals[s] = cr[l];
-        	else {
-	        	var conv = check_convert(cr[l], units);
-	            vals[s] = conv["val"];
-        	}
+            // don't convert if units is abbr for degrees
+            if (units == 'deg')
+                vals[s] = cr[l];
+            else {
+                var conv = check_convert(cr[l], units);
+                vals[s] = conv["val"];
+            }
             s++;
         }
     }
     var d1 = [];
     for (var j = 0, len = vals.length; j < len; j++) {
-    	if (type == 'w')
-    		d1.push([(j - len + 1)/4, vals[j]]);
-    	else
-    		d1.push([j - len + 1, vals[j]]);
+        if (type == 'w')
+            d1.push([(j - len + 1)/4, vals[j]]);
+        else
+            d1.push([j - len + 1, vals[j]]);
     }
 
     var options = {
-    	xaxis: {
-    	   ticks: ticks
-        }
+	        xaxis: {
+	           ticks: ticks
+	        }
+	    }
+
+    if (graph == 'wind_dir') {
+	    options.yaxis = {
+	    			min:   0,
+	    			max: 360,
+	    			ticks: [ [  0, check_convert(  0, "deg").val],
+	    			         [ 90, check_convert( 90, "deg").val],
+	    			         [180, check_convert(180, "deg").val],
+	    			         [270, check_convert(270, "deg").val],
+	    			         [360, check_convert(  0, "deg").val]
+	    			       ]
+	    		}
+    } else {
+	    if (graph == 'solar_uv' || graph == 'solar_wm' || graph == 'rain' || graph == 'wind_speed' || graph == 'wind_gust')
+	    	options.yaxis = { min: 0 };
     }
 
     $.plot($("#graphsinfo" + "_" + grtype + "_graph_" + graph), [ d1 ], options);
 }
 
 function getGraphDescr(graph, type) {
-	var descr = "<span crtxt='" + grtocr[graph] + "'>" + cr_fieldnames[grtocr[graph]] + "</span>" +
-	            " <span txtunits='" + cr_fields[grtocr[graph]][1] + "'>" + check_convert(0, cr_fields[grtocr[graph]][1])["units"] + "</span>";
-	switch (type) {
-	case "h": descr += " (<span iwdltxt='last_60m'>" + texts["last_60m"] + "</span>)"; break;
-	case "d": descr += " (<span iwdltxt='last_24h'>" + texts["last_24h"] + "</span>)"; break;
-	case "w": descr += " (<span iwdltxt='last_7d'>"  + texts["last_7d"] + "</span>)"; break;
-	case "m":
-		if (graph == "rain_year")
-			descr += " (<span iwdltxt='last_12m'>" + texts["last_12m"] + "</span>)";
-		else
-			descr += " (<span iwdltxt='last_31d'>" + texts["last_31d"] + "</span>)";
-		break;
-	}
-	return descr;
+    var descr = "<span crtxt='" + grtocr[graph] + "'>" + cr_fieldnames[grtocr[graph]] + "</span>" +
+                " <span txtunits='" + cr_fields[grtocr[graph]][1] + "'>" + check_convert(0, cr_fields[grtocr[graph]][1])["units"] + "</span>";
+    switch (type) {
+    case "h": descr += " (<span iwdltxt='last_60m'>" + texts["last_60m"] + "</span>)"; break;
+    case "d": descr += " (<span iwdltxt='last_24h'>" + texts["last_24h"] + "</span>)"; break;
+    case "w": descr += " (<span iwdltxt='last_7d'>"  + texts["last_7d"] + "</span>)"; break;
+    case "m":
+        if (graph == "rain_year")
+            descr += " (<span iwdltxt='last_12m'>" + texts["last_12m"] + "</span>)";
+        else
+            descr += " (<span iwdltxt='last_31d'>" + texts["last_31d"] + "</span>)";
+        break;
+    }
+    return descr;
 }
 
 function graphTimeTpl(graphs, type) {
     var str = "<ul class='rounded'>";
     for (var i = 0, len=graphs.length; i < len; ++i) {
         str += "<li class='iwdl'><table class='w100 iwdl_marpad0'><tr><td class='iwdl_bg iwdl_marpad0'>" + getGraphDescr(graphs[i], type) + "</td></tr></table>";
-    	str += "<div id='graphsinfo" + "_" + type + "_graph_" + graphs[i] + "' style='width:280px;height:100px;'></div>";
+        str += "<div id='graphsinfo" + "_" + type + "_graph_" + graphs[i] + "' style='width:280px;height:100px;'></div>";
         str += "</li>";
     }
     str += "</ul>";
@@ -923,16 +1022,16 @@ function graphTypeTpl(type) {
     var str = "<ul class='rounded'>";
     for (var i = 0, ilen=graphs.length; i < ilen; ++i) {
         for (var j = 0, jlen=graphs[i].length; j < jlen; ++j) {
-        	if (graphs[i][j]) {
-        		var t;
-        		if (i == 0) t = "h";
-        		if (i == 1) t = "d";
-        		if (i == 2) t = "w";
-        		if (i == 3) t = "m";
-		        str += "<li class='iwdl'><table class='w100 iwdl_marpad0'><tr><td class='iwdl_bg iwdl_marpad0'>" + getGraphDescr(graphs[i][j], t) + "</td></tr></table>";
-		    	str += "<div id='graphsinfo" + "_" + t + i + j + "_graph_" + graphs[i][j] + "' style='width:280px;height:100px;'></div>";
-		        str += "</li>";
-        	}
+            if (graphs[i][j]) {
+                var t;
+                if (i == 0) t = "h";
+                if (i == 1) t = "d";
+                if (i == 2) t = "w";
+                if (i == 3) t = "m";
+                str += "<li class='iwdl'><table class='w100 iwdl_marpad0'><tr><td class='iwdl_bg iwdl_marpad0'>" + getGraphDescr(graphs[i][j], t) + "</td></tr></table>";
+                str += "<div id='graphsinfo" + "_" + t + i + j + "_graph_" + graphs[i][j] + "' style='width:280px;height:100px;'></div>";
+                str += "</li>";
+            }
         }
     }
     str += "</ul>";
@@ -940,13 +1039,13 @@ function graphTypeTpl(type) {
 }
 
 function dispTimeGraphs(type) {
-	var graphs = new Array();
-	switch (type) {
-	case "h": graphs = settings["hour_graphs"];  break;
-	case "d": graphs = settings["day_graphs"];   break;
-	case "w": graphs = settings["week_graphs"];  break;
-	case "m": graphs = settings["month_graphs"]; break;
-	}
+    var graphs = new Array();
+    switch (type) {
+    case "h": graphs = settings["hour_graphs"];  break;
+    case "d": graphs = settings["day_graphs"];   break;
+    case "w": graphs = settings["week_graphs"];  break;
+    case "m": graphs = settings["month_graphs"]; break;
+    }
     for (var i = 0, len=graphs.length; i < len; ++i) {
         dispGraph(type, graphs[i]);
     }
@@ -962,45 +1061,45 @@ function dispTypeGraphs(type) {
 }
 
 function setTexts(what) {
-	if (what == 'iwdl' || what == 'all') {
-	    $("[iwdltxt]").each(function() {
-	    	$(this).html(texts[$(this).attr("iwdltxt")]);
-		});
+    if (what == 'iwdl' || what == 'all') {
+        $("[iwdltxt]").each(function() {
+            $(this).html(texts[$(this).attr("iwdltxt")]);
+        });
     }
 
-	if (what == 'cr' || what == 'all') {
-	    var done = new Array;
-	    for (var i = 0, len = settings["home"].length; i < len; ++i) {
-	    	done[i] = 1;
-	    	$("[crtxt=" + i + "]").html(cr_fieldnames[i]);
-	    }
-	    for (var i = 0, len = settings["live_screen"].length; i < len; ++i) {
-	    	if (!done[i]) {
-	    		$("[crtxt=" + i + "]").html(cr_fieldnames[i]);
-	    		done[i] = 1;
-	    	}
-	    }
-	    for (var i = 0, len = settings["min_max"].length; i < len; ++i) {
-	    	if (!done[i]) {
-	    		$("[crtxt=" + i + "]").html(cr_fieldnames[i]);
-	    		done[i] = 1;
-	    	}
-	    }
-	}
+    if (what == 'cr' || what == 'all') {
+        var done = new Array;
+        for (var i = 0, len = settings["home"].length; i < len; ++i) {
+            done[settings["home"][i]] = 1;
+            $("[crtxt=" + settings["home"][i] + "]").html(cr_fieldnames[settings["home"][i]]);
+        }
+        for (var i = 0, len = settings["live_screen"].length; i < len; ++i) {
+            if (!done[settings["live_screen"][i]]) {
+                $("[crtxt=" + settings["live_screen"][i] + "]").html(cr_fieldnames[settings["live_screen"][i]]);
+                done[settings["live_screen"][i]] = 1;
+            }
+        }
+        for (var i = 0, len = settings["min_max"].length; i < len; ++i) {
+            if (!done[settings["min_max"][i]]) {
+                $("[crtxt=" + settings["min_max"][i] + "]").html(cr_fieldnames[settings["min_max"][i]]);
+                done[settings["min_max"][i]] = 1;
+            }
+        }
+    }
 }
 
 function setUnits() {
     var conv;
     var lst = new Array('c', 'kn', 'deg', 'hpa', 'mm', 'ft');
     for (i = 0; i < lst.length; i++) {
-	    conv = check_convert(0, lst[i]);
-	    $("[txtunits=" + lst[i] + "]").html(conv["units"]);
+        conv = check_convert(0, lst[i]);
+        $("[txtunits=" + lst[i] + "]").html(conv["units"]);
     }
 }
 
 function addDiv(name, content) {
-	var dv = '';
-	dv += "<div id='" + name + "'>";
+    var dv = '';
+    dv += "<div id='" + name + "'>";
     dv += "<div class='toolbar'>";
     dv += "<h1>" + station + "</h1>";
     dv += "<a href='#' class='back' iwdltxt='back'>Back</a>";
@@ -1014,67 +1113,75 @@ function localiser() {
     if ($("#map_text").html()) return;
 
     var lng = 0;
-	var lat = 0;
-	if (cr[160] == '0' && cr[161] == '0') {
-		if (settings['longitude']) lng = -settings['longitude'];
-		if (settings['latitude'])  lat = settings['latitude'];
-	} else {
-		lng = -(parseFloat(cr[161]));
-		lat = parseFloat(cr[160]);
-	}
+    var lat = 0;
+    
+    // Meteohub uses - for east of GMT, Weather Display uses - for west of GMT
+    if (settings['longitude']) {
+    	if (settings["station_type"] && settings["station_type"] == 'meteohub')
+    		lng = settings['longitude'];
+    	else
+    		lng = -settings['longitude'];
+        lat = settings['latitude'];
+    } else {
+    	if (settings["station_type"] && settings["station_type"] == 'meteohub')
+    		lng = parseFloat(cr[161]);
+    	else
+    		lng = -(parseFloat(cr[161]));
+        lat = parseFloat(cr[160]);
+    }
 
-	if (lng || lat || settings["location"]) {
-	    var myLatlng = new google.maps.LatLng(lat, lng);
-	    var myOptions = {
-	      zoom: 5,
-	      center: myLatlng,
-	      mapTypeId: google.maps.MapTypeId.ROADMAP
-	    }
-	    var map = new google.maps.Map(document.getElementById('map_canvas'), myOptions);
-	    var marker = new google.maps.Marker({
-	      position: myLatlng,
-	      map: map,
-	      title: station
-	    });
+    if (lng || lat || settings["location"]) {
+        var myLatlng = new google.maps.LatLng(lat, lng);
+        var myOptions = {
+          zoom: 5,
+          center: myLatlng,
+          mapTypeId: google.maps.MapTypeId.ROADMAP
+        }
+        var map = new google.maps.Map(document.getElementById('map_canvas'), myOptions);
+        var marker = new google.maps.Marker({
+          position: myLatlng,
+          map: map,
+          title: station
+        });
 
-	    if (!settings["location"]) {
-		    var geocoder = new google.maps.Geocoder();
-		    var latlng = new google.maps.LatLng(lat, lng);
-		    if (geocoder) {
-		        geocoder.geocode({'latLng': latlng}, function(results, status) {
-		          if (status == google.maps.GeocoderStatus.OK) {
-		            if (results[1]) {
-	                  $("#map_text").html("<center>" + texts["station_location"] + ":<br>" +results[1].formatted_address + "</center>");
-		            }
-		          } else {
-	                  $("#map_text").html("<center>" + texts["station_location"] + ":<br>" + " ( not found ) " + "</center>");
-		          }
-		        });
-		    }
-	    } else {
-	    	$("#map_text").html("<center>" + settings["location"] + "</center>");
-	    }
-	} else {
-		$("#map_canvas").html(texts["unknown_location"]);
-	}
+        if (!settings["location"]) {
+            var geocoder = new google.maps.Geocoder();
+            var latlng = new google.maps.LatLng(lat, lng);
+            if (geocoder) {
+                geocoder.geocode({'latLng': latlng}, function(results, status) {
+                  if (status == google.maps.GeocoderStatus.OK) {
+                    if (results[1]) {
+                      $("#map_text").html("<center>" + texts["station_location"] + ":<br>" +results[1].formatted_address + "</center>");
+                    }
+                  } else {
+                      $("#map_text").html("<center>" + texts["station_location"] + ":<br>" + " ( not found ) " + "</center>");
+                  }
+                });
+            }
+        } else {
+            $("#map_text").html("<center>" + settings["location"] + "</center>");
+        }
+    } else {
+        $("#map_canvas").html(texts["unknown_location"]);
+    }
 }
 
 function settingsChange(which, newval) {
-	var nw = $("#" + newval).val();
-	settings[which] = nw;
-	if (isIphone) {
-		jQT.dbDeleteRow("settings", "setting", "'" + which + "'");
-		jQT.dbInsertRows({"addRow": [ { "table": "settings", "property": [ { "name": "setting", value: which }, { "name": "value", "value": nw } ] } ] });
+    var nw = $("#" + newval).val();
+    settings[which] = nw;
+    if (isIphone) {
+        jQT.dbDeleteRow("settings", "setting", "'" + which + "'");
+        jQT.dbInsertRows({"addRow": [ { "table": "settings", "property": [ { "name": "setting", value: which }, { "name": "value", "value": nw } ] } ] });
     }
-	if (which == "lang") {
-    	// Load language file
+    if (which == "lang") {
+        // Load language file
         loadjsfile("iwdl_lang_" + settings["lang"] + ".js");
         setTexts('all');
         $("#settings_content").html(dispSettings());
-	}
-	$("#fc").html("");
-	setUnits();
-	updateiWdl();
+    }
+    $("#fc").html("");
+    setUnits();
+    updateiWdl();
 }
 
 function startIwdl() {
@@ -1084,37 +1191,37 @@ function startIwdl() {
         statusBar: 'black',
     });
     $(document).ready(function(e){
-    	if (!settings["clientraw_dir"]) {
-    		alert("No iwdl_settings.js, please rename iwdl_settings.js.sample to iwdl_settings.js and make necessary changes");
-    	}
-    	if (isIphone) {
-	    	// Open database
-	    	jQT.dbOpen("iwdl", "1.0","Settings", 5000);
-	    	jQT.dbCreateTables({ "createTables" : [ { "table": "settings", "property": [ {"name": "setting", "type": "text"},
-	    	                                                                             {"name": "value", "type": "text" } ] } ] } );
-	    	jQT.dbSelectAll("settings", function(result) {
-	    		for (var i = 0; i < result.rows.length; i++) {
-	    			var row = result.rows.item(i);
-	    			if (row['setting'] == "lang" && settings["lang"] != row['value']) {
-	    			    settings[row['setting']] = row['value'];
-	    		    	// Load language file
-	    		        loadjsfile("iwdl_lang_" + settings["lang"] + ".js");
-	    		        setTexts('all');
-	    			} else {
-	    			    settings[row['setting']] = row['value'];
-	    			}
-	    		}
-	    		setUnits();
-	    		updateiWdl();
-	            addDiv("settings", "<div id='settings_content'>" + dispSettings() + "</div>");
-	    	});
-    	} else {
-        	// Load language file
+        if (!settings["clientraw_dir"]) {
+            alert("No iwdl_settings.js, please rename iwdl_settings.js.sample to iwdl_settings.js and make necessary changes");
+        }
+        updateiWdl();
+        if (isIphone) {
+            // Open database
+            jQT.dbOpen("iwdl", "1.0","Settings", 5000);
+            jQT.dbCreateTables({ "createTables" : [ { "table": "settings", "property": [ {"name": "setting", "type": "text"},
+                                                                                         {"name": "value", "type": "text" } ] } ] } );
+            jQT.dbSelectAll("settings", function(result) {
+                for (var i = 0; i < result.rows.length; i++) {
+                    var row = result.rows.item(i);
+                    if (row['setting'] == "lang" && settings["lang"] != row['value']) {
+                        settings[row['setting']] = row['value'];
+                        // Load language file
+                        loadjsfile("iwdl_lang_" + settings["lang"] + ".js");
+                        setTexts('all');
+                    } else {
+                        settings[row['setting']] = row['value'];
+                    }
+                }
+                setUnits();
+                addDiv("settings", "<div id='settings_content'>" + dispSettings() + "</div>");
+            });
+        } else {
+            // Load language file
             loadjsfile("iwdl_lang_" + settings["lang"] + ".js"); 
             addDiv("settings", "<div id='settings_content'>" + dispSettings() + "</div>");
-    	}
+        }
 
-    	// Load language file
+        // Load language file
         loadjsfile("iwdl_lang_" + settings["lang"] + ".js"); 
 
         getClientRaw(["cr"]);
@@ -1124,111 +1231,121 @@ function startIwdl() {
         addDiv("live_weather", dispIwdl());
         addDiv("min_max",      dispMinMax());
 
-		setUnits();
+        setUnits();
         updateiWdl();
  
         if (document.height >= 460) {
-        	$("#filler").css({'height': 49 });
+            $("#filler").css({'height': 51 });
         } else {
-        	$("#filler").css({'height': 5 });
+            $("#filler").css({'height': 7 });
         }
         
         $(document).everyTime(settings["refresh"] + "s", "iwdlTimer", function(i) { updateiWdl(); }, settings["num_refresh"]);
 
         var lst = ["hour", "day", "week", "month"];
         for (var i = 0; i < lst.length; i++) {
-        	var tm = lst[i];
+            var tm = lst[i];
             addDiv(tm, graphTimeTpl(settings[tm + "_graphs"],  tm.substr(0, 1)));
-        	$("#" + tm).bind('pageAnimationEnd', function(event, info){
+            $("#" + tm).bind('pageAnimationEnd', function(event, info){
                 if (info.direction == 'in') dispTimeGraphs($(this).attr("id").substr(0, 1));
                 if (info.direction == 'in') $(document).stopTime("iwdlTimer");
             });
         };
 
         for (var i = 0; i < settings["live_screen"].length; i++) {
-        	var gr = settings["live_screen"][i];
+            var gr = settings["live_screen"][i];
             if (crtogr[gr]) {
-	            addDiv("graphs_" + gr, graphTypeTpl(gr));
-	        	$("#graphs_" + gr).bind('pageAnimationEnd', function(event, info){
-	                if (info.direction == 'in') dispTypeGraphs($(this).attr("id").replace(/graphs_/, ""));
-	                if (info.direction == 'in') $(document).stopTime("iwdlTimer");
-	            });
+                addDiv("graphs_" + gr, graphTypeTpl(gr));
+                $("#graphs_" + gr).bind('pageAnimationEnd', function(event, info){
+                    if (info.direction == 'in') dispTypeGraphs($(this).attr("id").replace(/graphs_/, ""));
+                    if (info.direction == 'in') $(document).stopTime("iwdlTimer");
+                });
             }
         }
 
         $('#live_weather').bind('pageAnimationEnd', function(event, info){
             if (info.direction == 'in') {
-            	AsyncClientRaw();
-            	$(document).stopTime("iwdlTimer");
+                AsyncClientRaw();
+                $(document).stopTime("iwdlTimer");
                 $(document).everyTime(settings["refresh"] + "s", "iwdlTimer", function(i) { AsyncClientRaw(); }, settings["num_refresh"]);
             }
         });
 
         $('#home').bind('pageAnimationEnd', function(event, info){
             if (info.direction == 'in') {
-            	AsyncClientRaw();
-            	$(document).stopTime("iwdlTimer");
-            	$(document).everyTime(settings["refresh"] + "s", "iwdlTimer", function(i) { AsyncClientRaw(); }, settings["num_refresh"]);
+                AsyncClientRaw();
+                $(document).stopTime("iwdlTimer");
+                $(document).everyTime(settings["refresh"] + "s", "iwdlTimer", function(i) { AsyncClientRaw(); }, settings["num_refresh"]);
             }
         });
 
         $('#forecast').bind('pageAnimationEnd', function(event, info){
             if (info.direction == 'in') {
-            	$(document).stopTime("iwdlTimer");
-            	getForecast();
+                $(document).stopTime("iwdlTimer");
+                getForecast();
             }
         });
 
         $('#radar').bind('pageAnimationEnd', function(event, info){
             if (info.direction == 'in') {
-            	$(document).stopTime("iwdlTimer");
-            	$("#radarframe").attr("src", settings["radar"]);
+                $(document).stopTime("iwdlTimer");
+                $("#radarframe").attr("src", settings["radar"]);
             }
         });
 
         $('#webcam').bind('pageAnimationEnd', function(event, info){
             if (info.direction == 'in') {
-            	$(document).stopTime("iwdlTimer");
-            	$("#webcamframe").attr("src", settings["webcam"]);
+                $(document).stopTime("iwdlTimer");
+                $("#webcamframe").attr("src", settings["webcam"]);
             }
         });
 
         $("#tap_mapbutton").bind('click', function(event) {
-        	$(document).stopTime("iwdlTimer");
-        	jQT.goTo("#map", "slideup");
+            $(document).stopTime("iwdlTimer");
+            jQT.goTo("#map", "slideup");
+        });
+        
+        $("#tap_radarbutton").bind('click', function(event) {
+            $(document).stopTime("iwdlTimer");
+            jQT.goTo("#radar", "slideup");
+        });
+        
+        $("#tap_webcambutton").bind('click', function(event) {
+            $(document).stopTime("iwdlTimer");
+            jQT.goTo("#webcam", "slideup");
         });
         
         $("#tap_settings").bind('click', function(event) {
-        	$(document).stopTime("iwdlTimer");
-        	jQT.goTo("#settings", "slideup");
+            $(document).stopTime("iwdlTimer");
+            jQT.goTo("#settings", "slideup");
         });
         
         $("#tap_about").bind('click', function(event) {
-        	$(document).stopTime("iwdlTimer");
-        	jQT.goTo("#about", "slideup");
+            $(document).stopTime("iwdlTimer");
+            jQT.goTo("#about", "swap");
         });
         
         setTexts('iwdl');
 
         $(function(){
             $('body').bind('turn', function(event, info){
-            	  var curr = $(".current").attr("id");
-           		  switch (curr) {
-           		  case "hour"      : ;
-           		  case "day"       : ;
-           		  case "week"      : ;
-           		  case "month"     : dispTimeGraphs(curr.substr(0, 1));   break;
-           		  case "graphs_1"  : ;
-           		  case "graphs_2"  : ;
-           		  case "graphs_3"  : ;
-           		  case "graphs_4"  : ;
-           		  case "graphs_5"  : ;
-           		  case "graphs_6"  : ;
-           		  case "graphs_7"  : ;
-           		  case "graphs_12" : ;
-           		  case "graphs_79" : ;
-           		  case "graphs_127": dispTypeGraphs(curr.replace(/graphs_/, "")); break;
-            	  }
+                  var curr = $(".current").attr("id");
+                     switch (curr) {
+                     case "hour"      : ;
+                     case "day"       : ;
+                     case "week"      : ;
+                     case "month"     : dispTimeGraphs(curr.substr(0, 1));   break;
+                     case "graphs_1"  : ;
+                     case "graphs_2"  : ;
+                     case "graphs_3"  : ;
+                     case "graphs_4"  : ;
+                     case "graphs_5"  : ;
+                     case "graphs_6"  : ;
+                     case "graphs_7"  : ;
+                     case "graphs_12" : ;
+                     case "graphs_79" : ;
+                     case "graphs_127": dispTypeGraphs(curr.replace(/graphs_/, "")); break;
+                  }
             });
             
         });
@@ -1240,7 +1357,7 @@ function startIwdl() {
         });
 
         // Set bg color
-    	$(".iwdl_bg").css("background", settings["bgcolor"]);
+        $(".iwdl_bg").css("background", settings["bgcolor"]);
     });
 }
 
