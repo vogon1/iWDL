@@ -16,7 +16,7 @@
 //
 // Language file for iWDL
 // By Sietse Visser (sietse@sietse.nl)
-// Version 0.7
+// Version 0.8
 // 
 // Swedish translation by Labbs www.lokaltvader.se
 //
@@ -25,9 +25,14 @@ texts["about"]                     = "Om";
 texts["live_weather"]              = "Live v&#228;der";
 texts["min_max"]                   = "Min / Max";
 texts["graphs"]                    = "Grafer";
+texts["forecast"]                  = "Forecast";
 texts["map"]                       = "Map";
 texts["settings"]                  = "Settings";
 texts["back"]                      = "Tillbaka";
+
+texts["radar"]                     = "Radar";
+texts["webcam"]                    = "Webcam";
+texts["loading"]                   = "Loading...";
 
 texts["station_location"]          = "Weather station location";
 texts["unknown_location"]          = "Unknown location";

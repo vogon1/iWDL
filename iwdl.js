@@ -16,7 +16,7 @@
 //
 // Main javascript file
 // By Sietse Visser (sietse@sietse.nl)
-// Version 0.7
+// Version 0.8
 //
 
 //
@@ -339,6 +339,7 @@ var cr, crh, cre, crd;
 var jQT;
 var orientation = '0';
 var station = 'Weather station';
+var isIphone = (navigator.userAgent.toLowerCase().indexOf('iphone') != -1 || navigator.userAgent.toLowerCase().indexOf('ipod') != -1);
 
 function crAsyncDone(data, status) {
 	var now = new Date();
@@ -370,6 +371,75 @@ function makeSyncRequest(url) {
 
     return data;
 }
+
+function getForecast() {
+    if ($("#fc").html() != "") return;
+
+    if (settings["forecast"] == "yr.no") {
+	    var q = "";
+	    q += "http://query.yahooapis.com/v1/public/yql?q=";
+	    q += "select%20*%20from%20xml%20where%20url%3D'http%3A%2F%2Fwww.yr.no%2Fsted%2F";
+	    q += settings["yr.no"].replace(/\//g, "%2F");
+	    q += "%2Fforecast.xml'&format=json&callback=?";
+	    $.getJSON(q, function(fc) {
+		    var i = 0;
+		    var date = '';
+		    var str;
+		    while (i < 16) {
+		    	var t = fc.query.results.weatherdata.forecast.tabular.time[i];
+	    		var dt = t.from.replace(/T.*/, "");
+	    		var stime = t.from.replace(/.*T/, "");
+	    		var etime = t.to.replace(/.*T/, "");
+	    		var p = t.period;
+	    		var sym = t.symbol.number;
+	    		if (sym.length == 1) sym = '0' + sym;
+	    		var c_temp = check_convert(t.temperature.value, 'c');
+	    		var c_wind = check_convert(t.windSpeed.mps / 0.514444, 'kn');
+	    		var c_wdir = check_convert(t.windDirection.deg, 'deg');
+	    		var c_baro = check_convert(t.pressure.value, 'hpa');
+	
+			    if (i == 0)
+		    		str = "<table class='w100'><tr><td></td><td></td><td class='center'>" + c_temp.units + "</td><td class='center'>" + 
+			          c_wdir.units + "</td><td class='center'>" + c_wind.units + "</td><td class='center'>" + c_baro.units + "</td><td>";
+
+			    stime = stime.replace(/:.*$/, "");
+	            etime = etime.replace(/:.*$/, "");
+	
+	    		if (date != dt) {
+	    		    str += "<tr><td colspan='6' class='iwdl_bg left'>" + dt + "</td></tr>";
+	    			date = dt;
+	    		}
+	    		str += "<tr><td class='iwdl'>" + stime + "-" + etime;
+	    		if (p == "0") { if (sym == "01" || sym == "02" || sym == "03" || sym == "05" || sym == "06" || sym == "07" || sym == "08") sym += "n"; }
+	    		if (p == "1") { if (sym == "01" || sym == "02" || sym == "03" || sym == "05" || sym == "06" || sym == "07" || sym == "08") sym += "d"; }
+	    		if (p == "2") { if (sym == "01" || sym == "02" || sym == "03" || sym == "05" || sym == "06" || sym == "07" || sym == "08") sym += "d"; }
+	    		if (p == "3") { if (sym == "01" || sym == "02" || sym == "03" || sym == "05" || sym == "06" || sym == "07" || sym == "08") sym += "n"; }
+	    		str += "</td>";
+	            str += "<td><img src='http://fil.nrk.no/yr/grafikk/sym/b38/" + sym + ".png' width='28'></td>";
+	            str += "<td align='center' class='iwdl black'>" + c_temp.val + "</td>";
+	            str += "<td align='center' class='iwdl black'>" + c_wdir.val + "</td>";
+	            str += "<td align='center' class='iwdl black'>" + c_wind.val + "</td>";
+	            str += "<td align='center' class='iwdl black'>" + c_baro.val + "</td>";
+	    		str += "</tr>";
+		    	i++;
+	    	}
+		    str += "</table>";
+		    $("#fc").html(str);
+		    var link = "<center><a target='_blank' href='" + fc.query.results.weatherdata.credit.link.url + "'>Forecast by yr.no</a>";
+		    link += " <span class='iwdl'>" + settings["yr.no"] + "</span><br>";
+		    link += " <span class='iwdl'>" + fc.query.results.weatherdata.meta.lastupdate.replace(/T/, " ") + "</span>";
+		    link += "</center>";
+		    $("#fcref").html(link);
+
+		    // set background color
+		    $(".iwdl_bg").css("background", settings["bgcolor"]); 
+	    });
+    } else {
+    	$("#fc").html("<iframe frameborder='no' scrolling='auto' width='275px' height='200px' src='" + settings["forecast_url"] + "'></iframe>");
+    	$("#fcref").html("<center>" + settings["forecast_from"] + "</center>");
+    }
+
+};
 
 function loadjsfile(filename){
 	var code = makeSyncRequest(filename);
@@ -495,7 +565,11 @@ function updateiWdl() {
         time = station_time[1];
     }
 
-    if (mystation) station = mystation;
+    if (settings["station_name"])
+    	station = settings["station_name"];
+    else
+    	if (mystation)
+    		station = mystation;
 
     if ($("#hm_station").html() != station) $("[iwdltxt=hm_station]").html(station);
 
@@ -590,10 +664,23 @@ function dispHome() {
 }
 
 function dispIwdl() {
-    var str;
-    str = "<ul class='rounded'>";
+    var str = '';
 
-    str += "<li class='iwdl'>";
+    if (settings['webcam'] || settings['radar']) {
+    	str += "<ul class='individual'>";
+    	if (settings['radar']) {
+    		str += "<li><a href='#radar'>" + texts["radar"] + "</a></li>";
+    		addDiv("radar", "<iframe id='radarframe' frameborder='no' scrolling='auto' width='275px' height='200px' src=''></iframe>");
+    	}
+    	if (settings['webcam']) {
+    		str += "<li><a href='#webcam'>" + texts["webcam"] + "</a></li>";
+    		addDiv("webcam", "<iframe id='webcamframe' frameborder='no' scrolling='auto' width='275px' height='200px' src=''></iframe>");
+    	}
+        str += "</ul>";
+    }
+    str += "<ul class='rounded'>";
+
+    str += "<li class='iwdl iwdl_bg'>";
     str += "<table width='100%'>";
     str += "<tr>";
     str += "<td align='center' width='100%' class='head'>";
@@ -635,10 +722,10 @@ function dispMinMax() {
 
     var station_time = cr[32].split("-");
 
-    str += "<li class='iwdl'>";
+    str += "<li class='iwdl iwdl_bg'>";
     str += "<table width='100%'>";
     str += "  <tr>";
-    str += "    <td align='center' width='100%'>" + station_time[0].replace(/_/g, " ") + "</td>"; 
+    str += "    <td width='100%'iwdltxt='min_max'>Today's min/max</td>"; 
     str += "  </tr>";
     str += "</table>";
     str += "</li>";
@@ -666,7 +753,7 @@ function dispSettings() {
 	var selected;
 
 	str += "<form><ul class='edit rounded'>"
-	str += "<h1 iwdltxt='settings'>" + texts["settings"] + "</h1>";
+	str += "<li class='iwdl_bg'><h3 iwdltxt='settings'>" + texts["settings"] + "</h3></li>";
 
     str += "<li class='arrow'><select id='settings_temp' onChange='javascript: settingsChange(\"temp\", \"settings_temp\")'>";
     if (settings["temp"] == "c") selected = 'selected'; else selected = '';
@@ -762,8 +849,8 @@ function dispGraph(grtype, graph) {
 		break;
 	}
 
-    var width = "280px";
-    if (orientation != 0) width = "430px";
+    var width = "292px";
+    if (orientation != 0) width = "452px";
     $("#graphsinfo" + "_" + grtype + "_graph_" + graph).css({'width': width});
 
     // Make the graph
@@ -824,7 +911,7 @@ function getGraphDescr(graph, type) {
 function graphTimeTpl(graphs, type) {
     var str = "<ul class='rounded'>";
     for (var i = 0, len=graphs.length; i < len; ++i) {
-        str += "<li class='iwdl'>" + getGraphDescr(graphs[i], type) + "<br>";
+        str += "<li class='iwdl'><table class='w100 iwdl_marpad0'><tr><td class='iwdl_bg iwdl_marpad0'>" + getGraphDescr(graphs[i], type) + "</td></tr></table>";
     	str += "<div id='graphsinfo" + "_" + type + "_graph_" + graphs[i] + "' style='width:280px;height:100px;'></div>";
         str += "</li>";
     }
@@ -843,7 +930,7 @@ function graphTypeTpl(type) {
         		if (i == 1) t = "d";
         		if (i == 2) t = "w";
         		if (i == 3) t = "m";
-		        str += "<li class='iwdl'>" + getGraphDescr(graphs[i][j], t) + "<br>";
+		        str += "<li class='iwdl'><table class='w100 iwdl_marpad0'><tr><td class='iwdl_bg iwdl_marpad0'>" + getGraphDescr(graphs[i][j], t) + "</td></tr></table>";
 		    	str += "<div id='graphsinfo" + "_" + t + i + j + "_graph_" + graphs[i][j] + "' style='width:280px;height:100px;'></div>";
 		        str += "</li>";
         	}
@@ -877,10 +964,10 @@ function dispTypeGraphs(type) {
 
 function setTexts(what) {
 	if (what == 'iwdl' || what == 'all') {
-	    for (var t in texts ){
-	        $("[iwdltxt=" + t + "]").html(texts[t]);
-	    }
-	}
+	    $("[iwdltxt]").each(function() {
+	    	$(this).html(texts[$(this).attr("iwdltxt")]);
+		});
+    }
 
 	if (what == 'cr' || what == 'all') {
 	    var done = new Array;
@@ -937,7 +1024,7 @@ function localiser() {
 		lat = parseFloat(cr[160]);
 	}
 
-	if (lng || lat) {
+	if (lng || lat || settings["location"]) {
 	    var myLatlng = new google.maps.LatLng(lat, lng);
 	    var myOptions = {
 	      zoom: 5,
@@ -951,17 +1038,22 @@ function localiser() {
 	      title: station
 	    });
 
-	    var geocoder = new google.maps.Geocoder();
-	    var latlng = new google.maps.LatLng(lat, lng);
-	    if (geocoder) {
-	        geocoder.geocode({'latLng': latlng}, function(results, status) {
-	          if (status == google.maps.GeocoderStatus.OK) {
-	            if (results[3]) {
-                  $("#map_text").html("<center>" + texts["station_location"] + ":<br>" +results[3].formatted_address + "</center>");
-	            }
-	          } else {
-	          }
-	        });
+	    if (!settings["location"]) {
+		    var geocoder = new google.maps.Geocoder();
+		    var latlng = new google.maps.LatLng(lat, lng);
+		    if (geocoder) {
+		        geocoder.geocode({'latLng': latlng}, function(results, status) {
+		          if (status == google.maps.GeocoderStatus.OK) {
+		            if (results[1]) {
+	                  $("#map_text").html("<center>" + texts["station_location"] + ":<br>" +results[1].formatted_address + "</center>");
+		            }
+		          } else {
+	                  $("#map_text").html("<center>" + texts["station_location"] + ":<br>" + " ( not found ) " + "</center>");
+		          }
+		        });
+		    }
+	    } else {
+	    	$("#map_text").html("<center>" + settings["location"] + "</center>");
 	    }
 	} else {
 		$("#map_canvas").html(texts["unknown_location"]);
@@ -971,7 +1063,7 @@ function localiser() {
 function settingsChange(which, newval) {
 	var nw = $("#" + newval).val();
 	settings[which] = nw;
-	if (navigator.userAgent.toLowerCase().indexOf('iphone') != -1) {
+	if (isIphone) {
 		jQT.dbDeleteRow("settings", "setting", "'" + which + "'");
 		jQT.dbInsertRows({"addRow": [ { "table": "settings", "property": [ { "name": "setting", value: which }, { "name": "value", "value": nw } ] } ] });
     }
@@ -981,6 +1073,7 @@ function settingsChange(which, newval) {
         setTexts('all');
         $("#settings_content").html(dispSettings());
 	}
+	$("#fc").html("");
 	setUnits();
 	updateiWdl();
 }
@@ -995,7 +1088,7 @@ function startIwdl() {
     	if (!settings["clientraw_dir"]) {
     		alert("No iwdl_settings.js, please rename iwdl_settings.js.sample to iwdl_settings.js and make necessary changes");
     	}
-    	if (navigator.userAgent.toLowerCase().indexOf('iphone') != -1) {
+    	if (isIphone) {
 	    	// Open database
 	    	jQT.dbOpen("iwdl", "1.0","Settings", 5000);
 	    	jQT.dbCreateTables({ "createTables" : [ { "table": "settings", "property": [ {"name": "setting", "type": "text"},
@@ -1035,10 +1128,10 @@ function startIwdl() {
 		setUnits();
         updateiWdl();
  
-        if (document.height >= 450) {
+        if (document.height >= 460) {
         	$("#filler").css({'height': 49 });
         } else {
-        	$("#filler").css({'height': 8 });
+        	$("#filler").css({'height': 5 });
         }
         
         $(document).everyTime(settings["refresh"] + "s", "iwdlTimer", function(i) { updateiWdl(); }, settings["num_refresh"]);
@@ -1071,6 +1164,7 @@ function startIwdl() {
                 $(document).everyTime(settings["refresh"] + "s", "iwdlTimer", function(i) { AsyncClientRaw(); }, settings["num_refresh"]);
             }
         });
+
         $('#home').bind('pageAnimationEnd', function(event, info){
             if (info.direction == 'in') {
             	AsyncClientRaw();
@@ -1079,15 +1173,39 @@ function startIwdl() {
             }
         });
 
+        $('#forecast').bind('pageAnimationEnd', function(event, info){
+            if (info.direction == 'in') {
+            	$(document).stopTime("iwdlTimer");
+            	getForecast();
+            }
+        });
+
+        $('#radar').bind('pageAnimationEnd', function(event, info){
+            if (info.direction == 'in') {
+            	$(document).stopTime("iwdlTimer");
+            	$("#radarframe").attr("src", settings["radar"]);
+            }
+        });
+
+        $('#webcam').bind('pageAnimationEnd', function(event, info){
+            if (info.direction == 'in') {
+            	$(document).stopTime("iwdlTimer");
+            	$("#webcamframe").attr("src", settings["webcam"]);
+            }
+        });
+
         $("#tap_mapbutton").bind('click', function(event) {
+        	$(document).stopTime("iwdlTimer");
         	jQT.goTo("#map", "slideup");
         });
         
         $("#tap_settings").bind('click', function(event) {
+        	$(document).stopTime("iwdlTimer");
         	jQT.goTo("#settings", "slideup");
         });
         
         $("#tap_about").bind('click', function(event) {
+        	$(document).stopTime("iwdlTimer");
         	jQT.goTo("#about", "slideup");
         });
         
@@ -1121,6 +1239,9 @@ function startIwdl() {
                 localiser();
             }
         });
+
+        // Set bg color
+    	$(".iwdl_bg").css("background", settings["bgcolor"]);
     });
 }
 

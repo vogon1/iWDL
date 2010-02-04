@@ -16,16 +16,21 @@
 //
 // Language file for iWDL
 // By Sietse Visser (sietse@sietse.nl)
-// Version 0.7
+// Version 0.8
 //
 
 texts["about"]                     = "Over";
 texts["live_weather"]              = "Live weer";
 texts["min_max"]                   = "Min / Max";
 texts["graphs"]                    = "Grafieken";
+texts["forecast"]                  = "Verwachting";
 texts["map"]                       = "Kaart";
 texts["settings"]                  = "Instellingen";
 texts["back"]                      = "Terug";
+
+texts["radar"]                     = "Radar";
+texts["webcam"]                    = "Webcam";
+texts["loading"]                   = "Gegevens worden gehaald...";
 
 texts["station_location"]          = "Locatie van weerstation";
 texts["unknown_location"]          = "Onbekende locatie";

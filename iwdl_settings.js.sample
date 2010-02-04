@@ -16,20 +16,20 @@
 //
 // Settings for the iWDL iPhone webapp
 // By Sietse Visser (sietse@sietse.nl)
-// Version 0.7
+// Version 0.8
 //
 
 // Where are the clientraw files
 settings["clientraw_dir"] = "/iwdl";
 
-//What units to use
-//temp:   c f
-//wind:   kn mph kmh ms
-//wdir:   deg abbr        -- abbr will show W, NNE etc.
-//rain:   mm in
-//baro:   hpa hg
-//time:   24 12           -- unused for now
-//height: ft m
+// What units to use
+// temp:   c f
+// wind:   kn mph kmh ms
+// wdir:   deg abbr        -- abbr will show W, NNE etc.
+// rain:   mm in
+// baro:   hpa hg
+// time:   24 12           -- unused for now
+// height: ft m
 settings["temp"]   = "c";
 settings["wind"]   = "kmh";
 settings["wdir"]   = "abbr";
@@ -42,14 +42,43 @@ settings["time"]   = "24";
 // Possible languages: en nl dk no se
 settings["lang"] = "en";
 
-//Refresh period for live weather in seconds; 15 secs x 120 times = 30 minutes
-//The number of refreshes is limited to prevent draining the battery if the page is still
-//active in safari (even when the iPhone is turned off).
+// Station name override; iWDL normally uses the station name from the clientraw.txt.
+// In case you want another name to show up in the top bar, remove // in the following line:
+// settings["station_name"] = "Utrecht";
+
+// Location name override; iWDL normally uses the coordinates from clientraw.txt.
+// In case you want another location to show up in the map screen, remove // in the following line:
+// settings["location"] = "Utrecht, NL";
+
+// Forecast; possible types:
+// yr.no   -- get forecast from yr.no
+// url     -- provide your own forecast
+settings["forecast"] = "yr.no";
+
+// Where to get the forecast; go to http://yr.no, find the forecast for your location
+// and fill in the last part of the url like below.
+settings["yr.no"] = "Nederland/Utrecht/Utrecht";
+
+// When 'forcast' set to 'url', fill in the url (it will be shown in an iframe).
+// NOTE: You are responsible for a readable iphone page!
+// The forecast_from field is shown at the bottom of the forecast screen
+settings["forecast_url"] = "http://mobil.silkeborg-vejret.dk/vejrudsigt.php";
+settings["forecast_from"] = "Silkeborg";
+
+// If you have radar data, set the url here; it is shown in an iframe
+settings["radar"] = "http://buienradar.mobi/";
+
+// If you have a webcam, set the url here; it is shown in an iframe
+settings["webcam"] = "http://yoursite.com/webcam.html";
+
+// Refresh period for live weather in seconds; 15 secs x 120 times = 30 minutes
+// The number of refreshes is limited to prevent draining the battery if the page is still
+// active in safari (even when the iPhone is turned off).
 settings["refresh"]     =  15;
 settings["num_refresh"] = 120;
 
-//What to display on the live screen
-//The numbers correspond with the ones in iwdl_lang_en.js
+// What to display on the live screen
+// The numbers correspond with the ones in iwdl_lang_en.js
 settings["home"]        = [4, 5, 6, 7, 3, 1];
 settings["live_screen"] = [4, 5, 6, 7, 12, 13, 79, 127, 73, 3, 1, 2, 44, 45];
 settings["min_max"]     = [47, 46, 76, 75, 78, 77, 111, 110, 129, 128, 132, 131, 11, 71, 113];
@@ -59,18 +88,18 @@ settings["min_max"]     = [47, 46, 76, 75, 78, 77, 111, 110, 129, 128, 132, 131,
 settings["hour_graphs"] = [ "temp_out", "humid_out", "baro", "rain", "solar_wm",
                             "wind_speed", "wind_gust", "wind_dir" ];
 
-//Possible settings for day graphs:
-//temp_out, humid_out, rain, baro, wind_speed, wind_dir, solar_wm, solar_uv, temp_in
+// Possible settings for day graphs:
+// temp_out, humid_out, rain, baro, wind_speed, wind_dir, solar_wm, solar_uv, temp_in
 settings["day_graphs"] = [ "temp_out", "humid_out", "baro", "rain", "solar_wm", "solar_uv",  
                            "wind_speed", "wind_dir", "temp_in" ];
 
-//Possible settings for week graphs:
-//temp_out, humid_out, baro, wind_speed, wind_dir, solar_wm, solar_uv
+// Possible settings for week graphs:
+// temp_out, humid_out, baro, wind_speed, wind_dir, solar_wm, solar_uv
 settings["week_graphs"] = [ "temp_out", "humid_out", "baro", "wind_speed", "wind_dir",
                             "solar_wm", "solar_uv" ];
 
-//Possible settings for month graphs:
-//temp_high, temp_low, humid_out, rain, baro, wind_speed, wind_dir, rain_year
+// Possible settings for month graphs:
+// temp_high, temp_low, humid_out, rain, baro, wind_speed, wind_dir, rain_year
 settings["month_graphs"] = [ "temp_high", "temp_low", "humid_out", "baro", "rain",
                              "wind_speed", "wind_dir", "rain_year" ];
 
@@ -78,3 +107,6 @@ settings["month_graphs"] = [ "temp_high", "temp_low", "humid_out", "baro", "rain
 // Negative values for east of Greenich and southern hempisphere
 // settings["longitude"] = -5.119144;
 // settings["latitude"]  = 52.08144;
+
+// If you don't like the yellow background color, set your own color here:
+settings["bgcolor"] = "#e0e0a0";

@@ -52,9 +52,21 @@
                 font-size: 15px;
                 color: black;
             }
+            .iwdl_bg {
+                text-align: center;
+                background: #e0e0a0;
+                color: black;
+            }
             .iwdl_overview {
-                padding: 5px 2px 5px 2px;
-                background: #dce1eb;
+                margin: 5px 10px 5px 10px;
+                padding: 0px 0px 0px 0px;
+            }
+            .iwdl_marpad0 {
+                margin: 0px 0px 0px 00px;
+                padding: 0px 0px 0px 0px;
+            }
+            .iwdl_home_menu {
+                margin: 5px 10px 5px 10px;
             }
             .black {
                 color: black;
@@ -85,6 +97,14 @@
               font-size: 15px;
               font-weight: bold;
             }
+            .inline {
+                display: inline;
+                width: 200px;
+            }
+            ul.individual li + li + li {
+                float: right;
+            }
+            
             <!--// BEGIN MAP CSS //-->
             #map_canvas {
                     width: 100%;
@@ -115,7 +135,7 @@
     </head>
     <body id='body'>
         <div id="about">
-                <p><strong>iWDL</strong><br />Version 0.7<br />
+                <p><strong>iWDL</strong><br />Version 0.8<br />
                     <p><strong>By Sietse Visser</strong></p>
                 <p><em>Weather Display Live<br /> on you iPhone</em></p>
                     <p>&nbsp;</p>
@@ -130,6 +150,7 @@
                 <a href="#" class="back" iwdltxt="back">Back</a>
             </div>
             <ul class="rounded">
+                <li class="iwdl_bg" iwdltxt='graphs'>Graphs</li>
                 <li class="arrow"><a href="#hour"  iwdltxt="ghour">Hour graphs</a></li>
                 <li class="arrow"><a href="#day"   iwdltxt="gday">Day graphs</a></li>
                 <li class="arrow"><a href="#week"  iwdltxt="gweek">Week graphs</a></li>
@@ -142,24 +163,37 @@
                 <h1 iwdltxt='hm_station'>Your station</h1>
                 <a href="#" class="back" iwdltxt="back">Back</a>
             </div>
+            <ul class="rounded iwdl_bg">
+	          <div id="map_canvas" class="draggable"></div>
+              <p>&nbsp;</p>
+              <div id="map_text"></div>
+              <p>&nbsp;</p>
+            </ul>
+        </div>
+
+        <div id="forecast">
+            <div class="toolbar">
+                <h1 iwdltxt="hm_station">Your station</h1>
+                <a href="#" class="back" iwdltxt="back">Back</a>
+            </div>
             <ul class="rounded">
-          <div id="map_canvas" class="draggable"></div>
-          <p>&nbsp;</p>
-          <div id="map_text"></div>
-          <p>&nbsp;</p>
+                <li id='fc'></li>
+                <li id='fcref' iwdltxt='loading'></li>
+            </ul>
         </div>
 
         <div id="home" class="current">
             <div class="toolbar">
                 <h1 id='hm_station' iwdltxt='hm_station'>Your station</h1>
             </div>
-            <ul class="iwdl_overview">
+            <ul class="iwdl_overview iwdl_bg">
                 <li><div id='home_display'></div></li>
             </ul>
-            <ul class="rounded">
+            <ul class="rounded iwdl_home_menu">
                 <li class="arrow"><a href="#live_weather"  iwdltxt="live_weather">Live weather</a></li>
                 <li class="arrow"><a href="#min_max"       iwdltxt="min_max">Min / Max</a></li>
                 <li class="arrow"><a href="#graphs"        iwdltxt="graphs">Graphs</a></li>
+                <li class="arrow"><a href="#forecast"      iwdltxt="forecast">Forecast</a></li>
             </ul>
 
             <div id='filler'> </div>
@@ -180,6 +214,5 @@
               </table>
             </div>
         </div>
-
     </body>
 </html>

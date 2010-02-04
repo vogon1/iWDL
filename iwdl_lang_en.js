@@ -16,25 +16,30 @@
 //
 // Language file for iWDL
 // By Sietse Visser (sietse@sietse.nl)
-// Version 0.7
+// Version 0.8
 //
 
 texts["about"]                     = "About";
 texts["live_weather"]              = "Live weather";
 texts["min_max"]                   = "Min / Max";
 texts["graphs"]                    = "Graphs";
+texts["forecast"]                  = "Forecast";
 texts["map"]                       = "Map";
 texts["settings"]                  = "Settings";
 texts["back"]                      = "Back";
+
+texts["radar"]                     = "Radar";
+texts["webcam"]                    = "Webcam";
+texts["loading"]                   = "Loading...";
 
 texts["station_location"]          = "Weather station location";
 texts["unknown_location"]          = "Unknown location";
 
 texts["graphmenu"]                 = "Graph menu";
-texts["ghour"]                     = "Hour graphs";
-texts["gday"]                      = "Day graphs";
-texts["gweek"]                     = "Week graphs";
-texts["gmonth"]                    = "Month graphs";
+texts["ghour"]                     = "Hourly graphs";
+texts["gday"]                      = "Daily graphs";
+texts["gweek"]                     = "Weekly graphs";
+texts["gmonth"]                    = "Monthly graphs";
 
 texts["set_temp"]                  = "Temperature";
 texts["set_wind"]                  = "Wind speed";

@@ -16,16 +16,21 @@
 //
 // Language file for iWDL
 // By Sietse Visser (sietse@sietse.nl)
-// Version 0.7
+// Version 0.8
 //
 
 texts["about"]                     = "Om";
 texts["live_weather"]              = "Live vejrdata";
 texts["min_max"]                   = "Min / Max";
 texts["graphs"]                    = "Grafer";
+texts["forecast"]                  = "Forecast";
 texts["map"]                       = "Map";
 texts["settings"]                  = "Settings";
 texts["back"]                      = "Tilbage";
+
+texts["radar"]                     = "Radar";
+texts["webcam"]                    = "Webcam";
+texts["loading"]                   = "Loading...";
 
 texts["station_location"]          = "Weather station location";
 texts["unknown_location"]          = "Unknown location";
@@ -75,21 +80,21 @@ texts["Cloudy with clear patches"] = "Skyet med huller i skyd&#230;kket";
 texts["Overcast"]                  = "Overskyet";
 
 texts["wdir_N"]   = "N";
-texts["wdir_NNE"] = "NNE";
-texts["wdir_NE"]  = "NE";
-texts["wdir_ENE"] = "ENE";
-texts["wdir_E"]   = "E";
-texts["wdir_ESE"] = "ESE";
-texts["wdir_SE"]  = "SE";
-texts["wdir_SSE"] = "SSE";
+texts["wdir_NNE"] = "NN&#216;";
+texts["wdir_NE"]  = "N&#216;";
+texts["wdir_ENE"] = "&#216;N&#216;";
+texts["wdir_E"]   = "&#216;";
+texts["wdir_ESE"] = "&#216;S&#216;";
+texts["wdir_SE"]  = "S&#216;";
+texts["wdir_SSE"] = "SS&#216;";
 texts["wdir_S"]   = "S";
-texts["wdir_SSW"] = "SSW";
-texts["wdir_SW"]  = "SW";
-texts["wdir_WSW"] = "WSW";
-texts["wdir_W"]   = "W";
-texts["wdir_WNW"] = "WNW";
-texts["wdir_NW"]  = "NW";
-texts["wdir_NNW"] = "NNW";
+texts["wdir_SSW"] = "SSV";
+texts["wdir_SW"]  = "SV";
+texts["wdir_WSW"] = "VSV";
+texts["wdir_W"]   = "V";
+texts["wdir_WNW"] = "VNV";
+texts["wdir_NW"]  = "NV";
+texts["wdir_NNW"] = "NNV";
 
 //
 // The clientraw field names
@@ -173,7 +178,7 @@ cr_fieldnames[144] = "Fugtighed Trend (Logisk)";
 cr_fieldnames[145] = "Humidex Trend (Logisk)";
 cr_fieldnames[156] = "Leaf Wetness";
 cr_fieldnames[157] = "Soil moisture";
-cr_fieldnames[158] = "10 Min Avg Wind Speed";
+cr_fieldnames[158] = "10 Min Gns. Vindhast.";
 cr_fieldnames[159] = "Wet bulb temperatur";
-cr_fieldnames[162] = "9am reset rain total";
-cr_fieldnames[163] = "Midnight reset rain total";
+cr_fieldnames[162] = "9am nulstil regntotal";
+cr_fieldnames[163] = "Midnat nulstil regntotal";
