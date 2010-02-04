@@ -457,6 +457,7 @@ function check_convert(val, units) {
 			if (texts["wdir_" + ret["val"]]) ret["val"] = texts["wdir_" + ret["val"]];
 			if (unitnames["abbr"]) ret["units"] = unitnames["abbr"];
 		}
+		break;
 	case "mm":
 		if (settings["rain"] == "in") {
 			ret["val"] = roundNumber(0.0393700787 * val, 3) + '';
@@ -549,9 +550,9 @@ function updateiWdl() {
     for ( var i=0, len=fields.length; i<len; ++i ){
         var conv = check_convert(cr[fields[i]], cr_fields[fields[i]][1]);
         var newval = conv["val"];
-        var val = $("#hmcr_" + fields[i]).text();
+        var val = $("#hmcr_" + fields[i]).html();
         if (newval != val) {
-            $("#hmcr_" + fields[i]).text(newval);
+            $("#hmcr_" + fields[i]).html(newval);
         }
     }
 }
@@ -928,12 +929,12 @@ function localiser() {
 
     var lng = 0;
 	var lat = 0;
-	if (cr[160] == 0 && cr[161] == 0) {
+	if (cr[160] == '0' && cr[161] == '0') {
 		if (settings['longitude']) lng = -settings['longitude'];
 		if (settings['latitude'])  lat = settings['latitude'];
 	} else {
-		if (settings['longitude']) lng = -cr[161];
-		if (settings['latitude'])  lat = cr[160];
+		lng = -(parseFloat(cr[161]));
+		lat = parseFloat(cr[160]);
 	}
 
 	if (lng || lat) {
@@ -970,7 +971,7 @@ function localiser() {
 function settingsChange(which, newval) {
 	var nw = $("#" + newval).val();
 	settings[which] = nw;
-    if (1) {
+	if (navigator.userAgent.toLowerCase().indexOf('iphone') != -1) {
 		jQT.dbDeleteRow("settings", "setting", "'" + which + "'");
 		jQT.dbInsertRows({"addRow": [ { "table": "settings", "property": [ { "name": "setting", value: which }, { "name": "value", "value": nw } ] } ] });
     }
@@ -994,27 +995,27 @@ function startIwdl() {
     	if (!settings["clientraw_dir"]) {
     		alert("No iwdl_settings.js, please rename iwdl_settings.js.sample to iwdl_settings.js and make necessary changes");
     	}
-    	if (1) {
-    	// Open database
-    	jQT.dbOpen("iwdl", "1.0","Settings", 5000);
-    	jQT.dbCreateTables({ "createTables" : [ { "table": "settings", "property": [ {"name": "setting", "type": "text"},
-    	                                                                             {"name": "value", "type": "text" } ] } ] } );
-    	jQT.dbSelectAll("settings", function(result) {
-    		for (var i = 0; i < result.rows.length; i++) {
-    			var row = result.rows.item(i);
-    			if (row['setting'] == "lang" && settings["lang"] != row['value']) {
-    			    settings[row['setting']] = row['value'];
-    		    	// Load language file
-    		        loadjsfile("iwdl_lang_" + settings["lang"] + ".js");
-    		        setTexts('all');
-    			} else {
-    			    settings[row['setting']] = row['value'];
-    			}
-    		}
-    		setUnits();
-    		updateiWdl();
-            addDiv("settings", "<div id='settings_content'>" + dispSettings() + "</div>");
-    	});
+    	if (navigator.userAgent.toLowerCase().indexOf('iphone') != -1) {
+	    	// Open database
+	    	jQT.dbOpen("iwdl", "1.0","Settings", 5000);
+	    	jQT.dbCreateTables({ "createTables" : [ { "table": "settings", "property": [ {"name": "setting", "type": "text"},
+	    	                                                                             {"name": "value", "type": "text" } ] } ] } );
+	    	jQT.dbSelectAll("settings", function(result) {
+	    		for (var i = 0; i < result.rows.length; i++) {
+	    			var row = result.rows.item(i);
+	    			if (row['setting'] == "lang" && settings["lang"] != row['value']) {
+	    			    settings[row['setting']] = row['value'];
+	    		    	// Load language file
+	    		        loadjsfile("iwdl_lang_" + settings["lang"] + ".js");
+	    		        setTexts('all');
+	    			} else {
+	    			    settings[row['setting']] = row['value'];
+	    			}
+	    		}
+	    		setUnits();
+	    		updateiWdl();
+	            addDiv("settings", "<div id='settings_content'>" + dispSettings() + "</div>");
+	    	});
     	} else {
         	// Load language file
             loadjsfile("iwdl_lang_" + settings["lang"] + ".js"); 
@@ -1082,7 +1083,6 @@ function startIwdl() {
 
         $(function(){
             $('body').bind('turn', function(event, info){
-                $("#height").text(document.height);
             	  var curr = $(".current").attr("id");
            		  switch (curr) {
            		  case "hour"      : ;
