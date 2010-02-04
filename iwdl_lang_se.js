@@ -16,7 +16,7 @@
 //
 // Language file for iWDL
 // By Sietse Visser (sietse@sietse.nl)
-// Version 0.8
+// Version 0.8a
 // 
 // Swedish translation by Labbs www.lokaltvader.se
 //
@@ -25,17 +25,17 @@ texts["about"]                     = "Om";
 texts["live_weather"]              = "Live v&#228;der";
 texts["min_max"]                   = "Min / Max";
 texts["graphs"]                    = "Grafer";
-texts["forecast"]                  = "Forecast";
-texts["map"]                       = "Map";
-texts["settings"]                  = "Settings";
+texts["forecast"]                  = "Prognos";
+texts["map"]                       = "Karta";
+texts["settings"]                  = "Inst&#228;llningar";
 texts["back"]                      = "Tillbaka";
 
-texts["radar"]                     = "Radar";
-texts["webcam"]                    = "Webcam";
-texts["loading"]                   = "Loading...";
+texts["radar"]                     = "Radarbild";
+texts["webcam"]                    = "Webkamera";
+texts["loading"]                   = "Laddar...";
 
-texts["station_location"]          = "Weather station location";
-texts["unknown_location"]          = "Unknown location";
+texts["station_location"]          = "V&#228;derstationens placering";
+texts["unknown_location"]          = "Ok&#228;nd plats";
 
 texts["graphmenu"]                 = "Grafmenu";
 texts["ghour"]                     = "Timgrafer";
@@ -43,13 +43,13 @@ texts["gday"]                      = "Dagsgrafer";
 texts["gweek"]                     = "Veckografer";
 texts["gmonth"]                    = "M&#229;nadsgrafer";
 
-texts["set_temp"]                  = "Temperature";
-texts["set_wind"]                  = "Wind speed";
-texts["set_wdir"]                  = "Wind direction";
-texts["set_rain"]                  = "Rain";
-texts["set_baro"]                  = "Pressure";
-texts["set_height"]                = "Cloud height";
-texts["set_lang"]                  = "Language";
+texts["set_temp"]                  = "Temperatur";
+texts["set_wind"]                  = "Vindhastighet";
+texts["set_wdir"]                  = "Vindriktning";
+texts["set_rain"]                  = "Regn";
+texts["set_baro"]                  = "Lufttryck";
+texts["set_height"]                = "Molnh&#246;jd";
+texts["set_lang"]                  = "Spr&#229;k";
 
 texts["last_60m"]                  = "senaste 60 min";
 texts["last_24h"]                  = "senaste 24 tim";
@@ -61,6 +61,7 @@ texts["Dry"]                       = "Torrt";
 texts["Light rain"]                = "L&#228;tt regn";
 texts["Moderate drizzle"]          = "M&#229;ttligt duggregn";
 texts["Moderate rain"]             = "M&#229;ttligt regn";
+
 texts["Heavy rain"]                = "Kraftigt regn";
 texts["Stopped raining"]           = "Slutat regna";
 texts["Dawn"]                      = "Gryning";
@@ -80,21 +81,21 @@ texts["Cloudy with clear patches"] = "Molningt med luckor i molnt&#228;cket";
 texts["Overcast"]                  = "Mulet";
 
 texts["wdir_N"]   = "N";
-texts["wdir_NNE"] = "NNE";
-texts["wdir_NE"]  = "NE";
-texts["wdir_ENE"] = "ENE";
-texts["wdir_E"]   = "E";
-texts["wdir_ESE"] = "ESE";
-texts["wdir_SE"]  = "SE";
-texts["wdir_SSE"] = "SSE";
+texts["wdir_NNE"] = "NNO";
+texts["wdir_NE"]  = "NO";
+texts["wdir_ENE"] = "ONO";
+texts["wdir_E"]   = "O";
+texts["wdir_ESE"] = "OSO";
+texts["wdir_SE"]  = "SO";
+texts["wdir_SSE"] = "SSO";
 texts["wdir_S"]   = "S";
-texts["wdir_SSW"] = "SSW";
-texts["wdir_SW"]  = "SW";
-texts["wdir_WSW"] = "WSW";
-texts["wdir_W"]   = "W";
-texts["wdir_WNW"] = "WNW";
-texts["wdir_NW"]  = "NW";
-texts["wdir_NNW"] = "NNW";
+texts["wdir_SSW"] = "SSV";
+texts["wdir_SW"]  = "SV";
+texts["wdir_WSW"] = "VSV";
+texts["wdir_W"]   = "V";
+texts["wdir_WNW"] = "VNV";
+texts["wdir_NW"]  = "NV";
+texts["wdir_NNW"] = "NNV";
 
 //
 // The clientraw field names

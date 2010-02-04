@@ -1,0 +1,112 @@
+body.fullscreen #home .info {
+    display: none;
+}
+#splash {
+    padding: 50px 10px 40px;
+    text-shadow: rgba(255, 255, 255, 0.3) 0px -1px 0;
+    font-size: 18px;
+    text-align: center;
+    background: #161618;
+    color: white;
+}
+#splash p {
+    margin-bottom: 8px;
+}
+#about {
+    padding: 100px 10px 40px;
+    text-shadow: rgba(255, 255, 255, 0.3) 0px -1px 0;
+    font-size: 18px;
+    text-align: center;
+    background: #161618;
+    color: white;
+}
+#about p {
+    margin-bottom: 8px;
+}
+.iwdl {
+    padding: 4px 1px 4px 5px;
+    font-size: 15px;
+    color: #585858;
+}
+.head {
+    font-size: 15px;
+    color: black;
+}
+.iwdl_bg {
+    text-align: center;
+    background: #e0e0a0;
+    color: black;
+}
+.iwdl_overview {
+    margin: 5px 10px 5px 10px;
+    padding: 0px 0px 0px 0px;
+}
+.iwdl_marpad0 {
+    margin: 0px 0px 0px 00px;
+    padding: 0px 0px 0px 0px;
+}
+.iwdl_home_menu {
+    margin: 5px 10px 5px 10px;
+}
+.black {
+    color: black;
+}
+.left {
+    text-align: left;
+}
+.right {
+    text-align: right;
+}
+.center {
+    text-align: center;
+}
+.w25 {
+    width: 25%;
+}
+.w33 {
+    width: 25%;
+}
+.w50 {
+    width: 50%;
+}
+.w100 {
+    width: 100%;
+}
+.tb_link {
+  color: #f0f0f0;
+  font-size: 15px;
+  font-weight: bold;
+}
+.inline {
+    display: inline;
+    width: 200px;
+}
+ul.individual li + li + li {
+    float: right;
+}
+
+<!--// BEGIN MAP CSS //-->
+#map_canvas {
+        width: 100%;
+        height: 250px;
+}
+body.profile #map_canvas {
+        min-height: 250px;
+}
+body.landscape #map_canvas {
+        min-height: 250px;
+}
+.mapcontrol {
+        text-decoration: none;
+        -webkit-border-radius: 4px;
+        -webkit-box-shadow: rgba(0,0,0,.75) 1px 1px 3px;
+        font-family: Arial;
+        font-size: 20px;
+        padding: 5px 10px 5px 10px;
+        border: 1px solid #AAA;
+        color: #6688CC;
+        text-align: center;
+        margin-bottom: 5px;
+        background-color: #FFF;
+}
+<!--// END MAP CSS //-->

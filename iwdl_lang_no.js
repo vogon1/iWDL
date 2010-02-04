@@ -16,7 +16,7 @@
 //
 // Language file for iWDL
 // By Sietse Visser (sietse@sietse.nl)
-// Version 0.8
+// Version 0.8a
 //
 // Norwegian translation: Runar B. Gundersen (runar@runarweb.com)
 //
@@ -24,15 +24,15 @@
 texts["about"]                     = "Om";
 texts["live_weather"]              = "V&aelig;ret n&aring;";
 texts["min_max"]                   = "Min/Maks i dag";
-texts["graphs"]                    = "Grafer";
-texts["forecast"]                  = "Forecast";
+texts["graphs"]                    = "Grafiske framstillinger";
+texts["forecast"]                  = "V&aelig;rmelding";
 texts["map"]                       = "Kart";
 texts["settings"]                  = "Oppsett";
 texts["back"]                      = "Tilbake";
 
 texts["radar"]                     = "Radar";
-texts["webcam"]                    = "Webcam";
-texts["loading"]                   = "Loading...";
+texts["webcam"]                    = "Webkamera";
+texts["loading"]                   = "Laster...";
 
 texts["station_location"]          = "V&aelig;rstasjonens lokasjon";
 texts["unknown_location"]          = "Ukjent lokasjon";

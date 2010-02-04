@@ -16,24 +16,24 @@
 //
 // Language file for iWDL
 // By Sietse Visser (sietse@sietse.nl)
-// Version 0.8
+// Version 0.8a
 //
 
 texts["about"]                     = "Om";
 texts["live_weather"]              = "Live vejrdata";
 texts["min_max"]                   = "Min / Max";
 texts["graphs"]                    = "Grafer";
-texts["forecast"]                  = "Forecast";
-texts["map"]                       = "Map";
-texts["settings"]                  = "Settings";
+texts["forecast"]                  = "Vejrudsigt";
+texts["map"]                       = "Kort";
+texts["settings"]                  = "Indstillinger";
 texts["back"]                      = "Tilbage";
 
 texts["radar"]                     = "Radar";
 texts["webcam"]                    = "Webcam";
-texts["loading"]                   = "Loading...";
+texts["loading"]                   = "Henter...";
 
-texts["station_location"]          = "Weather station location";
-texts["unknown_location"]          = "Unknown location";
+texts["station_location"]          = "Vejrstationens placering";
+texts["unknown_location"]          = "Ukendt lokation";
 
 texts["graphmenu"]                 = "Graf menu";
 texts["ghour"]                     = "Timegrafer";
@@ -41,13 +41,13 @@ texts["gday"]                      = "Dagsgrafer";
 texts["gweek"]                     = "Ugegrafer";
 texts["gmonth"]                    = "M&#229;nedsgrafer";
 
-texts["set_temp"]                  = "Temperature";
-texts["set_wind"]                  = "Wind speed";
-texts["set_wdir"]                  = "Wind direction";
-texts["set_rain"]                  = "Rain";
-texts["set_baro"]                  = "Pressure";
-texts["set_height"]                = "Cloud height";
-texts["set_lang"]                  = "Language";
+texts["set_temp"]                  = "Temperatur";
+texts["set_wind"]                  = "Vindhastighed";
+texts["set_wdir"]                  = "Vindretning";
+texts["set_rain"]                  = "Regn";
+texts["set_baro"]                  = "Barometer";
+texts["set_height"]                = "Skyh&#248;jde";
+texts["set_lang"]                  = "Sprog";
 
 texts["last_60m"]                  = "sidste 60 min";
 texts["last_24h"]                  = "sidste 24 timer";
@@ -180,5 +180,5 @@ cr_fieldnames[156] = "Leaf Wetness";
 cr_fieldnames[157] = "Soil moisture";
 cr_fieldnames[158] = "10 Min Gns. Vindhast.";
 cr_fieldnames[159] = "Wet bulb temperatur";
-cr_fieldnames[162] = "9am nulstil regntotal";
-cr_fieldnames[163] = "Midnat nulstil regntotal";
+cr_fieldnames[162] = "Regn siden 9am";
+cr_fieldnames[163] = "Regn siden midnat";

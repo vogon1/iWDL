@@ -16,7 +16,7 @@
 //
 // Main javascript file
 // By Sietse Visser (sietse@sietse.nl)
-// Version 0.8
+// Version 0.8a
 //
 
 //
@@ -378,9 +378,8 @@ function getForecast() {
     if (settings["forecast"] == "yr.no") {
 	    var q = "";
 	    q += "http://query.yahooapis.com/v1/public/yql?q=";
-	    q += "select%20*%20from%20xml%20where%20url%3D'http%3A%2F%2Fwww.yr.no%2Fsted%2F";
-	    q += settings["yr.no"].replace(/\//g, "%2F");
-	    q += "%2Fforecast.xml'&format=json&callback=?";
+	    q += encodeURIComponent("select * from xml where url='http:www.yr.no/sted/" + encodeURI(settings["yr.no"]) + "/forecast.xml'");
+	    q += "&format=json&callback=?";
 	    $.getJSON(q, function(fc) {
 		    var i = 0;
 		    var date = '';

@@ -16,7 +16,7 @@
 //
 // Language file for iWDL
 // By Sietse Visser (sietse@sietse.nl)
-// Version 0.8
+// Version 0.8a
 //
 
 texts["about"]                     = "About";
