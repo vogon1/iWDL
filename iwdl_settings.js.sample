@@ -16,7 +16,7 @@
 //
 // Settings for the iWDL iPhone webapp
 // By Sietse Visser (sietse@sietse.nl)
-// Version 0.9
+// Version 1.0
 //
 
 // Where are the clientraw files
@@ -39,9 +39,9 @@ settings["height"] = "ft";
 settings["time"]   = "24";
 
 //Language to use; a file named iwdl_lang_<language>.js must exist.
-// Possible languages: cz dk en fi it nl no se sp
+// Possible languages: cz de dk en fi fr hu it nl no se sp
 settings["lang"] = "en";
-settings["all_langs"] = [ "cz", "dk", "en", "fi", "it", "nl", "no", "se", "sp" ];
+settings["all_langs"] = [ "cz", "de", "dk", "en", "fi", "fr", "hu", "it", "nl", "no", "se", "sp" ];
 
 // Station name override; iWDL normally uses the station name from the clientraw.txt.
 // In case you want another name to show up in the top bar, remove // in the following line:
@@ -93,9 +93,17 @@ settings["home"]        = [4, 5, 6, 7, 3, 1];
 settings["live_screen"] = [4, 5, 6, 7, 12, 13, 79, 127, 73, 3, 1, 2, 44, 45];
 settings["min_max"]     = [47, 46, 76, 75, 78, 77, 111, 110, 129, 128, 132, 131, 11, 71, 113];
 
+// Which records to show; possible values are
+// temp wind rain baro soil grass solar uv
+settings["records"] = ["temp", "wind", "rain", "baro", "solar", "uv"];
+
 // If you want to toggle humidex (temp > 17C) and windchill (temp < 17C), then uncomment following option.
 // In the live screen setting (see above), use either field 44 or 45, it will toggle
 // settings["humchill"] = "toggle";
+
+// If you want to toggle heat index  (temp > 17C) and windchill (temp < 17C), then uncomment following option.
+// In the live screen setting (see above), use either field 44 or 112, it will toggle
+// settings["heatchill"] = "toggle";
 
 // Possible settings for hour graphs:
 // temp_out, humid_out, rain, baro, wind_speed, wind_gust, wind_dir, solar_wm

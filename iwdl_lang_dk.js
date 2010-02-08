@@ -16,7 +16,7 @@
 //
 // Language file for iWDL
 // By Sietse Visser (sietse@sietse.nl)
-// Version 0.9
+// Version 1.0
 //
 
 texts["about"]                     = "Om";
@@ -27,6 +27,29 @@ texts["forecast"]                  = "Vejrudsigt";
 texts["map"]                       = "Kort";
 texts["settings"]                  = "Indstillinger";
 texts["back"]                      = "Tilbage";
+
+texts["records"]                   = "Rekorder";
+texts["rec_today"]                 = "Rekorder i dag";
+texts["rec_month"]                 = "Rekorder denne m &#229;ned";
+texts["rec_year"]                  = "Rekorder i &#229;r";
+texts["rec_alltime"]               = "All-time rekorder";
+texts["temp"]                      = "Temperatur";
+texts["wind"]                      = "Vind";
+texts["rain"]                      = "Regn";
+texts["baro"]                      = "Baro";
+texts["soil"]                      = "Jord temperatur";
+texts["grass"]                     = "Gr &#230;s temperatur";
+texts["solar"]                     = "Sol";
+texts["uv"]                        = "UV";
+texts["min"]                       = "Min";
+texts["max"]                       = "Max";
+texts["coldest_day"]               = "Koldeste dag";
+texts["warmest_day"]               = "Varmeste dag";
+texts["coldest_night"]             = "Koldeste nat";
+texts["warmest_night"]             = "Varmeste nat";
+texts["rain_rate"]                 = "Regnrate";
+texts["rain_hour"]                 = "Regn sidste time";
+texts["rain_day"]                  = "Regn i dag";
 
 texts["radar"]                     = "Radar";
 texts["webcam"]                    = "Webcam";

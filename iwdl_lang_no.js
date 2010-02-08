@@ -16,7 +16,7 @@
 //
 // Language file for iWDL
 // By Sietse Visser (sietse@sietse.nl)
-// Version 0.9
+// Version 1.0
 //
 // Norwegian translation: Runar B. Gundersen (runar@runarweb.com)
 //
@@ -29,6 +29,29 @@ texts["forecast"]                  = "V&aelig;rmelding";
 texts["map"]                       = "Kart";
 texts["settings"]                  = "Oppsett";
 texts["back"]                      = "Tilbake";
+
+texts["records"]                   = "Rekorder";
+texts["rec_today"]                 = "Rekorder i dag";
+texts["rec_month"]                 = "Rekorder denne måneden";
+texts["rec_year"]                  = "Rekorder i år";
+texts["rec_alltime"]               = "Rekorder totalt";
+texts["temp"]                      = "Temperatur";
+texts["wind"]                      = "Vind";
+texts["rain"]                      = " Nedb&oslash;r";
+texts["baro"]                      = "Lufttrykk";
+texts["soil"]                      = "Jordtemperatur";
+texts["grass"]                     = "Grasstemperatur";
+texts["solar"]                     = "Solar";
+texts["uv"]                        = "UV";
+texts["min"]                       = "Min";
+texts["max"]                       = "Maks";
+texts["coldest_day"]               = "Kaldeste dag (snitt 6-18)";
+texts["warmest_day"]               = "Varmeste dag (snitt 6-18)";
+texts["coldest_night"]             = "Kaldeste natt (snitt 18-6)";
+texts["warmest_night"]             = "Varmeste natt (snitt 18-6)";
+texts["rain_rate"]                 = "Nedb&oslash;rsrate";
+texts["rain_hour"]                 = "Nedb&oslash;r pr. time";
+texts["rain_day"]                  = "Nedb&oslash;r pr. dag";
 
 texts["radar"]                     = "Radar";
 texts["webcam"]                    = "Webkamera";
@@ -101,8 +124,8 @@ texts["Tuesday"]   = "Tirsdag";
 texts["Wednesday"] = "Onsdag";
 texts["Thursday"]  = "Torsdag";
 texts["Friday"]    = "Fredag";
-texts["Saturday"]  = "Lørdag";
-texts["Sunday"]    = "Søndag";
+texts["Saturday"]  = "L&oslash;rdag";
+texts["Sunday"]    = "S&oslash;ndag";
 
 //
 // The clientraw field names

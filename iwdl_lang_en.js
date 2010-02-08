@@ -16,7 +16,7 @@
 //
 // Language file for iWDL
 // By Sietse Visser (sietse@sietse.nl)
-// Version 0.9
+// Version 1.0
 //
 
 texts["about"]                     = "About";
@@ -27,6 +27,29 @@ texts["forecast"]                  = "Forecast";
 texts["map"]                       = "Map";
 texts["settings"]                  = "Settings";
 texts["back"]                      = "Back";
+
+texts["records"]                   = "Records";
+texts["rec_today"]                 = "Records today";
+texts["rec_month"]                 = "Records this month";
+texts["rec_year"]                  = "Records this year";
+texts["rec_alltime"]               = "Records all time";
+texts["temp"]                      = "Temperature";
+texts["wind"]                      = "Wind";
+texts["rain"]                      = "Rain";
+texts["baro"]                      = "Baro";
+texts["soil"]                      = "Soil temperature";
+texts["grass"]                     = "Grass temperature";
+texts["solar"]                     = "Solar";
+texts["uv"]                        = "UV";
+texts["min"]                       = "Min";
+texts["max"]                       = "Max";
+texts["coldest_day"]               = "Coldest day";
+texts["warmest_day"]               = "Warmest day";
+texts["coldest_night"]             = "Coldest night";
+texts["warmest_night"]             = "Warmest night";
+texts["rain_rate"]                 = "Rain rate";
+texts["rain_hour"]                 = "Rain hour";
+texts["rain_day"]                  = "Rain day";
 
 texts["radar"]                     = "Radar";
 texts["webcam"]                    = "Webcam";

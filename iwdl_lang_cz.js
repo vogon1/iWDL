@@ -16,7 +16,7 @@
 //
 // Language file for iWDL
 // By Sietse Visser (sietse@sietse.nl)
-// Version 0.9
+// Version 1.0
 //
 
 texts["about"]                     = "O programu";
@@ -27,6 +27,29 @@ texts["forecast"]                  = "Předpověď";
 texts["map"]                       = "Mapy";
 texts["settings"]                  = "Nastavení";
 texts["back"]                      = "Zpět";
+
+texts["records"]                   = "Rekordy";
+texts["rec_today"]                 = "Rekordy dnes";
+texts["rec_month"]                 = "Rekordy tento měsíc";
+texts["rec_year"]                  = "Rekordy tento rok";
+texts["rec_alltime"]               = "Všechny rekordy";
+texts["temp"]                      = "Teplota";
+texts["wind"]                      = "Vítr";
+texts["rain"]                      = "Srážky";
+texts["baro"]                      = "Tlak";
+texts["soil"]                      = "Teplota půdy";
+texts["grass"]                     = "Teplota trávníku";
+texts["solar"]                     = "Sluneční svit";
+texts["uv"]                        = "UV";
+texts["min"]                       = "Min";
+texts["max"]                       = "Max";
+texts["coldest_day"]               = "Nejchladnější den";
+texts["warmest_day"]               = "Nejteplejší den";
+texts["coldest_night"]             = "Nejchladnější noc";
+texts["warmest_night"]             = "Nejteplejší noc";
+texts["rain_rate"]                 = "Intenzita srážek";
+texts["rain_hour"]                 = "Srážky za hodinu";
+texts["rain_day"]                  = "Denní srážky";
 
 texts["radar"]                     = "Radar";
 texts["webcam"]                    = "Webová kamera";

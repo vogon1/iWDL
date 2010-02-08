@@ -16,7 +16,7 @@
 //
 // Language file for iWDL
 // By Sietse Visser (sietse@sietse.nl)
-// Version 0.9
+// Version 1.0
 // 
 // Swedish translation by Labbs www.lokaltvader.se
 //
@@ -29,6 +29,29 @@ texts["forecast"]                  = "Prognos";
 texts["map"]                       = "Karta";
 texts["settings"]                  = "Inst&#228;llningar";
 texts["back"]                      = "Tillbaka";
+
+texts["records"]                   = "Rekord";
+texts["rec_today"]                 = "Dagens rekord";
+texts["rec_month"]                 = "M&#229;nadens rekord";
+texts["rec_year"]                  = "&#197;rets rekord";
+texts["rec_alltime"]               = "All-time rekord";
+texts["temp"]                      = "Temperatur";
+texts["wind"]                      = "Vind";
+texts["rain"]                      = "Regn";
+texts["baro"]                      = "Lufttryck";
+texts["soil"]                      = "Marktemperatur";
+texts["grass"]                     = "Gr&#228;stemperatur";
+texts["solar"]                     = "Sol";
+texts["uv"]                        = "UV";
+texts["min"]                       = "Min";
+texts["max"]                       = "Max";
+texts["coldest_day"]               = "Kallaste dag";
+texts["warmest_day"]               = "Varmaste dag";
+texts["coldest_night"]             = "Kallaste natt";
+texts["warmest_night"]             = "Varmaste natt";
+texts["rain_rate"]                 = "Regnintensitet";
+texts["rain_hour"]                 = "Regn senaste timme";
+texts["rain_day"]                  = "Regn idag";
 
 texts["radar"]                     = "Radarbild";
 texts["webcam"]                    = "Webkamera";

@@ -16,7 +16,7 @@
 //
 // Language file for iWDL
 // By Sietse Visser (sietse@sietse.nl)
-// Version 0.9
+// Version 1.0
 //
 
 texts["about"]                     = "Over";
@@ -27,6 +27,29 @@ texts["forecast"]                  = "Verwachting";
 texts["map"]                       = "Kaart";
 texts["settings"]                  = "Instellingen";
 texts["back"]                      = "Terug";
+
+texts["records"]                   = "Records";
+texts["rec_today"]                 = "Records vandaag";
+texts["rec_month"]                 = "Records deze maand";
+texts["rec_year"]                  = "Records dit jaar";
+texts["rec_alltime"]               = "Records ooit";
+texts["temp"]                      = "Temperatuur";
+texts["wind"]                      = "Wind";
+texts["rain"]                      = "Regen";
+texts["baro"]                      = "Luchtdruk";
+texts["soil"]                      = "Grond temperatuur";
+texts["grass"]                     = "Gras temperatruur";
+texts["solar"]                     = "Zonnewarmte";
+texts["uv"]                        = "UV straling";
+texts["min"]                       = "Min";
+texts["max"]                       = "Max";
+texts["coldest_day"]               = "Koudste dag";
+texts["warmest_day"]               = "Warmste dag";
+texts["coldest_night"]             = "Koudste nacht";
+texts["warmest_night"]             = "Warmste nacht";
+texts["rain_rate"]                 = "Regen per minuut";
+texts["rain_hour"]                 = "Regen per uur";
+texts["rain_day"]                  = "Regen per dag";
 
 texts["radar"]                     = "Radar";
 texts["webcam"]                    = "Webcam";
@@ -42,8 +65,8 @@ texts["gweek"]                     = "Week grafieken";
 texts["gmonth"]                    = "Maand grafieken";
 
 texts["set_temp"]                  = "Temperatuur";
-texts["set_wind"]                  = "Wind snelheid";
-texts["set_wdir"]                  = "Wind richting";
+texts["set_wind"]                  = "Windsnelheid";
+texts["set_wdir"]                  = "Windrichting";
 texts["set_rain"]                  = "Regen";
 texts["set_baro"]                  = "Druk";
 texts["set_height"]                = "Wolkenbasis";

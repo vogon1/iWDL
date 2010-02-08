@@ -3,6 +3,12 @@
 # MkRel version @@version@@
 #
 
+if [ "$1" = "" ]
+then
+   echo "Usage: $0 <release version>"
+   exit 1
+fi
+
 rm -rf /tmp/iwdl
 mkdir /tmp/iwdl
 
@@ -22,6 +28,7 @@ done
 
 cp yuicompressor-2.4.2.jar /tmp/iwdl/
 
+srcdir=`pwd`
 cd /tmp/iwdl/
 
 cat lib/jqtouch.js lib/jqt.database.js lib/jquery.timers.js iwdl.js > tmp.js
@@ -33,5 +40,7 @@ rm tmp.js tmp.min.js
 cat css/jqtouch.css themes/apple/theme.css iwdl.css > tmp.css
 java -jar yuicompressor-2.4.2.jar tmp.css > all.min.css
 rm tmp.css yuicompressor-2.4.2.jar
+
+cp all.min.js all.min.css $srcdir
 
 echo "Now edit /tmp/iwdl/index.html"

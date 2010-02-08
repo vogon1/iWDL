@@ -16,7 +16,7 @@
 //
 // Language file for iWDL
 // By Sietse Visser (sietse@sietse.nl)
-// Version 0.9
+// Version 1.0
 //
 
 texts["about"]                     = "Tietoa meistä";
@@ -27,6 +27,29 @@ texts["forecast"]                  = "Ennuste";
 texts["map"]                       = "Kartta";
 texts["settings"]                  = "Asetukset";
 texts["back"]                      = "Takaisin";
+
+texts["records"]                   = "Ennätykset";
+texts["rec_today"]                 = "Tänään";
+texts["rec_month"]                 = "Kuukausi";
+texts["rec_year"]                  = "Vuosi";
+texts["rec_alltime"]               = "Kaikkien aikojen";
+texts["temp"]                      = "Lämpötila";
+texts["wind"]                      = "Tuuli";
+texts["rain"]                      = "Sade";
+texts["baro"]                      = "Ilmanpaine";
+texts["soil"]                      = "Maan lämpötila";
+texts["grass"]                     = "Ruohon lämpötila";
+texts["solar"]                     = "Aurinko";
+texts["uv"]                        = "UV";
+texts["min"]                       = "Minimi";
+texts["max"]                       = "Maksimi";
+texts["coldest_day"]               = "Kylmin päivä";
+texts["warmest_day"]               = "Lämpimin yö";
+texts["coldest_night"]             = "Kylmin yö";
+texts["warmest_night"]             = "Lämpimin yö";
+texts["rain_rate"]                 = "Sade";
+texts["rain_hour"]                 = "Sateen voimakkuus";
+texts["rain_day"]                  = "Sademäärä päivässä";
 
 texts["radar"]                     = "Tutka";
 texts["webcam"]                    = "Kamera";

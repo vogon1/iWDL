@@ -16,7 +16,7 @@
 //
 // Language file for iWDL
 // By Sietse Visser (sietse@sietse.nl)
-// Version 0.9
+// Version 1.0
 //
 
 texts["about"]                     = "Acerca de";
@@ -27,6 +27,29 @@ texts["forecast"]                  = "Pron&#243stico";
 texts["map"]                       = "Mapa";
 texts["settings"]                  = "Ajustes";
 texts["back"]                      = "Atr&#225s";
+
+texts["records"]                   = "Registros";
+texts["rec_today"]                 = "Registros de hoy";
+texts["rec_month"]                 = "Registros del mes";
+texts["rec_year"]                  = "Registros del año";
+texts["rec_alltime"]               = "Todos los registros";
+texts["temp"]                      = "Temperatura";
+texts["wind"]                      = "Viento";
+texts["rain"]                      = "Lluvía";
+texts["baro"]                      = "Barómetro";
+texts["soil"]                      = "Temperatura del suelo";
+texts["grass"]                     = "Temperatura de la hierba";
+texts["solar"]                     = "Solar";
+texts["uv"]                        = "UV";
+texts["min"]                       = "Mín";
+texts["max"]                       = "Máx";
+texts["coldest_day"]               = "Día más frío";
+texts["warmest_day"]               = "Día más cálido";
+texts["coldest_night"]             = "Noche más fría";
+texts["warmest_night"]             = "Noche más cálida";
+texts["rain_rate"]                 = "Tasa de lluvia";
+texts["rain_hour"]                 = "Lluvia por hora";
+texts["rain_day"]                  = "Lluvia por día";
 
 texts["radar"]                     = "Radar";
 texts["webcam"]                    = "Webcam";

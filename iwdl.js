@@ -16,7 +16,7 @@
 //
 // Main javascript file
 // By Sietse Visser (sietse@sietse.nl)
-// Version 0.9
+// Version 1.0
 //
 
 //
@@ -330,6 +330,38 @@ crtogr[127] = [
                [  ]
              ];
 
+var records = new Array;
+// order is clientraw field, month, ytd, alltime
+records["temp_high"]     = [   4,  61, 187, 313 ];
+records["temp_low"]      = [   4,  67, 193, 319 ];
+records["wind_avg"]      = [   1, 109, 235, 361 ];
+records["wind_gust"]     = [   2,  73, 199, 325 ];
+records["rain_rate"]     = [  10,  79, 205, 331 ];
+records["daily_rain"]    = [   7,  97, 223, 349 ];
+records["hour_rain"]     = [   7, 104, 229, 355 ];
+records["baro_low"]      = [   6,  85, 211, 337 ];
+records["baro_high"]     = [   6,  91, 217, 343 ];
+records["soil_high"]     = [  14, 121, 247, 373 ];
+records["soil_low"]      = [  14, 127, 253, 379 ];
+records["grass_high"]    = [   4, 181, 307, 433 ];
+records["windchill"]     = [  44, 133, 259, 385 ];
+records["heatindex"]     = [ 112, 175, 301, 427 ];
+records["warmest_day"]   = [   4, 151, 277, 403 ];
+records["coldest_night"] = [   4, 157, 283, 409 ];
+records["coldest_day"]   = [   4, 163, 289, 415 ];
+records["warmest_night"] = [   4, 169, 295, 421 ];
+records["solar"]         = [ 127, 660, 672, 684 ];
+records["uv"]            = [  79, 666, 678, 690 ];
+
+var record_disp = new Array;
+record_disp["temp"]  = [ "temp_high", "temp_low", "warmest_day", "coldest_day", "warmest_night", "coldest_night" ];
+record_disp["wind"]  = [ "wind_avg", "wind_gust" ];
+record_disp["rain"]  = [ "rain_rate", "hour_rain", "daily_rain" ];
+record_disp["baro"]  = [ "baro_high", "baro_low" ];
+record_disp["soil"]  = [ "soil_high", "soil_low" ];
+record_disp["grass"] = [ "grass_high" ];
+record_disp["solar"] = [ "solar" ];
+record_disp["uv"]    = [ "uv" ];
 
 var config = 'iwdl_settings.js'
 var settings = new Array;
@@ -384,7 +416,7 @@ function getForecast() {
             var i = 0;
             var date = '';
             var str;
-            while (i < 16) {
+            while (i < 30 && fc.query.results.weatherdata.forecast.tabular.time[i]) {
                 var t = fc.query.results.weatherdata.forecast.tabular.time[i];
                 var dt = t.from.replace(/T.*/, "");
                 var stime = t.from.replace(/.*T/, "");
@@ -410,8 +442,8 @@ function getForecast() {
                     var elms = ndate.split(/[- :]/);
                     var jsdt = new Date();
                     jsdt.setFullYear(parseInt(elms[0]));
-                    jsdt.setMonth(parseInt(elms[1]-1));
-                    jsdt.setDate(parseInt(elms[2]));
+                    jsdt.setMonth(parseInt(elms[1].replace(/^0/, "")-1));
+                    jsdt.setDate(parseInt(elms[2].replace(/^0/, "")));
                     var day = '?';
                     switch (jsdt.getDay()) {
                     case 0: day = texts['Sunday']; break;
@@ -655,10 +687,28 @@ function updateiWdl() {
     			$("[crtxt=45]").html(cr_fieldnames[45]);
     		}
     		if (fields[i] == 45 && t < 17) {
-    			// toggle to humidex
+    			// toggle to windchill
     			settings["live_screen"][i] = 44;
     			$("[crtxt=45]").attr("crtxt", "44");
     			$("#cr_45").attr("id", "cr_44");
+    			$("[crtxt=44]").html(cr_fieldnames[44]);
+    		}
+    	}
+
+    	if ((fields[i] == 44 || fields[i] == 112) && settings["heatchill"] == 'toggle') {
+			var t = parseInt(cr[4]);
+    		if (fields[i] == 44 && t >= 17) {
+    			// toggle to heatindex
+    			settings["live_screen"][i] = 112;
+    			$("[crtxt=44]").attr("crtxt", "112");
+    			$("#cr_44").attr("id", "cr_112");
+    			$("[crtxt=112]").html(cr_fieldnames[112]);
+    		}
+    		if (fields[i] == 112 && t < 17) {
+    			// toggle to windchill
+    			settings["live_screen"][i] = 44;
+    			$("[crtxt=112]").attr("crtxt", "44");
+    			$("#cr_112").attr("id", "cr_44");
     			$("[crtxt=44]").html(cr_fieldnames[44]);
     		}
     	}
@@ -803,7 +853,7 @@ function dispIwdl() {
     return str;
 }
 
-function dispMinMax() {
+function dispToday() {
     var str;
     str = "<ul class='rounded'>";
 
@@ -812,7 +862,7 @@ function dispMinMax() {
     str += "<li class='iwdl iwdl_bg'>";
     str += "<table width='100%'>";
     str += "  <tr>";
-    str += "    <td width='100%'iwdltxt='min_max'>Today's min/max</td>"; 
+    str += "    <td width='100%'iwdltxt='rec_today'>Records today</td>"; 
     str += "  </tr>";
     str += "</table>";
     str += "</li>";
@@ -832,6 +882,77 @@ function dispMinMax() {
         str += "</li>";
     }
     str += "</ul>";
+    return str;
+}
+
+function dispRec(which) {
+    var str;
+    str = "<ul class='rounded'>";
+    str += "<li class='iwdl iwdl_bg'>";
+    str += "<table width='100%'>";
+    str += "  <tr>";
+    str += "    <td width='100%' iwdltxt='rec_" + which + "'>" + texts["rec_" + which] + "</td>"; 
+    str += "  </tr>";
+    str += "</table>";
+    str += "</li>";
+    str += "</ul>";
+
+    getClientRaw(["cr", "ecr"]);
+
+    var items = settings["records"];
+    for ( var i=0, len=items.length; i<len; ++i ) {
+        var fields = record_disp[items[i]];
+        str += "<ul class='rounded'>";
+    	str += "<li class='iwdl'>";
+    	str += "<table width='100%'><tr><td class='iwdl iwdl_bg black center' colspan='3'><b>" + texts[items[i]] + "</b></td></tr></table>";
+    	str += "</li>";
+        for ( var j=0, len2=fields.length; j<len2; ++j ) {
+            str += "<li class='iwdl'><table width='100%'>";
+        	if (fields[j] == '') {
+        		str += "<tr><td class='iwdl w50'>&nbsp;</td><td class='iwdl w25'>&nbsp;</td><td class='iwdl w25'>&nbsp;</td></tr>";
+        	} else {
+        		var cr_field = records[fields[j]][0];
+        		var r_start;
+        		switch (which) {
+        		  case 'month':   r_start = records[fields[j]][1]; break;
+        		  case 'year':    r_start = records[fields[j]][2]; break;
+        		  case 'alltime': r_start = records[fields[j]][3]; break;
+        		}
+                str += "<tr><td class='iwdl black' colspan='3'>";
+                switch(fields[j]) {
+                  case "temp_high":     str += texts["max"] + " " + cr_fieldnames[cr_field]; break;
+                  case "temp_low":      str += texts["min"] + " " + cr_fieldnames[cr_field]; break;
+                  case "warmest_day":   str += texts["warmest_day"]; break;
+                  case "coldest_day":   str += texts["coldest_day"]; break;
+                  case "warmest_night": str += texts["warmest_night"]; break;
+                  case "coldest_night": str += texts["coldest_night"]; break;
+                  case "wind_avg":      str += texts["max"] + " " + cr_fieldnames[cr_field]; break;
+                  case "wind_avg_dir":  break;
+                  case "wind_gust":     str += texts["max"] + " " + cr_fieldnames[cr_field]; break;
+                  case "wind_gust_dir": break;
+                  case "rain_rate":     str += texts["rain_rate"]; break;
+                  case "hour_rain":     str += texts["rain_hour"]; break;
+                  case "daily_rain":    str += texts["rain_day"]; break;
+                  case "baro_high":     str += texts["max"] + " " + cr_fieldnames[cr_field]; break;
+                  case "baro_low":      str += texts["min"] + " " + cr_fieldnames[cr_field]; break;
+                  case "soil_high":     str += texts["max"]; break;
+                  case "soil_low":      str += texts["min"]; break;
+                  case "grass_high":    str += texts["max"]; break;
+                  case "solar":         str += texts["max"] + " " + cr_fieldnames[cr_field]; break;
+                  case "uv":            str += texts["max"] + " " + cr_fieldnames[cr_field]; break;
+                }
+                str += "</td></tr>";
+                str += "<tr><td class='iwdl w50'>" + cre[r_start+5] + "-"  + cre[r_start+4] + "-" + cre[r_start+3] + " ";
+                str += cre[r_start+1] + ":" + cre[r_start+2] + "</td>";
+                var conv = check_convert(cre[r_start], cr_fields[cr_field][1]);
+                str += "<td class='iwdl w25 right black'>" + conv['val'] + "</td>";
+                str += "<td class='iwdl w25'>" + conv['units'] + "</td></tr>";
+                str += "</table></li>";
+        	}
+        }
+        str += "</ul>";
+    }
+
     return str;
 }
 
@@ -1065,6 +1186,14 @@ function setTexts(what) {
         $("[iwdltxt]").each(function() {
             $(this).html(texts[$(this).attr("iwdltxt")]);
         });
+        $("#r_today").remove();
+        $("#r_month").remove();
+        $("#r_year").remove();
+        $("#r_alltime").remove();
+        addDiv("r_today",      dispToday());
+        addDiv("r_month",      dispRec('month'));
+        addDiv("r_year",       dispRec('year'));
+        addDiv("r_alltime",    dispRec('alltime'));
     }
 
     if (what == 'cr' || what == 'all') {
@@ -1224,12 +1353,15 @@ function startIwdl() {
         // Load language file
         loadjsfile("iwdl_lang_" + settings["lang"] + ".js"); 
 
-        getClientRaw(["cr"]);
+        getClientRaw(["cr", "ecr"]);
         dispHome();
         updateiWdl();
 
         addDiv("live_weather", dispIwdl());
-        addDiv("min_max",      dispMinMax());
+        addDiv("r_today",      dispToday());
+        addDiv("r_month",      dispRec('month'));
+        addDiv("r_year",       dispRec('year'));
+        addDiv("r_alltime",    dispRec('alltime'));
 
         setUnits();
         updateiWdl();
